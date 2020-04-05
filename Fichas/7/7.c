@@ -135,130 +135,116 @@ int main ()
 //ex 2
 
 //a)
-typedef struct aluno
-{
-	char nome[61];
-	int numeroAluno, nota;
-}Aluno;
-
-typedef struct turma *Turma;
-
-typedef struct turma
-{
-	Aluno aluno;
-	Turma proxAluno;
-}NodoTurma;
-
-void showT (Turma t)
-{
-	while (t)
+	typedef struct aluno
 	{
-		printf("Nome:%s ",t->aluno.nome);
-		printf("Numero:%d ",t->aluno.numeroAluno);
-		printf("Nota:%d ",t->aluno.nota);
-		putchar('\n');
-		t = t->proxAluno;
-	}
-}
+		char nome[61];
+		int numeroAluno, nota;
+	}Aluno;
 
-void showAluno (Aluno a)
-{
-	printf("Nome:%s ",a.nome);
-	printf("Numero:%d ",a.numeroAluno);
-	printf("Nota:%d ",a.nota);
-	putchar('\n');
-}
+	typedef struct turma *Turma;
+
+	typedef struct turma
+	{
+		Aluno aluno;
+		Turma proxAluno;
+	}NodoTurma;
+
+	void showT (Turma t)
+	{
+		while (t)
+		{
+			printf("Nome:%s ",t->aluno.nome);
+			printf("Numero:%d ",t->aluno.numeroAluno);
+			printf("Nota:%d ",t->aluno.nota);
+			putchar('\n');
+			t = t->proxAluno;
+		}
+	}
+
+	void showAluno (Aluno a)
+	{
+		printf("Nome:%s ",a.nome);
+		printf("Numero:%d ",a.numeroAluno);
+		printf("Nota:%d ",a.nota);
+		putchar('\n');
+	}
 
 //b)
 
-Aluno a1 = {"Jorge", 1, 5};
-Aluno a2 = {"Ana", 2, 17};
-Aluno a3 = {"Rui", 3, 14};
-Aluno a4 = {"Francisco", 4, 10};
-Aluno a5 = {"Joana", 5, 7};
-Aluno a6 = {"Marta", 6, 11};
+	Aluno a1 = {"Jorge", 1, 5};
+	Aluno a2 = {"Ana", 2, 17};
+	Aluno a3 = {"Rui", 3, 14};
+	Aluno a4 = {"Francisco", 4, 10};
+	Aluno a5 = {"Joana", 5, 7};
+	Aluno a6 = {"Marta", 6, 11};
 
-Turma t = malloc(sizeof(NodoTurma));
-t = NULL;
+	Turma t = malloc(sizeof(NodoTurma));
+	t = NULL;
 
-int acrescentaAluno (Turma *t, Aluno a)
-{
-	Turma b,c; 
-	b = malloc(sizeof(NodoTurma));
-	if (!b)
-		return 1;
-	b->aluno = a;
-	b->proxAluno = NULL;
-	c = *t;
-	if (!c)
+	int acrescentaAluno (Turma *t, Aluno a)
+	{
+		Turma b,c; 
+		b = malloc(sizeof(NodoTurma));
+		if (!b)
+			return 1;
+		b->aluno = a;
+		b->proxAluno = NULL;
+		c = *t;
+		if (!c)
 		{
 			*t = b;
 			return 0;
 		}
-	while(c->proxAluno)
-		c = c->proxAluno;
-	c->proxAluno = b; 
-	return 0;
-}
+		while(c->proxAluno)
+			c = c->proxAluno;
+		c->proxAluno = b; 
+		return 0;
+	}
 
-acrescentaAluno (&t, a1);
-acrescentaAluno (&t, a2);
-acrescentaAluno (&t, a3);
-acrescentaAluno (&t, a4);
-acrescentaAluno (&t, a5);
-acrescentaAluno (&t, a6);
+	acrescentaAluno (&t, a1);
+	acrescentaAluno (&t, a2);
+	acrescentaAluno (&t, a3);
+	acrescentaAluno (&t, a4);
+	acrescentaAluno (&t, a5);
+	acrescentaAluno (&t, a6);
 
 
-showT (t);
-putchar('\n');
+	showT (t);
+	putchar('\n');
 
 //c)
-Aluno *procura (Turma t, int numero)
-{
-	while(t)
+	Aluno *procura (Turma t, int numero)
 	{
-		if (t->aluno.numeroAluno == numero)
-			return &t->aluno;
-		else 
-			t = t->proxAluno;
+		while(t)
+		{
+			if (t->aluno.numeroAluno == numero)
+				return &t->aluno;
+			else 
+				t = t->proxAluno;
+		}
+		return NULL;
 	}
-	return NULL;
-}
 
-showAluno(*procura(t,2));
-putchar('\n');
+	showAluno(*procura(t,2));
+	putchar('\n');
 
 //d)
-
-
-int aprovados(Turma t)
-{
-	int r = 0;
-	Turma a = t;
-	while (t)
+	int aprovados(Turma t)
 	{
-		if (t->aluno.nota >= 10)
-			r++;
-		t = t->proxAluno;
+		int r = 0;
+		Turma a = t;
+		while (t)
+		{
+			if (t->aluno.nota >= 10)
+				r++;
+			t = t->proxAluno;
+		}
+		return r;
 	}
-	return r;
-}
 
-int numero_aprovadados = aprovados(t);
-printf("Aprovados = %d\n", numero_aprovadados );
-putchar('\n');
-
-
-
-
-
-
-
-
-
-
-
-
+	int numero_aprovadados = aprovados(t);
+	printf("Aprovados = %d\n", numero_aprovadados );
+	putchar('\n');
 
 	return 0;
 }
