@@ -22,6 +22,7 @@ int main ()
 	}
 
 //ex 1
+
 //a)
 
 	LInt a, b, c;
@@ -57,11 +58,17 @@ int main ()
 //ii.
 	LInt tail (LInt l)
 	{
+		LInt r = NULL;
 		if (l)
-			l = l->prox;
+		{
+			r = l->prox;
+			free(l);
+		}
+		return r;
 	}
 
 	a = tail (a);
+	printf("tail\n");
 	showL(a);
 	putchar('\n');
 
@@ -72,7 +79,6 @@ int main ()
 		b = l;
 		if (!b || !b->prox)
 			return NULL;
-		
 		while(b && b->prox)
 		{
 			ant = b;
