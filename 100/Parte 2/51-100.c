@@ -60,7 +60,7 @@ LInt reverseL (LInt l)
    while (l)
    {
  
-       r = insere (l->valor, r);
+       r = inserecabeça (l->valor, r);
        freed = l;
        l = l->prox;
        free(freed);
