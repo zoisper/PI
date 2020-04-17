@@ -293,13 +293,13 @@ int main ()
 	
 	int pop (Stack *s, int *x) 
 	{
-    	Stack pt;
+    	Stack aux;
     	if(!isEmptyS(s)) 
     	{
         	*x = (*s)->valor;
-        	pt = (*s)->prox;
+        	aux = (*s)->prox;
         	free(*s);
-        	*s=pt;
+        	*s=aux;
         return 0;
    		} 
     	else
@@ -318,6 +318,13 @@ int main ()
         	return 1;
 	}
 
-
+	void showStack(Stack s)
+	{
+		while (s)
+		{
+			printf("%d ",s->valor);
+			s=s->prox;
+		}
+	}
 	return 0;
 }
