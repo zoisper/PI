@@ -7,6 +7,8 @@ int valor;
 LInt prox;
 } Nodo;
 
+typedef LInt Stack;
+
 int main ()
 
 {
@@ -184,8 +186,7 @@ int main ()
 	Aluno a5 = {"Joana", 5, 7};
 	Aluno a6 = {"Marta", 6, 11};
 
-	Turma t = malloc(sizeof(NodoTurma));
-	t = NULL;
+	Turma t = NULL;
 
 	int acrescentaAluno (Turma *t, Aluno a)
 	{
@@ -221,14 +222,12 @@ int main ()
 //c)
 	Aluno *procura (Turma t, int numero)
 	{
-		while(t)
-		{
-			if (t->aluno.numeroAluno == numero)
-				return &t->aluno;
-			else 
-				t = t->proxAluno;
-		}
-		return NULL;
+		while(t && t->aluno.numeroAluno != numero)
+			t = t->proxAluno;
+		if (t)
+			return &t->aluno;
+		else 
+			return NULL;
 	}
 
 	showAluno(*procura(t,2));
@@ -238,7 +237,7 @@ int main ()
 	int aprovados(Turma t)
 	{
 		int r = 0;
-		Turma a = t;
+		//Turma a = t;
 		while (t)
 		{
 			if (t->aluno.nota >= 10)
@@ -248,9 +247,77 @@ int main ()
 		return r;
 	}
 
+	int aprovadosRec (Turma t)
+	{
+		if (!t)
+			return 0;
+		return (t->aluno.nota >=10) + aprovadosRec(t->proxAluno);
+
+	}
+
 	int numero_aprovadados = aprovados(t);
 	printf("Aprovados = %d\n", numero_aprovadados );
 	putchar('\n');
+
+	int numero_aprovadadosRec = aprovadosRec(t);
+	printf("Aprovados = %d\n", numero_aprovadados );
+	putchar('\n');
+
+//3
+
+	void initStack (Stack *s)
+	{
+		(*s) = NULL;
+	}
+	
+	int isEmptyS (Stack *s)
+	{
+		if (*s)
+			return 0;
+		else 
+			return 1;
+	}
+	int push (Stack *s, int x)
+	{
+		Stack aux = malloc (sizeof(Nodo));
+		if(aux)
+		{
+			aux->valor = x;
+			aux->prox = *s;
+			*s = aux;
+			return 0;
+		}
+		return 0;
+	}
+	
+	
+	int pop (Stack *s, int *x) 
+	{
+    	Stack pt;
+    	if(!isEmptyS(s)) 
+    	{
+        	*x = (*s)->valor;
+        	pt = (*s)->prox;
+        	free(*s);
+        	*s=pt;
+        return 0;
+   		} 
+    	else
+        	return 1;
+	}
+	
+
+	int top (Stack *s, int *x)
+	{
+    	if(!isEmptyS(s)) 
+    	{
+        	*x = (*s)->valor;
+        	return 0;
+   		} 
+    	else
+        	return 1;
+	}
+
 
 	return 0;
 }
