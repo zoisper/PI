@@ -263,7 +263,7 @@ int main ()
 	printf("Aprovados = %d\n", numero_aprovadados );
 	putchar('\n');
 
-//3
+//ex 3
 
 	void initStack (Stack *s)
 	{
