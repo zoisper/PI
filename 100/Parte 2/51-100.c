@@ -222,3 +222,155 @@ int removeAll (LInt *l, int x){
     return n;
 }
 
+/*11. Apresente uma definição da função int removeDups (LInt *) que remove os valores repeti-
+dos de uma lista (deixando apenas a primeira ocorrência). (https://codeboard.io/projects/
+16250)*/
+
+int isDup (LInt l, int x, int len)  // funçao auxiliar que verifica se algum elemento é repetido
+{
+   
+    int r=0;
+    while (l && len>0)
+    {
+        if (l->valor == x)
+            r=1;
+        l = l->prox;
+        len--;
+    }
+    return r;
+}
+
+int removeDups (LInt *l){
+    int r=0;
+    int len=0;
+    LInt init = *l;
+    
+    while(*l)
+    {
+        if (isDup (init, (*l)->valor, len) ==0)
+            {
+                l = &((*l)->prox);
+                len++;
+            }
+        else
+            if ((*l)->prox)
+            {
+                *l = (*l)->prox;
+                r++;
+            }
+        else
+            {
+                *l = NULL;
+                r++;
+            }
+
+            
+    }
+    
+    return r;
+}
+
+/*12. Apresente uma definição da função int removeMaiorL (LInt *) que remove (a primeira
+ocorrência) o maior elemento de uma lista não vazia, retornando o valor desse elemento.
+(https://codeboard.io/projects/16251)*/
+
+int maior (LInt l)  //funçao auxiliar que obtem o maior elemento da lista
+{
+    int r = l->valor;
+    
+    while (l)
+    {
+     if (l->valor >r)
+        r = l->valor;
+    l = l->prox;
+    }
+    return r;
+    
+}
+
+int removeMaiorL (LInt *l)
+{
+    int r = maior (*l);
+    int controlo = 1;
+    
+    while (*l && controlo)
+    {
+        if((*l)->valor != r)
+            l = &((*l)->prox);
+        else 
+            if ((*l)->prox)
+            {
+                *l = (*l)->prox;
+                controlo = 0;
+            }
+        else
+            {
+                *l = NULL;
+                controlo = 0;
+            }
+    }
+    
+    return r;
+}
+
+/*13. Apresente uma definição não recursiva da função void init (LInt *) que remove o último
+elemento de uma lista não vazia (libertando o correspondente espaço). (https://codeboard.
+io/projects/16252)*/
+
+void init (LInt *l){
+    LInt ant=NULL;
+    while ((*l)->prox)
+        {
+            ant = *l;
+            l = &((*l)->prox);
+        }
+    if (!ant)
+    {
+        free (*l);
+        *l = NULL;
+    }
+    else
+    {
+        free(*l);
+        ant->prox = NULL;   
+    }   
+}
+
+/*14. Apresente uma definição não recursiva da função void appendL (LInt *, int) que acres-
+centa um elemento no fim da lista. (https://codeboard.io/projects/16253)*/
+
+void appendL (LInt *l, int x)
+{
+    
+    LInt new = malloc(sizeof(struct lligada));
+    new->valor = x;
+    new->prox = NULL;
+    
+    if (*l == NULL)
+        *l = new;
+    
+    else
+    {
+    	while((*l)->prox)
+        	l = &((*l)->prox);
+
+        (*l)->prox = new;
+    }
+}
+
+/*15. Apresente uma definição da função void concatL (LInt *a, LInt b) que acrescenta a lista
+b à lista *a. (https://codeboard.io/projects/16254)*/
+void concatL (LInt *a, LInt b)
+{
+   
+   if(! *a)
+    *a = b;
+    
+    else
+    {
+       while ((*a)->prox)
+            a = &((*a)->prox);
+        (*a)->prox = b; 
+    }
+}
+
