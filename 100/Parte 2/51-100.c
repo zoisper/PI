@@ -574,20 +574,8 @@ int main ()
 
 	int v[5] = {1,2,3,4,5};
 	
-	LInt a = fromArrayL (v, 5);
-	imprimeL (a);
+	LInt a = arrayToList (v, 5);
 	
-	putchar ('\n');
-	
-	LInt b = cloneL (a);
-	imprimeL(b);
-	
-	putchar ('\n');
-
-	LInt c = cloneRev (a);
-	imprimeL(c);
-
-	putchar ('\n');
 	return 0;
 
 }
