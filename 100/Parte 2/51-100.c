@@ -498,6 +498,9 @@ o respectivo espaço). Se a lista tiver n ou menos nodos, a função liberta a t
 A função deve retornar o número de elementos removidos. (https://codeboard.io/projects/
 16259)*/
 
+
+
+
 int drop (int n, LInt *l)
 {
    int r = 0;
@@ -512,6 +515,57 @@ int drop (int n, LInt *l)
        r++;
    }
    
+    return r;
+}
+
+/*21. O tipo LInt pode ser usado ainda para implementar listas circulares. Defina uma função LInt
+Nforward (LInt l, int N) que, dada uma lista circular dá como resultado o endereço do
+elemento da lista que está N posições à frente. (https://codeboard.io/projects/16260)*/
+
+LInt NForward (LInt l, int N)
+{
+    while (N>0)
+    {
+        l = l->prox;
+        N--;
+    }
+    return l;
+}
+
+/*22. Defina uma função int listToArray (LInt l, int v[], int N) que, dada uma lista l,
+preenche o array v com os elementos da lista.
+A função deverá preencher no máximo N elementos e retornar o número de elementos preenchi-
+dos. (https://codeboard.io/projects/16261)*/
+int listToArray (LInt l, int v[], int N)
+{
+    int r = 0;
+    while (l && r<N)
+    {
+        v[r] = l->valor;
+        l = l->prox;
+        r++;   
+    }
+    return r;
+}
+
+/*23. Defina uma função LInt arrayToList (int v[], int N) que constrói uma lista com os
+elementos de um array, pela mesma ordem em que aparecem no array.. (https://codeboard.
+io/projects/16262)*/
+
+LInt arrayToList (int v[], int N)
+{
+    int i = 0;
+    LInt r = NULL;
+    LInt *ptr = &r;
+    
+    while (i<N)
+    {
+        *ptr = malloc (sizeof (struct lligada));
+        (*ptr)->valor = v[i];
+        (*ptr)->prox = NULL;
+        ptr = &((*ptr)->prox);
+        i++;
+    }
     return r;
 }
 
