@@ -1,7 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 typedef struct lligada {
 int valor;
 struct lligada *prox;
 } *LInt;
+
+
+
+LInt fromArrayL (int v[], int N)
+{
+	LInt r = NULL;
+	LInt *a = &r;
+
+
+	for(int i = 0; i<N; i++)
+	{
+		*a = malloc (sizeof (struct lligada));
+		(*a)->valor = v[i];
+		a = &((*a)->prox);
+	}
+	*a = NULL;
+
+	
+
+
+
+	return r;
+
+}
 
 /*1. Apresente uma definição não recursiva da função int length (LInt) que calcula o compri-
 mento de uma lista ligada. (https://codeboard.io/projects/16161).*/
@@ -20,7 +47,7 @@ int length (LInt l)
 /*2. Apresente uma definição não recursiva da função void freeL (LInt) que liberta o espaço
 ocupado por uma lista.*/
 
-void freeL (Lint l)
+void freeL (LInt l)
 {
 	while(l)
 	{
@@ -44,7 +71,7 @@ void imprimeL (LInt l)
 /*4. Apresente uma definição não recursiva da função LInt reverseL (LInt) que inverte uma
 lista (sem criar uma nova lista). (https://codeboard.io/projects/16243)*/
 
-LInt inserecabeça (int x, LInt l)
+LInt inserecabeca (int x, LInt l)
 {
     LInt r = malloc (sizeof(struct lligada));
     r->valor = x;
@@ -59,7 +86,7 @@ LInt reverseL (LInt l)
 	r = NULL;
 	while (l)
 	{
-		r = inserecabeça (l->valor, r);
+		r = inserecabeca (l->valor, r);
 		freed = l;
 		l = l->prox;
 		free(freed);
@@ -372,5 +399,142 @@ void concatL (LInt *a, LInt b)
             a = &((*a)->prox);
         (*a)->prox = b; 
     }
+}
+
+/*16. Apresente uma definição da função LInt cloneL (LInt) que cria uma nova lista ligada com
+os elementos pela ordem em que aparecem na lista argumento.*/
+
+LInt cloneL (LInt l) 
+{
+	LInt r = NULL;
+	LInt *ptr = & r;
+
+	while (l)
+	{
+		*ptr = malloc (sizeof (struct lligada));
+		(*ptr)->valor = l->valor;
+		ptr = &((*ptr)->prox);
+		l = l->prox; 
+	}
+
+	return r;
+}
+
+/*17. Apresente uma definição não recursiva da função LInt cloneRev (LInt) que cria uma nova
+lista ligada com os elementos por ordem inversa.
+Por exemplo, se a lista l tiver 5 elementos com os valores {1,2,3,4,5} por esta ordem, a
+invocação cloneRev(l) deve corresponder a uma nova lista com os elementos {5,4,3,2,1}
+por esta ordem. (https://codeboard.io/projects/16256)*/
+
+LInt cloneRev (LInt l)
+{
+    LInt a = NULL;
+    LInt r = NULL;
+    while (l)
+    {
+        a = malloc (sizeof (struct lligada));
+        a->valor = l->valor;
+        a->prox = r;
+        r = a;
+        l = l->prox;
+    }
+    return r;
+}
+
+/*18. Defina uma função int maximo (LInt l) que calcula qual o maior valor armazenado numa
+lista não vazia. (https://codeboard.io/projects/16257)*/
+
+
+int maximo (LInt l)
+{
+    int r = l->valor;
+    
+    while (l)
+    {
+        if (l->valor >r)
+        	r = l->valor;
+        l = l->prox;
+    }
+    return r;
+}
+
+/*19. Apresente uma definição iterativa da função int take (int n, LInt *l) que, dado um in-
+teiro n e uma lista ligada de inteiros l, apaga de l todos os nodos para além do n-ésimo
+(libertando o respectivo espaço). Se a lista tiver n ou menos nodos, a função não altera a
+lista.
+A função deve retornar o comprimento final da lista. (https://codeboard.io/projects/
+16258)*/
+int take (int n, LInt *l)
+{
+	int r=0;
+	LInt aux = NULL;
+    while (*l  && n>0)
+        {
+            aux = *l;
+            l = &((*l)->prox);
+            n--;
+            r++;
+        }
+    
+    if (*l && n == 0)
+    {
+    	aux->prox = NULL;
+     	while (*l)
+     	{
+     		aux = *l;
+     		l = &((*l)->prox);
+     		free(aux);
+       
+     	}
+    }
+    
+   
+    return r;
+}
+
+/*20. Apresente uma definição iterativa da função int drop (int n, LInt *l) que, dado um in-
+teiro n e uma lista ligada de inteiros l, apaga de l os n primeiros elementos da lista (libertando
+o respectivo espaço). Se a lista tiver n ou menos nodos, a função liberta a totalidade da lista.
+A função deve retornar o número de elementos removidos. (https://codeboard.io/projects/
+16259)*/
+
+int drop (int n, LInt *l)
+{
+   int r = 0;
+   LInt aux = NULL; 
+   
+   while (*l && r<n)
+   {
+       aux = *l;
+       *l = (*l)->prox;
+       aux->prox = NULL;
+       free (aux);
+       r++;
+   }
+   
+    return r;
+}
+
+int main ()
+{
+
+	int v[5] = {1,2,3,4,5};
+	
+	LInt a = fromArrayL (v, 5);
+	imprimeL (a);
+	
+	putchar ('\n');
+	
+	LInt b = cloneL (a);
+	imprimeL(b);
+	
+	putchar ('\n');
+
+	LInt c = cloneRev (a);
+	imprimeL(c);
+
+	putchar ('\n');
+	return 0;
+
 }
 
