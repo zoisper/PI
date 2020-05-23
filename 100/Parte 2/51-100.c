@@ -569,16 +569,7 @@ LInt arrayToList (int v[], int N)
     return r;
 }
 
-int main ()
-{
 
-	int v[5] = {1,2,3,4,5};
-	
-	LInt a = arrayToList (v, 5);
-	
-	return 0;
-
-}
 
 /*24. Defina uma função LInt somasAcL (LInt l) que, dada uma lista de inteiros, constrói uma
 nova lista de inteiros contendo as somas acumuladas da lista original (que deverá permanecer
@@ -675,4 +666,23 @@ LInt parte (LInt l)
        
     }
     return r;
+}
+
+
+
+
+
+
+
+
+
+int main ()
+{
+
+	int v[5] = {1,2,3,4,5};
+	
+	LInt a = arrayToList (v, 5);
+	
+	return 0;
+
 }
