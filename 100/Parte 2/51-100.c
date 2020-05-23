@@ -580,3 +580,99 @@ int main ()
 
 }
 
+/*24. Defina uma função LInt somasAcL (LInt l) que, dada uma lista de inteiros, constrói uma
+nova lista de inteiros contendo as somas acumuladas da lista original (que deverá permanecer
+inalterada).
+Por exemplo, se a lista l tiver os valores [1,2,3,4] a lista contruı́da pela invocação de
+somasAcL (l) deverá conter os valores [1,3,6,10]. (https://codeboard.io/projects/
+16263)*/
+LInt somasAcL (LInt l) {
+    int r = 0;
+    LInt a = NULL;
+    LInt * ptr = &a;
+    while (l)
+    {
+    	r += l->valor;
+    	*ptr = malloc(sizeof(struct lligada));
+    	(*ptr)->valor = r;
+    	(*ptr)->prox = NULL;
+    	ptr = &((*ptr)->prox);
+    	l = l->prox;
+    }
+    return a;
+}
+
+/*25. Defina uma função void remreps (LInt l) que, dada uma lista ordenada de inteiros, elimina
+dessa lista todos os valores repetidos assegurando que o espaço de memória correspondente
+aos nós removidos é correctamente libertado. (https://codeboard.io/projects/16264)*/
+
+void remreps (LInt l)
+{
+    LInt ant = NULL;
+    LInt aux = NULL;
+    while (l)
+    {
+        if (ant != NULL && l->valor == ant->valor)
+        {
+            ant->prox = l->prox;
+            aux = l;
+            l = l->prox; 
+            free(aux);
+        }
+        else
+            {
+                ant = l;
+                l = l->prox; 
+            }
+    }
+    
+}
+
+/*26. Defina uma função LInt rotateL (LInt l) que coloca o primeiro elemento de uma lista no
+fim. Se a lista for vazia ou tiver apenas um elemento, a função não tem qualquer efeito prático
+(i.e., devolve a mesma lista que recebe como argumento).
+Note que a sua função não deve alocar nem libertar memória. Apenas re-organizar as células
+da lista. (https://codeboard.io/projects/16265)*/
+
+LInt rotateL (LInt l){
+    int i = 0;
+    LInt r = l;
+    LInt a = l;
+    while (l && l->prox)
+    {
+        l = l->prox;
+        i++;
+    }
+    
+    if (i>0)
+    {
+        r = r->prox;
+        a->prox = NULL;
+        l->prox = a;
+    }
+    
+    
+    return r;
+}
+
+/*27. Defina uma função LInt parte (LInt l) que parte uma lista l em duas: na lista l ficam
+apenas os elementos das posições ı́mpares; na lista resultante ficam os restantes elementos.
+Assim, se a lista x tiver os elementos {1,2,3,4,5,6} a chamada y = parte (x), coloca na
+lista y os elementos {2,4,6} ficando em x apenas os elementos {1,3,5} (https://codeboard.
+io/projects/16266)*/
+
+LInt parte (LInt l)
+{
+    LInt r= NULL;
+    LInt *ptr = &r;
+    while (l && l->prox)
+    {
+    	*ptr = l->prox;
+    	l->prox = (*ptr)->prox,
+    	(*ptr)->prox = NULL;
+    	ptr = & ((*ptr)->prox);
+    	l = l->prox;
+       
+    }
+    return r;
+}
