@@ -22,6 +22,12 @@ LInt fromArrayL (int v[], int N)
 	}
 	*a = NULL;
 
+typedef struct nodo 
+{
+	int valor;
+	struct nodo *esq, *dir;	
+} *ABin;
+
 	
 
 
@@ -668,6 +674,192 @@ LInt parte (LInt l)
     return r;
 }
 
+/*28. Apresente uma definição da função int altura (ABin) que calcula a altura de uma árvore
+binária. (https://codeboard.io/projects/16220)*/
+
+int altura (ABin a)
+{
+	if (!a)
+    return 0;
+	if (altura (a->esq)> altura (a->dir))
+		return 1 + altura (a->esq);
+    else
+        return 1 +altura (a->dir);
+}
+
+/*29. Defina uma função ABin cloneAB (ABin) que cria uma cópia de uma árvore. (https://
+codeboard.io/projects/16267)*/
+
+ABin cloneAB (ABin a) 
+{
+    ABin r = NULL;
+    
+    if (!a)
+    return NULL;
+    
+    r = malloc (sizeof(struct nodo));
+    r->valor = a->valor;
+    r->dir = cloneAB (a->dir);
+    r->esq = cloneAB (a->esq);
+    
+    return r;
+}
+
+/*30. Defina uma função void mirror (ABin *) que inverte uma árvore (sem criar uma nova
+árvore). (https://codeboard.io/projects/16268)*/
+
+void mirror (ABin *a) 
+{
+    if (*a)
+    {
+        ABin aux = (*a)->dir;
+        (*a)->dir = (*a)->esq;
+        (*a)->esq = aux;
+        mirror (&((*a)->dir));
+        mirror (&((*a)->esq));
+        
+    }
+}
+
+
+/*31. Defina a função void inorder (ABin , LInt *) que cria uma lista ligada de inteiros a partir
+de uma travessia inorder de uma árvore binária. (https://codeboard.io/projects/16269)*/
+
+void inorder (ABin a, LInt * l) 
+{
+    if(a)
+    {
+        inorder (a->dir, l );
+        LInt aux = malloc (sizeof(struct lligada));
+        aux->valor = a->valor;
+        aux->prox = *l;
+        *l = aux;
+        inorder (a->esq, l);
+    }
+}
+
+/*32. Defina a função void preorder (ABin , LInt *) que cria uma lista ligada de inteiros a
+partir de uma travessia preorder de uma árvore binária. (https://codeboard.io/projects/
+16270)*/
+
+void preorder_aux (ABin a, LInt * l) 
+{
+    if (a)
+    {
+     	preorder_aux (a->dir, l);
+     	preorder_aux (a->esq, l);
+     	LInt aux = malloc (sizeof(struct lligada));
+     	aux -> valor = a->valor;
+     	aux->prox = *l;
+     	*l = aux;
+    }
+   
+}
+
+void preorder (ABin a, LInt * l)
+{
+    *l = NULL;
+    preorder_aux (a, l);
+}
+
+
+
+/*33. Defina a função void posorder (ABin , LInt *) que cria uma lista ligada de inteiros a
+partir de uma travessia posorder de uma árvore binária. (https://codeboard.io/projects/
+16272*/
+
+void posorder_aux (ABin a, LInt * l)
+{
+	if (a)
+	{
+        LInt aux = malloc (sizeof (struct lligada));
+        aux ->valor = a->valor;
+        aux->prox = *l;
+        *l = aux;
+        posorder_aux (a->dir, l);
+        posorder_aux (a->esq, l);
+    }  
+}
+
+void posorder (ABin a, LInt * l)
+{
+	*l = NULL;
+	posorder_aux (a, l);
+}
+
+/*34. Apresente uma definição da função int depth (ABin a, int x) que calcula o nı́vel (menor)
+a que um elemento está numa árvore binária (-1 caso não exista). (https://codeboard.io/
+projects/16273)*/
+int depth (ABin a, int x) 
+{
+    if (!a)
+        return -1;
+    else 
+        if (x == a-> valor)
+            return 1;
+    	else 
+        	{
+            	int e = depth (a->esq, x);
+            	int d = depth (a->dir, x);
+            
+            	if (e<d && e>0)
+                	return 1 + e;
+            	else 
+                	if (d<e && d>0)
+                    	return 1 + d;
+            		else 
+                		if (e>0 && d<0)
+                    		return 1 + e;
+                		else
+                    		if (d>0 && e<0)
+                        		return 1 + d;
+            }
+}
+
+/*35. Defina uma função int freeAB (ABin a) que liberta o espaço ocupado por uma árvore
+binária, retornando o número de nodos libertados. (https://codeboard.io/projects/16274)*/
+int freeAB (ABin a) 
+{
+    if (!a)
+        return 0;
+    else
+    {
+        int e = freeAB (a->esq);
+        int d = freeAB (a->dir);
+        free(a);
+        return 1 + e + d;
+    }
+}
+
+/*36. Defina uma função int pruneAB (ABin *a, int l) que remove (libertando o espaço respec-
+tivo) todos os elementos da árvore *a que estão a uma profundidade superior a l, retornando
+o número de elementos removidos.
+Assuma que a profundidade da raı́z da árvore é 1, e por isso a invocação pruneAB(&a,0)
+corresponde a remover todos os elementos da árvore a. (https://codeboard.io/projects/
+16275)*/
+ int pruneAB (ABin *a, int l) 
+ {
+     int e, d  = 0;
+     if (! *a)
+        return 0;
+    
+    if (l==0)
+    {
+        e = pruneAB (&((*a)->esq),0);
+        d = pruneAB (&((*a)->dir),0);
+        free(*a);
+        *a = NULL;
+        return  1 + e + d;
+    }
+    else
+    {
+        
+        e = pruneAB (&((*a)->esq),l-1);
+        d = pruneAB (&((*a)->dir),l-1);
+        return e + d;
+    }
+        
+ }
 
 
 
@@ -675,6 +867,7 @@ LInt parte (LInt l)
 
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main ()
 {

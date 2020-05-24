@@ -1,4 +1,8 @@
-# include <stdio.h>
+
+/*3. Defina um programa que lê (usando a função scanf uma sequência de números inteiros ter-
+minada com o número 0 e imprime no ecran o segundo maior elemento.*/
+
+#include <stdio.h>
 
 int main ()
 
