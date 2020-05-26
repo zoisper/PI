@@ -261,10 +261,10 @@ int removeDups (LInt *l){
     while(*l)
     {
         if (isDup (init, (*l)->valor, len) ==0)
-            {
-                l = &((*l)->prox);
-                len++;
-            }
+        {
+        	l = &((*l)->prox);
+            len++;
+        }
         else
             if ((*l)->prox)
             {
@@ -293,9 +293,9 @@ int maior (LInt l)  //funçao auxiliar que obtem o maior elemento da lista
     
     while (l)
     {
-     if (l->valor >r)
-        r = l->valor;
-    l = l->prox;
+     	if (l->valor >r)
+        	r = l->valor;
+    	l = l->prox;
     }
     return r;
     
@@ -316,11 +316,11 @@ int removeMaiorL (LInt *l)
                 *l = (*l)->prox;
                 controlo = 0;
             }
-        else
-            {
-                *l = NULL;
-                controlo = 0;
-            }
+        	else
+            	{
+                	*l = NULL;
+                	controlo = 0;
+           		}
     }
     
     return r;
@@ -1064,7 +1064,54 @@ int addOrd (ABin *a, int x)
 }
 
 
+/*45. Apresente uma definição não recursiva da função int lookupAB (ABin a, int x) que testa
+se um elemento pertence a uma árvore binária de procura. (https://codeboard.io/projects/
+16284)*/
 
+int lookupAB (ABin a, int x) 
+{
+    int r = 0;
+    while (a && r == 0)
+    {
+    	if (a->valor == x)
+            r = 1;
+        else
+            if (a->valor > x)
+                a = a->esq;
+            else
+                a = a->dir;
+    }
+    
+    return r;
+}
+
+/*46. Apresente uma definição da funçãoint depthOrd (ABin a, int x) que calcula o nı́vel a que
+um elemento está numa árvore binária de procura (-1 caso não exista). (https://codeboard.
+io/projects/16285)*/
+
+int depthOrd (ABin a, int x) 
+{
+	int r = -1;
+	if (a) 
+    	if (a->valor == x)
+    		r = 1;
+        else
+            if (a->valor > x)
+            {
+            	r = depthOrd (a->esq, x);
+            	if (r>0)
+            		r++;    
+            }
+            
+            else
+            {
+            	r = depthOrd (a->dir, x);
+            	if (r>0)
+            		r++;
+            }
+    
+    return r;       
+}
 
 
 
@@ -1081,3 +1128,4 @@ int main ()
 	return 0;
 
 }
+
