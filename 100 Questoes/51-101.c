@@ -1015,54 +1015,6 @@ int contaFolhas (ABin a)
                     return contaFolhas (a->dir) + contaFolhas (a->esq);
 }
 
-/*43. Defina uma função ABin cloneMirror (ABin a) que cria uma árvore nova, com o resultado
-de inverter a árvore (efeito de espelho). (https://codeboard.io/projects/16282)*/
-
-ABin cloneMirror (ABin a) 
-{
-	ABin r;
-	if (!a)
-		r = NULL;
-    else 
-    {
-        r = malloc (sizeof (ABin));
-        r->valor = a->valor;
-        r->dir = cloneMirror (a->esq);
-        r->esq = cloneMirror (a->dir);
-    }
-        
-    return r;
-}
-
-/*44. Apresente uma definição não recursiva da função int addOrd (ABin *a, int x) que adi-
-ciona um elemento a uma árvore binária de procura. A função deverá retornar 1 se o elemento
-a inserir já existir na árvore ou 0 no outro caso. (https://codeboard.io/projects/16283)*/
-
-int addOrd (ABin *a, int x) 
-{
-	int r = 0;
-    while (*a && r!= 1)
-    {
-    	if ((*a)->valor == x)
-            r = 1;
-        else
-            if ((*a)->valor > x)
-                a = &((*a)->esq);
-            else
-                a = &((*a)->dir);
-    }
-        
-    if (!*a)
-    {
-        *a = malloc (sizeof (ABin));
-        (*a)->valor = x;
-        (*a)->esq = NULL;
-        (*a)->dir = NULL;
-    }
-        
-    return r;
-}
-
 
 
 
