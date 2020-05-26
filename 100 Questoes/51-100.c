@@ -14,32 +14,9 @@ typedef struct nodo
 
 
 
-
-LInt fromArrayL (int v[], int N)
-{
-	LInt r = NULL;
-	LInt *a = &r;
-
-
-	for(int i = 0; i<N; i++)
-	{
-		*a = malloc (sizeof (struct lligada));
-		(*a)->valor = v[i];
-		a = &((*a)->prox);
-	}
-	*a = NULL;
-
-
-	
-
-
-
-	return r;
-
-}
-
 /*1. Apresente uma definição não recursiva da função int length (LInt) que calcula o compri-
 mento de uma lista ligada. (https://codeboard.io/projects/16161).*/
+
 int length (LInt l)
 {
 	int r=0;
@@ -67,6 +44,7 @@ void freeL (LInt l)
 
 /*3. Apresente uma definição não recursiva da função void imprimeL (LInt) que imprime no
 ecran os elementos de uma lista (um por linha).*/
+
 void imprimeL (LInt l)
 {
 	while (l)
@@ -395,6 +373,7 @@ void appendL (LInt *l, int x)
 
 /*15. Apresente uma definição da função void concatL (LInt *a, LInt b) que acrescenta a lista
 b à lista *a. (https://codeboard.io/projects/16254)*/
+
 void concatL (LInt *a, LInt b)
 {
    
@@ -452,7 +431,6 @@ LInt cloneRev (LInt l)
 /*18. Defina uma função int maximo (LInt l) que calcula qual o maior valor armazenado numa
 lista não vazia. (https://codeboard.io/projects/16257)*/
 
-
 int maximo (LInt l)
 {
     int r = l->valor;
@@ -472,6 +450,7 @@ teiro n e uma lista ligada de inteiros l, apaga de l todos os nodos para além d
 lista.
 A função deve retornar o comprimento final da lista. (https://codeboard.io/projects/
 16258)*/
+
 int take (int n, LInt *l)
 {
 	int r=0;
@@ -505,9 +484,6 @@ teiro n e uma lista ligada de inteiros l, apaga de l os n primeiros elementos da
 o respectivo espaço). Se a lista tiver n ou menos nodos, a função liberta a totalidade da lista.
 A função deve retornar o número de elementos removidos. (https://codeboard.io/projects/
 16259)*/
-
-
-
 
 int drop (int n, LInt *l)
 {
@@ -544,6 +520,7 @@ LInt NForward (LInt l, int N)
 preenche o array v com os elementos da lista.
 A função deverá preencher no máximo N elementos e retornar o número de elementos preenchi-
 dos. (https://codeboard.io/projects/16261)*/
+
 int listToArray (LInt l, int v[], int N)
 {
     int r = 0;
@@ -578,13 +555,13 @@ LInt arrayToList (int v[], int N)
 }
 
 
-
 /*24. Defina uma função LInt somasAcL (LInt l) que, dada uma lista de inteiros, constrói uma
 nova lista de inteiros contendo as somas acumuladas da lista original (que deverá permanecer
 inalterada).
 Por exemplo, se a lista l tiver os valores [1,2,3,4] a lista contruı́da pela invocação de
 somasAcL (l) deverá conter os valores [1,3,6,10]. (https://codeboard.io/projects/
 16263)*/
+
 LInt somasAcL (LInt l) {
     int r = 0;
     LInt a = NULL;
@@ -792,6 +769,7 @@ void posorder (ABin a, LInt * l)
 /*34. Apresente uma definição da função int depth (ABin a, int x) que calcula o nı́vel (menor)
 a que um elemento está numa árvore binária (-1 caso não exista). (https://codeboard.io/
 projects/16273)*/
+
 int depth (ABin a, int x) 
 {
     if (!a)
@@ -820,6 +798,7 @@ int depth (ABin a, int x)
 
 /*35. Defina uma função int freeAB (ABin a) que liberta o espaço ocupado por uma árvore
 binária, retornando o número de nodos libertados. (https://codeboard.io/projects/16274)*/
+
 int freeAB (ABin a) 
 {
     if (!a)
@@ -839,6 +818,7 @@ o número de elementos removidos.
 Assuma que a profundidade da raı́z da árvore é 1, e por isso a invocação pruneAB(&a,0)
 corresponde a remover todos os elementos da árvore a. (https://codeboard.io/projects/
 16275)*/
+
 int pruneAB (ABin *a, int l) 
 {
 	int e, d  = 0;
@@ -952,6 +932,87 @@ int nivelV (ABin a, int n, int v[])
             return e+d;
              
         }
+}
+
+/*40. Defina uma função int dumpAbin (ABin a, int v[], int N) que dada uma árvore a, preenche
+o array v com os elementos da árvore segundo uma travessia inorder. A função deverá
+preencher no máximo N elementos e retornar o número de elementos preenchidos. (https:
+//codeboard.io/projects/16279)*/
+
+int dumpAbin (ABin a, int v[], int N) 
+{
+	if (a && N>0)
+	{
+		int e = dumpAbin (a->esq, v, N);
+        if (e<N)
+        {
+        	*(v+e) = a->valor;
+        	int d = dumpAbin (a->dir, v+e+1, N-1-e);
+        	return e+d+1; 
+        }
+        else
+        	return N;
+    }
+    else 
+    	return 0;
+}
+
+
+
+
+/*41. Defina uma função ABin somasAcA (ABin a) que, dada uma árvore de inteiros, calcula a
+árvore das somas acumuladas dessa árvore.
+A árvore calculada deve ter a mesma forma da árvore recebida como argumento e em cada
+nodo deve conter a soma dos elementos da sub-árvore que aı́ se inicia. (https://codeboard.
+io/projects/16280)*/
+
+ABin somasAcA (ABin a) 
+{
+    
+    ABin r = NULL;
+    if (!a)
+    	return NULL;
+    else
+    {
+    	r = malloc (sizeof (ABin));
+    	r->valor = a->valor;
+    	ABin e = somasAcA (a->esq);
+    	ABin d = somasAcA (a->dir);
+
+    	if (e && d)
+    		r->valor = r->valor + e->valor +  d->valor ;
+    	else
+    		if (e)
+    			r->valor = r->valor + e->valor;
+    		else
+    			if (d)
+    				r->valor = r->valor + d->valor ;
+    	r->esq = e;
+    	r->dir = d;
+    	return r;
+                
+    }
+}
+
+/*42. Apresente uma definição da função int contaFolhas (ABin a) que dada uma árvore binária
+de inteiros, conta quantos dos seus nodos são folhas, i.e., que não têm nenhum descendente.
+(https://codeboard.io/projects/16281)*/
+
+int contaFolhas (ABin a) 
+{
+	if (!a)
+        return 0;
+    else
+        if(!a->esq && !a->dir)
+            return 1;
+        else
+            if (!a->esq && a->dir)
+                return contaFolhas (a->dir);
+            else
+                if (!a->dir && a->esq)
+                    return contaFolhas (a->esq);
+                else
+                    return contaFolhas (a->dir) + contaFolhas (a->esq);
 }
 
 
