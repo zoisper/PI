@@ -839,11 +839,11 @@ o número de elementos removidos.
 Assuma que a profundidade da raı́z da árvore é 1, e por isso a invocação pruneAB(&a,0)
 corresponde a remover todos os elementos da árvore a. (https://codeboard.io/projects/
 16275)*/
- int pruneAB (ABin *a, int l) 
- {
-     int e, d  = 0;
-     if (! *a)
-        return 0;
+int pruneAB (ABin *a, int l) 
+{
+	int e, d  = 0;
+	if (! *a)
+		return 0;
     
     if (l==0)
     {
@@ -861,7 +861,98 @@ corresponde a remover todos os elementos da árvore a. (https://codeboard.io/pro
         return e + d;
     }
         
+}
+
+/*37. Defina uma função int iguaisAB (ABin a, ABin b) que testa se duas árvores são iguais
+(têm os mesmos elementos e a mesma forma). (https://codeboard.io/projects/16276)*/
+
+int iguaisAB (ABin a, ABin b) 
+{
+	if (!a && ! b)
+		return 1;
+     else 
+     	if (!b && a)
+     		return 0;
+         else
+         	if (!a && b)
+         		return 0;
+         	else
+         		if (a->valor != b->valor)
+         			return 0;
+         		else
+         			return (iguaisAB (a->esq, b->esq) && iguaisAB (a->dir, b->dir));
+                     
  }
+
+/*38. Defina uma função LInt nivelL (ABin a, int n) que, dada uma árvore binária, constrói
+uma lista com os valores dos elementos que estão armazenados na árvore ao nı́vel n (assuma
+que a raiz da árvore está ao nı́vel 1). (https://codeboard.io/projects/16277)*/
+
+LInt concatenaL (LInt a, LInt b)
+{
+	LInt r = a;
+	if (!a)
+		return b;
+	else
+		while (a->prox)
+			a = a->prox;
+	
+	a->prox = b;
+	return r;
+         
+}
+
+LInt nivelL (ABin a, int n) 
+{
+	LInt r = NULL;
+	LInt d = NULL;
+	LInt e = NULL;
+
+	if (!a)
+		return NULL;
+	else
+		if (n == 1)
+		{
+			r = malloc (sizeof (struct lligada));
+			r->valor = a->valor;
+            r->prox = NULL;
+            return r;
+        }
+        else
+        {
+        	d = nivelL (a->dir, n-1);
+            e = nivelL (a->esq, n-1);
+            r = concatenaL (e,d);
+            return r;
+        }  
+     
+}
+
+
+/*39. Defina uma função int nivelV (ABin a, int n, int v[]) que preenche o vector v com os
+elementos de a que se encontram no nı́vel n.
+Considere que a raı́z da árvore se encontra no nı́vel 1.
+A função deverá retornar o número de posições preenchidas do array. (https://codeboard.
+io/projects/16278)*/
+
+int nivelV (ABin a, int n, int v[]) 
+{
+	if (!a)
+		return 0;
+    else
+    	if (n == 1)
+        {
+        	*v = a->valor;
+        	return 1;
+        }
+        else
+        {
+        	int e = nivelV (a->esq,n-1, v);
+            int d = nivelV (a->dir, n-1, v+e);
+            return e+d;
+             
+        }
+}
 
 
 
