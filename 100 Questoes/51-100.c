@@ -1113,8 +1113,92 @@ int depthOrd (ABin a, int x)
     return r;       
 }
 
+/*47. Apresente uma definição não recursiva da função int maiorAB (ABin) que calcula o maior
+elemento de uma árvore binária de procura não vazia. (https://codeboard.io/projects/
+16286)*/
 
+int maiorAB (ABin a) 
+{
+    int r = a->valor;
+    while (a)
+    {
+        if (a->valor > r)
+            r = a->valor;
+        a = a->dir;
+    }
+    
+    return r;
+}
 
+/*48. Defina uma função void removeMaiorA (ABin *) que remove o maior elemento de uma
+árvore binária de procura. (https://codeboard.io/projects/16287)*/
+
+void removeMaiorA (ABin *a) 
+{
+
+    ABin aux = NULL;
+    
+    while ((*a)->dir)
+        a = &((*a)->dir);
+        
+        aux = *a;
+        *a = (*a)->esq;
+        free(aux);
+}
+
+/*49. Apresente uma definição da função int quantosMaiores (ABin a, int x) que, dada uma
+árvore binária de procura de inteiros e um inteiro, conta quantos elementos da árvore são
+maiores que o inteiro dado. (https://codeboard.io/projects/16288)*/
+int quantosMaiores (ABin a, int x) 
+{
+	int r=0;
+    
+    if (a)
+    {
+      if (a->valor > x)
+            r++;
+        r += quantosMaiores (a->dir,x);
+        r += quantosMaiores (a->esq, x);
+      
+    }
+    
+    return r ;
+}
+
+/*50. Apresente uma definição da função void listToBTree (LInt l, ABin *a) que constrói uma
+árvore binária de procura a partir de uma lista ligada ordenada. (https://codeboard.io/
+projects/16289)*/
+
+void listToBTree (LInt l, ABin *a) 
+{
+    while (l)
+    {
+        (*a) = malloc (sizeof(struct nodo));
+        (*a)->valor = l->valor;
+        (*a)->esq = NULL;
+        a = &((*a)->dir);
+        l = l->prox;
+       
+    }
+}
+
+/*51. Apresente uma definição da função int deProcura (ABin a) que testa se uma árvore é de
+procura. (https://codeboard.io/projects/16290)*/
+int deProcura (ABin a) 
+{
+    if (!a)
+        return 1;
+    else
+    {
+        if (a->esq && (a->esq->valor > a->valor || a->esq->dir && a->esq->dir->valor > a->valor))
+            return 0;
+        if (a->dir && (a->dir->valor < a->valor || a->dir->esq && a->dir->esq->valor < a->valor))
+            return 0;
+    }
+    
+    return deProcura ( a->esq) && deProcura ( a->dir); 
+   
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
