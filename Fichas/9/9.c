@@ -20,6 +20,11 @@ int valor;
 struct slista *prox;
 } *LInt;
 
+typedef struct dlista {
+int valor;
+struct dlista *prox, *ant;
+} *DLInt;
+
 
 void imprimeDic (Dicionario d)   ///////////////// Imprime dicionario
 {
@@ -250,8 +255,6 @@ LInt inorderLAux (ABin a, LInt *end)
 			r = new;
 	}
 
-	
-
 	return r;
 
 
@@ -267,32 +270,83 @@ LInt inorderL2 (ABin a)
 	return r;
 }
 
+////////////////////////////////////////////////////
 
-int main ()
+
+void showDL (DLInt dl)  ///////////////////// imprime lista duplamente ligada
 {
-	
-	int v[5] = {1,2,3,4,5};
-	
-	LInt l1 = fromArray(v,5);
-	showL (l1);
-	
-	putchar ('\n');
-	
-	ABin a = fromList(l1);
-	showABin(a);
-
-	putchar ('\n');
-	
-	LInt l2 = inorderL (a);
-	showL (l2);
-	
-	putchar ('\n');
-
-	LInt l3 = inorderL2 (a);
-	showL (l3);
-	
-	putchar ('\n');
-	 
-
-	return 0;
+	while (dl)
+	{
+		
+		printf("%d\n",dl->valor);
+		dl = dl->prox;
+	}
 }
+
+void showDLrec (DLInt dl)   ////////////////// imprime lista duplamente ligada recursivamente
+{
+	if (dl)
+	{
+		printf("%d\n", dl->valor );
+		showDLrec (dl->prox);
+	}
+}
+
+void showDLback (DLInt dl)   /////////////////// imprime lista duplamente liga ao contrario
+{
+	while (dl && dl->prox)
+		dl = dl->prox;
+	
+	while (dl)
+	{
+		printf("%d\n",dl->valor );
+		dl = dl->ant;
+	}
+}
+
+DLInt inorderDL (ABin a)
+{
+	DLInt new = NULL;
+	DLInt d = NULL;
+	DLInt e = NULL;
+	DLInt r = NULL;
+
+	if (a)
+	{
+		d = inorderDL (a->dir);
+		e = inorderDL (a->esq);
+		
+		new = malloc (sizeof (struct dlista));
+		new->valor = a->valor;
+		new->prox = d;
+
+		if (d)
+			d->ant = new;
+		
+		if (e)
+		{
+			r=e;
+			
+			while (e->prox)
+				e = e->prox;
+
+			e->prox = new;
+			new->ant = e;
+			
+		}
+
+		else
+		{
+			new->ant = NULL;
+			r=new;
+
+		}
+
+
+	}
+
+	
+	return r;
+
+}
+
