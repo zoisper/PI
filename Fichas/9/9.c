@@ -21,7 +21,7 @@ struct slista *prox;
 } *LInt;
 
 
-void imprimeDic (Dicionario d)
+void imprimeDic (Dicionario d)   ///////////////// Imprime dicionario
 {
 	if (d)
 	{
@@ -108,97 +108,20 @@ char *maisFreq (Dicionario d, int *c)
 	return mf;
 
 }
+////////////////////////////////////////////////////////////////////////////////
 
 
-
-LInt inorderLAux (ABin a, LInt *end){
-    
-    LInt res, aux, novo;
-    
-    if (a == NULL) { // caso de paragem
-       res = NULL;
-       *end = NULL;
-    }
-    else {
-       novo = malloc (sizeof (struct slista));
-       novo->valor = a->valor;
-       novo->prox = inorderLAux(a->dir, end);
-    
-    res = inorderLAux (a->esq, &aux);
-
-    if (res==NULL)
-    	res = novo;
-   	
-   	else
-   		aux->prox = novo;
-   	
-   	if (*end == NULL)
-   		*end = novo;
-
-
-          }
-    return res;
-}
-
-LInt parteAmeio (LInt l, LInt *dest )
+void showL (LInt l) /////// Imprime lista ligada
 {
-	int len = 0;
-	//LInt r = l;
-	LInt aux = l;
-	LInt ant = NULL;
-
-	while (aux)
+	while (l)
 	{
-		aux = aux->prox;
-		len++;
+		printf("%d\n", l->valor);
+		l = l->prox;
 	}
-	
-	aux = l;
-	len /= 2;
-
-	while (len > 0)
-		{
-			ant = aux;
-			aux = aux->prox;
-			len--;
-		}
-
-	*dest = aux;
-	
-	if (ant) 
-    	ant->prox = NULL;
-    
-    else 
-    	l = NULL;
- 
-
-	return l;
-
 }
 
 
-
-
-ABin fromList (LInt l)
-{
-	ABin r = NULL;
-	LInt ini = NULL;
-	LInt fim = NULL;
-
-	if (l)
-	{
-		ini = parteAmeio (l, & fim);
-		r = malloc (sizeof (struct abin));
-		r->valor = fim->valor;
-		r->esq = fromList (ini);
-		r->dir = fromList (fim->prox);
-
-	}
-
-	return r;
-}
-
-LInt fromArray (int *v, int N)
+LInt fromArray (int *v, int N)  /////////////// Constroi lista apartir de array
 {
 	LInt r=NULL;
 	LInt *ptr = &r;
@@ -217,17 +140,11 @@ LInt fromArray (int *v, int N)
 
 }
 
+/////////////////////////////////////////////////////////////////////////////////
 
-void showL (LInt l)
-{
-	while (l)
-	{
-		printf("%d\n", l->valor);
-		l = l->prox;
-	}
-}
 
-void showABin (ABin a)
+
+void showABin (ABin a) /////////////////////////// Imprime ABin
 {
 	if (a)
 	{
@@ -238,42 +155,143 @@ void showABin (ABin a)
 }
 
 
+ABin fromListAux (LInt l, int N) 
+{
+	ABin r = NULL;
+	LInt meio = l;
+	
+	if (N>0 && l)
+	{
+		int i = N/2;
+		
+		while (i)
+		{
+			meio = meio->prox;
+			i--;
+		}
+
+		r = malloc (sizeof (struct abin));
+		r-> valor = meio->valor;
+		r->esq = fromListAux (l, N/2);
+		if (meio)
+		r->dir = fromListAux (meio->prox, N - N/2 -1);
+
+
+	}
+
+	return r;
+}
+
+
+ABin fromList (LInt l)  
+{
+	
+	LInt aux = l;
+	int len = 0;
+	
+	while (aux)
+	{
+		aux = aux->prox;
+		len++;
+	}
+
+
+	ABin r = fromListAux (l, len);
+
+	return r; 
+}
+
+LInt inorderL (ABin a)
+{
+	LInt r = NULL;
+	if (a)
+	{
+		LInt dir = inorderL (a->dir);
+		r = malloc (sizeof (struct slista));
+		r->valor = a->valor;
+		r->prox = dir;
+		LInt esq = inorderL (a->esq);
+
+		if (esq)
+		{
+			LInt aux = esq;
+			while (aux->prox)
+				aux = aux->prox;
+			aux->prox = r;
+			r = esq;
+		}
+		
+	}
+
+	return r;
+}
+
+LInt inorderLAux (ABin a, LInt *end)
+{
+	LInt r = NULL;
+	LInt new = NULL;
+	LInt aux = NULL;
+
+	*end = NULL;
+	
+	if (a)
+	{
+		new = malloc (sizeof (struct slista));
+		new->valor = a->valor;
+		new->prox = inorderLAux (a->dir, end);
+		r = inorderLAux (a->esq, &aux);
+
+		if (*end==NULL)
+			*end = new;
+	
+		if (r)
+			aux->prox = new;
+		else
+			r = new;
+	}
+
+	
+
+	return r;
+
+
+
+
+}
+
+LInt inorderL2 (ABin a)
+{
+	LInt end = NULL;
+	LInt r = inorderLAux (a, &end);
+
+	return r;
+}
+
 
 int main ()
 {
 	
-	int c=0;
-	char * mf = NULL;
-	
-	Dicionario d; 
-	initDic(&d);
-	acrescenta (&d, "Ola");
-	acrescenta(&d, "Mundo");
-	acrescenta(&d, "Mundo");
-	acrescenta (&d, "Ola");
-	acrescenta (&d, "Ola");
-
-	//imprimeDic (d);
-
-	mf = maisFreq (d, &c);
-	//printf("%s %d\n",mf, c );
-
 	int v[5] = {1,2,3,4,5};
-	LInt l = fromArray(v,5);
-	showL (l);
+	
+	LInt l1 = fromArray(v,5);
+	showL (l1);
+	
 	putchar ('\n');
 	
-	ABin a = fromList(l);
-
+	ABin a = fromList(l1);
 	showABin(a);
 
+	putchar ('\n');
+	
+	LInt l2 = inorderL (a);
+	showL (l2);
+	
+	putchar ('\n');
 
-
-	//LInt aux = parteAmeio (&l);
-	//showL(aux);
-	//putchar ('\n');
-	//showL(l);
-
+	LInt l3 = inorderL2 (a);
+	showL (l3);
+	
+	putchar ('\n');
 	 
 
 	return 0;
