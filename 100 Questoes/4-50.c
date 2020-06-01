@@ -1,4 +1,3 @@
-
 /*4. Defina uma função int bitsUm (unsigned int n) que calcula o número de bits iguais a 1
 usados na representação binária de um dado número n. (https://codeboard.io/projects/
 13548)*/
