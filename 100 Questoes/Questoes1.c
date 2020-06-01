@@ -1,3 +1,95 @@
+/*1. Defina um programa que lê (usando a função scanf uma sequência de números inteiros ter-
+minada com o número 0 e imprime no ecran o maior elemento da sequência.*/
+
+#include <stdio.h>
+
+int main ()
+
+{
+
+  int var, maior = 0;
+
+  printf("Intorduza um Numero\n");
+  scanf ("%d", &var);
+
+  while (var != 0)
+    {
+      if (maior < var) 
+      maior = var;
+
+      printf("Intorduza um Numero\n");
+        scanf ("%d", &var);
+    }
+
+    printf ("%d", maior);
+return 0;
+
+}
+
+/*2. Defina um programa que lê (usando a função scanf uma sequência de números inteiros ter-
+minada com o número 0 e imprime no ecran a média da sequência.*/
+
+#include <stdio.h>
+
+int main ()
+{
+
+  int var = 1, n = 0 ;
+  float  ac = 0;
+
+  while ( var != 0)
+  {
+    scanf ("%d", &var);
+    
+    n++;
+
+    ac = ac + var;
+  }
+  
+  n--;
+  ac /= n;
+  printf ("%.2f", ac);
+
+return 0;
+
+}
+
+
+
+/*3. Defina um programa que lê (usando a função scanf uma sequência de números inteiros ter-
+minada com o número 0 e imprime no ecran o segundo maior elemento.*/
+
+#include <stdio.h>
+
+int main ()
+
+{
+  int maior = 0, segundo = 0, aux=1;
+
+  while (aux != 0)
+  {
+    scanf ("%d", &aux);
+    if (aux > maior)
+    {
+      segundo = maior;
+      maior = aux;
+    }
+    else
+    {
+      if (aux > segundo)
+        segundo = aux;
+  }
+}
+
+
+
+printf("%d\n", segundo );
+
+return 0;
+
+}
+
+
 /*4. Defina uma função int bitsUm (unsigned int n) que calcula o número de bits iguais a 1
 usados na representação binária de um dado número n. (https://codeboard.io/projects/
 13548)*/
