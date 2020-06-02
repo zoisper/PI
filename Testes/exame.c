@@ -139,19 +139,57 @@ int addOrd (ABin *a, int x)
 
 }
 
+// Parte B
 
 
+typedef struct celula {
+char *palavra;
+int comp;
+struct celula *prox;
+} *Palavras;
 
 
+/*1. Defina uma função int daPalavra (char *s, int *e) que calcula o comprimento da primeira palavra
+dessa string (retorna 0 se não houver palavras). Adicionalmente a função deve colocar no endereço e o
+número de espaços que antecedem essa palavra.
+Use a função int isspace (char c) que testa se um caracter é um espaço.
+Por exemplo, a invocação x=daPalavra(" roda nas trevas", &y) deve colocar na variável x o valor 4
+(comprimento de "roda") e na variável y o valor 1 (pois há um espaço no inı́cio).*/
+
+int daPalavra (char *s, int *e)
+{
+	int i, r = 0;
+	*e = 0;
+
+	for(i=0; s[i] && s[i]==' '; i++)
+		(*e)++;
+	if(s[i])
+	{
+		while(s[i] && s[i]!= ' ')
+		{
+			r++;
+			i++;
+		}
+
+	}
+
+	return r;
+	
 
 
-
-
-
+}
 
 
 
 int main ()
 {
+	char t[17] = " roda nas trevas";
+
+	int e, d;
+
+	d=daPalavra(t, &e);
+
+	printf("%d %d\n",d,e );
+
 
 }
