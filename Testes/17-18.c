@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 
 typedef struct slist {
 int valor;
@@ -207,6 +205,9 @@ int minheapOK (ABin a)
 	return r;
 }
 
+/*2. Defina uma função int maxHeap (ABin a) que determina o maior elemento de uma min-heap
+não vazia.*/
+
 int maxHeap (ABin a)
 {
 	ABin esq = a->esq;
@@ -232,6 +233,9 @@ int maxHeap (ABin a)
 			else
 				return a->valor;
 }
+
+/*3. Defina uma função void removeMin (ABin *a) que remove o menor elemento de uma min-
+heap não vazia (que está necessariamente na raı́z).*/
 
 void removeMin (ABin *a)
 {
@@ -265,20 +269,25 @@ void removeMin (ABin *a)
 		}
 }
 
-void add (ABin*a, int x)
+/*4. Assumindo que, para além das funções acima, existe definida uma função void add (ABin
+*a, int x), defina uma função void heapSort (int v[], int N) que ordena um array us-
+ando uma min-heap auxiliar. Começa-se por construir uma min-heap com todos os elementos
+do array e de seguida vão-se retirando os elementos para obter o array ordenado.*/
+
+void add (ABin*a, int x)  ////// adiciona elemento a miniheap
 {
 	ABin new = NULL;
 	int aux;
 	
 
 	if (!*a)
-		{
+	{
 			new = malloc (sizeof (struct nodo));
 			new->valor = x;
 			new ->esq = NULL;
 			new->dir = NULL;
 			*a = new;
-		}
+	}
 	
 	else
 		if (x > (*a)->valor && !(*a)->esq)
@@ -323,27 +332,56 @@ void add (ABin*a, int x)
 										x = aux;
 										add ((&(*a)->esq),x);
 									}
-
-	
 }
 
-
-int main ()
+void heapSort (int v[], int N)
 {
-	int v[8] = {1,2,3,4,6,8,7,9};
+	int i=0;
+	ABin a = NULL;
 
-	ABin a = arrayToABinOrd (v, 6);
-	showABin (a);
-	putchar ('\n');
-
-	int r = minheapOK (a);
-	printf("%d\n",r );
-	putchar ('\n');
-
-	add (&a, 0);
-	showABin(a);
-	putchar ('\n');
-
-
-	return 0;
+	for(i=0; i<N; i++)
+		add (&a, v[i]);
+	
+	 for (i=0; i<N; i++)
+	{
+		v[i] = a->valor;
+		removeMin (&a);
+	}
 }
+
+/*5. Considere o problema de ler uma sequência de números e determinar o k-ésimo maior número
+lido.
+Por exemplo se forem lidos os números 20, 30, 10, 40, 50, 2, 5, 8, 13, 35, 44
+e quisermos determinar o 4 o maior, deve ser produzido o número 35
+Uma forma de resolver este problema consiste em guardar apenas os k maiores números lidos
+até à altura. No final apenas teremos que devolver/imprimir o menor dos números guardados.
+De forma a tornar este processo mais eficiente do que simplesmente guardar os números num
+array pode-se usar uma min-heap com os ditos números.
+Sempre que já foram lidos pelo menos k números e é lido um número menor do que os
+armazenados esse número é ignorado. No entanto, se tal não acontecer, remove-se o menor
+elemento da min-heap e acrescenta-se esse novo número.
+Use esta estratégia para definir uma função int kMaior (int v[], int N, int k) que de-
+termina o k-maior elemento de um array v com N elementos.*/
+
+
+int kMaior (int v[], int N, int k)
+{
+	ABin a = NULL;
+
+	for (int i=0; i<N; i++)
+	{
+		if (i<k)
+			add (&a, v[i]);
+		else
+			if (a->valor < v[i])
+			{
+				removeMin (&a);
+				add(&a, v[i]);
+			}
+	}
+
+	return a->valor;
+}
+
+
+
