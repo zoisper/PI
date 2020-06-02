@@ -108,7 +108,7 @@ LInt somasAcL (LInt l)
 		l = l->prox;
 	}
 
-	return r
+	return r;
 }
 
 /*
