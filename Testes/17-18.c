@@ -207,19 +207,142 @@ int minheapOK (ABin a)
 	return r;
 }
 
+int maxHeap (ABin a)
+{
+	ABin esq = a->esq;
+	ABin dir = a->dir;
+
+	if (esq && dir)
+	{
+		 int e = maxHeap (esq);
+		 int d = maxHeap (dir);
+		 
+		 if ( e > d)
+		 	return e;
+		 else
+		 	return d;
+	}
+	
+	else
+		if (!esq && dir)
+			return maxHeap (dir);
+		else
+			if (esq && !dir)
+				return maxHeap (esq);
+			else
+				return a->valor;
+}
+
+void removeMin (ABin *a)
+{
+	ABin aux = NULL;
+
+	if (!(*a)->esq)
+	{
+		aux  = *a;
+		*a = (*a)->dir;
+		free (aux);
+
+	}
+	else
+		if (!(*a)->dir)
+		{
+			aux = *a;
+			*a =(*a)->esq;
+			free (aux);
+
+		}	
+	else
+		if ((*a)->dir->valor > (*a)->esq->valor)
+		{
+			(*a)->valor = (*a)->esq->valor;
+			removeMin (&((*a)->esq));
+		}
+		else
+		{
+			(*a)->valor = (*a)->dir->valor;
+			removeMin ((&(*a)->dir));
+		}
+}
+
+void add (ABin*a, int x)
+{
+	ABin new = NULL;
+	int aux;
+	
+
+	if (!*a)
+		{
+			new = malloc (sizeof (struct nodo));
+			new->valor = x;
+			new ->esq = NULL;
+			new->dir = NULL;
+			*a = new;
+		}
+	
+	else
+		if (x > (*a)->valor && !(*a)->esq)
+			add ((&(*a)->esq),x);
+		else
+			if (x > (*a)->valor && !(*a)->dir)
+				add ((&(*a)->dir),x);
+			else
+				if (x > (*a)->valor && (*a)->esq->valor > (*a)->dir->valor)
+					add ((&(*a)->esq),x);
+				else
+					if (x > (*a)->valor && (*a)->dir->valor > (*a)->esq->valor)
+						add ((&(*a)->dir),x);
+					else
+						if (x < (*a)->valor && !(*a)->esq)
+						{
+							aux = (*a)->valor;
+							(*a)->valor = x;
+							x = aux;
+							add ((&(*a)->esq),x);
+						}
+						else
+							if (x < (*a)->valor && !(*a)->dir)
+							{
+								aux = (*a)->valor;
+								(*a)->valor = x;
+								x = aux;
+								add ((&(*a)->dir),x);
+							}
+							else
+								if (x < (*a)->valor && (*a)->esq->valor > (*a)->dir->valor)
+								{
+									aux = (*a)->valor;
+									(*a)->valor = x;
+									x = aux;
+									add ((&(*a)->dir),x);
+								}
+								else
+									{
+										aux = (*a)->valor;
+										(*a)->valor = x;
+										x = aux;
+										add ((&(*a)->esq),x);
+									}
+
+	
+}
 
 
 int main ()
 {
-	int v[8] = {1,2,0,4,6,9,7,8};
+	int v[8] = {1,2,3,4,6,8,7,9};
 
-	ABin a = arrayToABinOrd (v, 3);
+	ABin a = arrayToABinOrd (v, 6);
 	showABin (a);
 	putchar ('\n');
 
 	int r = minheapOK (a);
 	printf("%d\n",r );
+	putchar ('\n');
 
+	add (&a, 0);
+	showABin(a);
+	putchar ('\n');
 
 
 	return 0;
