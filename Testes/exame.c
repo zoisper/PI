@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include<string.h>
 
 typedef struct posicao {
 int x, y;
@@ -148,6 +149,19 @@ int comp;
 struct celula *prox;
 } *Palavras;
 
+void showPal (Palavras p)  ////////// imprime Palavras
+{
+	while (p)
+	{
+		char s[p->comp+1]; 
+		strcpy(s, (p->palavra));
+		s[p->comp] = '\0';
+		printf ("%s\n", s);
+		printf("comprimento: %d\n",p->comp);
+		p = p->prox;
+	}
+}
+
 
 /*1. Defina uma função int daPalavra (char *s, int *e) que calcula o comprimento da primeira palavra
 dessa string (retorna 0 se não houver palavras). Adicionalmente a função deve colocar no endereço e o
@@ -174,9 +188,74 @@ int daPalavra (char *s, int *e)
 	}
 
 	return r;
+
+}
+
+/*2. Usando a função referida na alı́nea anterior defina agora uma função Palavras words (char *texto)
+que, a partir de um texto, constrói a lista das palavras desse texto.
+A função em questão não precisa de alocar espaço para armazenar cada uma das palavras (o campo
+palavra de cada célula), nem precisa de terminar essas strings com o caracter ’\0’. Em vez disso deve
+ser armazenado o endereço onde a palavra se inı́cia no texto dado, bem como o comprimento da palavra.*/
+
+
+Palavras words (char *texto) 
+{
+	int i = 0;
+	Palavras pal = NULL;
+	Palavras *ptr = &pal;
+	int len = 0,e = 0;
+
+	while (*texto)
+	{
+		len = daPalavra (texto, &e);
+		*ptr = malloc (sizeof (struct celula));
+		(*ptr)->palavra = (texto+e);
+		(*ptr)->comp = len;
+		(*ptr)->prox = NULL;
+		ptr = &((*ptr)->prox);
+		texto += e+len;
+	}
+
+	return pal;
+
+}
+
+/*3. Defina uma função Palavras daLinha (Palavras t, int n) que dada uma lista de palavras t e um
+tamanho de linha n, remove dessa lista o maior número de palavras que possam ser escritas numa linha
+desse comprimento. A função deve deixar em t a lista com as palavras que compõe a primeira linha e
+retornar a lista com apenas as restantes.
+Esta função reorganiza a lista recebida sem alocar memória adicional.*/
+
+Palavras daLinha (Palavras t, int n) 
+{
+	Palavras r = NULL;
+	Palavras prev = NULL;
 	
+	if(t)
+	{
+		if (t->comp >= n)
+		{
+			r = t->prox;
+			t->prox = NULL;	
+		}
+		
 
+		else
+		{
+			
+			while (n>0 && t->comp <= n)
+			{
+				n -= t->comp;
+				prev = t;
+				t = t->prox;
+			}
+			r = t;
+			prev->prox = NULL;
+		}
 
+	}
+
+	return r;
 }
 
 
@@ -185,11 +264,18 @@ int main ()
 {
 	char t[17] = " roda nas trevas";
 
-	int e, d;
+	Palavras p = words (t);
 
-	d=daPalavra(t, &e);
+	Palavras r = daLinha (p, 6);
+	showPal (p);
+	putchar ('\n');
+	showPal (r);
 
-	printf("%d %d\n",d,e );
+
+
+	return 0;
+
+	
 
 
 }
