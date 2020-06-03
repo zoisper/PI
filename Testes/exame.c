@@ -237,25 +237,88 @@ Palavras daLinha (Palavras t, int n)
 		{
 			r = t->prox;
 			t->prox = NULL;	
-		}
+		}		
 		
-
 		else
 		{
 			
 			while (n>0 && t->comp <= n)
 			{
-				n -= t->comp;
+				n -= t->comp+1;
 				prev = t;
 				t = t->prox;
 			}
 			r = t;
 			prev->prox = NULL;
 		}
+	}
+	
+	return r;
+}
 
+/*4. Defina uma função void escreveLinha (Palavras p, int n) que recebe uma lista de palavras e a
+escreve no ecran (stdout) numa linha com n caracteres, correctamente justificada de ambos os lados.
+Assuma que a menos que se trate de uma única palavra com mais do que n caracteres, as palavras e os
+espaços para as separar podem ser escritas com esse número de caracteres. No caso de se tratar de uma
+linha só com uma palavra maior do que a largura pretendida, deve ser escrita toda a palavra.*/
+
+void escreveLinha (Palavras p, int n)
+{
+	Palavras aux = p;
+	int len = 0, numP=0, i=0, j=0, k=0, acc=0;
+	if(p)
+	{
+		if (p->comp >=n)
+		{
+			for (i=0; i< p->comp; i++)
+				putchar (p->palavra[i]);
+		}
+		else
+		{
+			
+			while (aux && len-1 <= n)
+			{
+				
+				acc = aux->comp+1;
+				len += acc;
+				numP++;
+				aux = aux->prox;
+					
+			}
+
+			if (len-1>n)
+			{
+				numP--;
+				len -= acc;	
+			}
+			
+		
+			int space = (n-len);
+			
+			
+			for (i=0; i<numP; i++)
+			{
+				space -= j;
+				space /= numP-i;
+
+				for (j=0; j< p->comp; j++)
+					putchar (p->palavra[j]);
+
+				if (i<numP-1);
+					putchar (' ');
+				
+				for(k=0; j<space; j++)
+					putchar (' ');
+				p= p->prox;
+
+			}	
+
+		}
+		putchar ('\n');
+
+		
 	}
 
-	return r;
 }
 
 
@@ -266,10 +329,13 @@ int main ()
 
 	Palavras p = words (t);
 
-	Palavras r = daLinha (p, 6);
+	/*Palavras r = daLinha (p, 7);
 	showPal (p);
 	putchar ('\n');
-	showPal (r);
+	showPal (r);*/
+
+	escreveLinha (p, 15);
+	
 
 
 
