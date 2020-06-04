@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#define MAXc 3 
 
 typedef struct slist {
 int valor;
@@ -140,6 +137,8 @@ void removeMaiorA (ABin *a)
 
 // Parte B
 
+#define MAXc 3 
+
 typedef struct chunk {
 int vs [MAXc];
 struct chunk *prox;
@@ -149,6 +148,7 @@ typedef struct stackC {
 CList valores;
 int sp;
 } StackC;
+
 
 
 
@@ -195,7 +195,6 @@ StackC initStack ()  ///// inicia uma StackC
 
 
 
-
 StackC StackCFromArray (int v[], int N) ///// cria uma StacK apartir de uma array
 {
 	StackC r = initStack();
@@ -224,6 +223,7 @@ void showS (StackC s)  //// imprime uma StackC
 		limite = MAXc;
 	}
 }
+
 /*2. int pop (StackC *s, int *x) que remove o elemento do
 topo da stack, colocando-o em *x. Retorna 0 em caso de sucesso.*/
 
@@ -234,10 +234,12 @@ int pop (StackC *s, int *x)
 	
 		if (s->sp == 0 && s->valores->prox)
 		{
+			CList aux = s->valores;
 			s->valores = s->valores->prox;
 			s->sp = MAXc-1;
 			*x = s->valores->vs[s->sp];
 			r=0;
+			free (aux);
 		}
 		else
 			if (s->sp > 0 && s->valores)
@@ -282,34 +284,54 @@ void reverse (StackC *s)
 	*s = aux;
 }
 
+/*5. Apresente uma definição alternativa da função reverse da alı́nea anterior que reutiliza as células
+da lista, i.e., que não faz quaisquer push (malloc) ou pop (free).*/
 
-
-
-
-int main ()
+void myswitch (int *x, int *y) // troca duas variaveis
 {
-	int r;
-	int v[9] = {1,12,23,34,45,56,67,8,6};
-	StackC s = StackCFromArray (v,7);
-	showS (s);
-	putchar ('\n');
-	reverse(&s);
-	/*int x;
-	r = pop (&s, &x);
-	printf("sucesso:%d\n",r );
-	r = pop (&s, &x);
-	printf("SSucesso:%d\n",r );
+	int aux; 
+	aux = *x;
+	*x = *y;
+	*y = aux;
+}
 
-	//r = pop (&s, &x);
-	//printf("sucesso: %d\n",r );
-	//r = pop (&s, &x);
-	//printf("sucesso: %d\n",r );
-
-	putchar ('\n');*/
-	showS (s);
-
+int *find (StackC s, int n)   /// encontra o elemento n na StackC
+{
+	int len = size (s);
+	int num_chunk = (len/MAXc);
 	
+	int local = 0;
+	while (n>MAXc)
+	{
+		n -= MAXc;
+		local++;
+	}
+	while (num_chunk>local)
+	{
+		s.valores = (s.valores)->prox;
+		num_chunk--;
+	}
 
-	return 0;
+	return &((s.valores)->vs[n-1]);
 
 }
+
+void reverseSMF (StackC *s)
+{
+	int len = size (*s);
+	int i = 1;
+	int *x = NULL, * y = NULL;
+	while (i<len)
+	{
+		x = find (*s, i);
+		y = find (*s, len);
+		myswitch (x,y);
+		i++;
+		len--;
+
+	}
+
+}
+
+
+
