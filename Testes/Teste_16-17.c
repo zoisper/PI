@@ -297,23 +297,29 @@ void myswitch (int *x, int *y) // troca duas variaveis
 
 int *find (StackC s, int n)   /// encontra o elemento n na StackC
 {
+	int *r = NULL;
 	int len = size (s);
 	int num_chunk = (len/MAXc);
 	
 	int local = 0;
-	while (n>MAXc)
+	
+	if (n>0 && n<=len)
 	{
-		n -= MAXc;
-		local++;
-	}
-	while (num_chunk>local)
-	{
-		s.valores = (s.valores)->prox;
-		num_chunk--;
+		while (n>MAXc)
+		{
+			n -= MAXc;
+			local++;
+		}
+		while (num_chunk>local)
+		{
+			s.valores = (s.valores)->prox;
+			num_chunk--;
+		}
+
+		r = &((s.valores)->vs[n-1]);
 	}
 
-	return &((s.valores)->vs[n-1]);
-
+	return r;
 }
 
 void reverseSMF (StackC *s)
@@ -328,7 +334,6 @@ void reverseSMF (StackC *s)
 		myswitch (x,y);
 		i++;
 		len--;
-
 	}
 
 }
