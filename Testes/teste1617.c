@@ -237,7 +237,7 @@ int pop (StackC *s, int *x)
 			s->valores = s->valores->prox;
 			s->sp = MAXc-1;
 			*x = s->valores->vs[s->sp];
-			s->sp--;
+			r=0;
 		}
 		else
 			if (s->sp > 0 && s->valores)
@@ -247,11 +247,41 @@ int pop (StackC *s, int *x)
 				r=0;
 			}
 		
-	
-
-
 	return r;
 }
+
+/*3. int size(StackC s) que calcula o comprimento (número
+de elementos) de s.*/
+
+int size(StackC s)
+{
+	int r = s.sp;
+	while ((s.valores)->prox)
+	{
+		r += MAXc;
+		s.valores = (s.valores)->prox;	
+	}
+	return r;
+}
+
+/*4. Usando as funções push e pop acima defina a função void reverse (StackC *s) que inverte
+a ordem dos elementos de s.
+Apresente o resultado de aplicar essa função à stack apresentada como exemplo.*/
+
+void reverse (StackC *s)
+{
+	StackC aux = initStack ();
+	int x, controlo = 0;
+	while(controlo == 0)
+	{
+		controlo = pop (s, &x);
+		if (controlo == 0)
+			push (&aux, x);
+	}
+
+	*s = aux;
+}
+
 
 
 
@@ -259,10 +289,25 @@ int pop (StackC *s, int *x)
 int main ()
 {
 	int r;
-	int v[9] = {1,12,23,34,45,56,67,8,9};
+	int v[9] = {1,12,23,34,45,56,67,8,6};
 	StackC s = StackCFromArray (v,7);
-	
 	showS (s);
+	putchar ('\n');
+	reverse(&s);
+	/*int x;
+	r = pop (&s, &x);
+	printf("sucesso:%d\n",r );
+	r = pop (&s, &x);
+	printf("SSucesso:%d\n",r );
+
+	//r = pop (&s, &x);
+	//printf("sucesso: %d\n",r );
+	//r = pop (&s, &x);
+	//printf("sucesso: %d\n",r );
+
+	putchar ('\n');*/
+	showS (s);
+
 	
 
 	return 0;
