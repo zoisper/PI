@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include<string.h>
 
 typedef struct posicao {
 int x, y;
@@ -353,29 +350,3 @@ void formata (char texto[], int largura)
 
 }
 
-
-
-
-int main ()
-{
-	char t[1024] = "As armas e os barões assinalados, Que da ocidental praia Lusitana, Por mares nunca de antes navegados, Passaram ainda além da Taprobana, Em perigos e guerras esforçados, Mais do que prometia a forca humana, E entre gente remota edificaram Novo Reino, que tanto sublimaram";
-
-	/*Palavras p = words (t);
-
-	Palavras r = daLinha (p, 8);
-	showPal (p);
-	putchar ('\n');
-	showPal (r)*/
-	formata (t, 10);
-
-	
-	
-
-
-
-	return 0;
-
-	
-
-
-}
