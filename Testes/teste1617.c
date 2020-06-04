@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define MAXc 3 
 
 typedef struct slist {
 int valor;
@@ -46,3 +47,196 @@ void transposta (int N, float m [N][N])
         }
 }
 
+/*3. Apresente uma definição da função LInt cloneL (LInt) que cria uma nova lista ligada com
+os elementos pela ordem em que aparecem na lista argumento.*/
+
+LInt cloneL (LInt l) 
+{
+	LInt r =NULL;
+	LInt *ptr = &r;
+	while (l)
+	{
+		*ptr = malloc (sizeof (struct slist));
+		(*ptr)->valor = l->valor;
+		(*ptr)->prox = NULL;
+		ptr = &((*ptr)->prox);
+		l = l->prox;
+	}
+	return r;
+}
+
+
+void showL (LInt l)  //// imprime uma lista ligada
+{
+	while (l)
+	{
+		printf("%d\n", l->valor );
+		l = l->prox;
+	}
+}
+
+LInt LIntFromArray (int v[], int N)  ////// constroi lista ligada de array
+{
+	LInt r = NULL;
+	LInt *ptr = &r;
+	int i = 0;
+	while (i<N)
+	{
+		*ptr = malloc (sizeof (struct slist));
+		(*ptr)->valor = v[i];
+		(*ptr)->prox = NULL;
+		ptr = &((*ptr)->prox);
+		i++;
+	}
+
+	return r;
+
+}
+
+/*4. Defina uma função int nivelV (ABin a, int n, int v[]) que preenche o vector v com os
+elementos de a que se encontram no nı́vel n.
+Considere que a raı́z da árvore se encontra no nı́vel 1.
+A função deverá retornar o número de posições preenchidas do array.*/
+
+int nivelV (ABin a, int n, int v[])
+{
+	int r = 0;
+	
+	if (a)
+	{
+		if (n==1)
+		{
+			*v = a->valor;
+			r++;
+		}
+	
+		else
+			if (n>1)
+			{
+				int e = nivelV (a->esq, n-1,v);
+				int d = nivelV (a->dir, n-1, v+e);
+				r = e+d;
+			}
+	}
+	return r;
+}
+
+/*5. Defina uma função void removeMaiorA (ABin *) que remove o maior elemento de uma árvore
+binária de procura.*/
+
+void removeMaiorA (ABin *a) 
+{
+   ABin aux = NULL;
+   if(*a)
+   {
+		while ((*a)->dir)
+   			a = &((*a)->dir);
+		
+		aux = *a;
+		*a = (*a)->esq;
+		free(aux);
+	}
+}
+
+// Parte B
+
+typedef struct chunk {
+int vs [MAXc];
+struct chunk *prox;
+} *CList;
+
+typedef struct stackC {
+CList valores;
+int sp;
+} StackC;
+
+
+
+
+/*1. int push (StackC *s, int x) que acrescenta um ele-mento x a s. Retorna 0 em caso de sucesso.*/
+
+int push (StackC *s, int x) 
+{
+	int r = 1;
+	if(s->sp >= MAXc)
+	{
+		CList new = malloc (sizeof (struct chunk));
+		if (new)
+		{
+			s->sp=0;
+			new->vs[s->sp] = x;
+			s->sp++;
+			new->prox = s->valores;
+			s->valores = new;
+			r = 0;	
+		}		  
+	}
+	
+	else
+	{
+		s->valores->vs[s->sp] = x;
+		s->sp++;
+		r=0;
+	}
+
+return r;
+
+}
+
+StackC initStack ()  ///// inicia uma StackC
+{
+	StackC s;
+	s.sp = 0;
+	s.valores = malloc (sizeof (struct chunk));
+	(s.valores)->prox = NULL;
+
+	return s;
+}
+
+
+
+
+StackC StackCFromArray (int v[], int N) ///// cria uma StacK apartir de uma array
+{
+	StackC r = initStack();
+	int i = 0;
+	while (i<N)
+	{
+		push (&r, v[i]);
+		i++;
+	}
+	return r;
+}
+
+void showS (StackC s)  //// imprime uma StackC
+{
+	int limite = s.sp;
+	while (s.valores)
+	{
+		int i = 0;
+		
+		while (i<limite)
+		{
+			printf("%d\n",(s.valores)->vs[i] );
+			i++;
+		}
+		s.valores = (s.valores)->prox;
+		limite = MAXc;
+	}
+}
+/*2. int pop (StackC *s, int *x) que remove o elemento do
+topo da stack, colocando-o em *x. Retorna 0 em caso de sucesso.*/
+
+
+int main ()
+{
+	int v[9] = {1,12,23,34,45,56,67,8,9};
+	StackC s = StackCFromArray (v,7);
+	//int r = push (&s, 20);
+	//r = push (&s, 22);
+	//printf("Sucesso: %d\n", r );
+	showS (s);
+	
+	return 0;
+
+}
