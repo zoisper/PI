@@ -227,16 +227,44 @@ void showS (StackC s)  //// imprime uma StackC
 /*2. int pop (StackC *s, int *x) que remove o elemento do
 topo da stack, colocando-o em *x. Retorna 0 em caso de sucesso.*/
 
+int pop (StackC *s, int *x) 
+{
+	int r = 1;
+
+	
+		if (s->sp == 0 && s->valores->prox)
+		{
+			s->valores = s->valores->prox;
+			s->sp = MAXc-1;
+			*x = s->valores->vs[s->sp];
+			s->sp--;
+		}
+		else
+			if (s->sp > 0 && s->valores)
+			{
+				s->sp--;
+				*x = s->valores->vs[s->sp];
+				r=0;
+			}
+		
+	
+
+
+	return r;
+}
+
+
+
 
 int main ()
 {
+	int r;
 	int v[9] = {1,12,23,34,45,56,67,8,9};
 	StackC s = StackCFromArray (v,7);
-	//int r = push (&s, 20);
-	//r = push (&s, 22);
-	//printf("Sucesso: %d\n", r );
+	
 	showS (s);
 	
+
 	return 0;
 
 }
