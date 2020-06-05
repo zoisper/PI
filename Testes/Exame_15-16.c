@@ -186,6 +186,40 @@ int inc(Hist *h, char *pal)
 entrada correspondente à palavra mais frequente, retornando-a e armazenando a sua contagem na
 posição de memória apontada por count. */
 
+char *remMaisFreq(Hist *h, int *count)
+{
+	char *r = NULL;
+	*count = 0;
+	Hist *aux = NULL;
+	Hist freeD = NULL;
+
+	if (*h)
+	{
+		aux = h;
+		*count = (*aux)->cont;
+		
+		while (*aux)
+		{
+			if ((*aux)->cont > *count)
+			{
+				*count = (*aux)->cont;
+				h = aux;
+			}
+			aux = &((*aux)->prox);
+
+		} 
+		r = (*h)->pal;
+		freeD = *h;
+		(*h) = (*h)->prox;
+		free (freeD);
+	}
+
+
+
+
+
+	return r;
+}
 
 
 
@@ -197,11 +231,8 @@ posição de memória apontada por count. */
 	while (*s)
 		{
 			jump = primeiraPal (s, buff);
-			//printf("buff %s\n",buff );
-			//printf("size %d\n", size);
 			inc (&h, buff);
 			int len = strlen (buff);
-			//printf("len %d\n",len );
 			s += len+jump;
 		}
 
@@ -215,26 +246,64 @@ void showHist (Hist h)   //// imprime listaP
 	while (h)
 	{
 		printf ("%s\n", h->pal);
+		printf("%d\n",h->cont );
 		h = h->prox;
 	}
 } 
 
-int main ()
+/*3. Escreva um programa C que, utilizando os tipos e as funções definidas, leia um texto (de stdin)
+e imprima (em stdout) as 10 palavras mais frequentes com mais de três caracteres (e a respectiva
+contagem). Deve atender aos seguintes aspectos:
+• Pode considerar que o tamanho máximo das palavras que ocorrem no texto é 60;
+• As palavras devem passar por um processo de filtagem onde se removem todos os caracteres que
+não letras e se convertem para maiúsculas (e.g. "gato22,", "GaTo" ou "Gato,,,"" devem ser
+consideradas a mesma palavra: "GATO").
+• Toda a memória alocada pelo programa deve explicitamente libertada.
+• Utilize as funções definidas nas bibliotecas standard do C (em particular as de manipulação de
+strings e caracteres disponibilizadas em string.h e ctype.h).*/
+
+
+
+int main (int argc , char *argv[] )
 {
 
-	/*char texto[100] = ".-.-.-pato-ferro, mundo amigos";
-	Hist h = HistFromStr (texto);
-	showHist (h);*/
+	FILE *input = NULL;  
+	char buff[1024]; 
+	Hist h = NULL;
+	int i = 0, x = 0;
+	int r = 1;
+	
+	if (argc == 2)
+		input = fopen (argv[1], "r");
+	else
+		input = stdin;
+
+	if (input)
+	
+	{
+		while (fscanf(input,"%s", buff )==1)
+		{
+			limapaPal (buff);
+			maiusculas (buff);
+			if (strlen (buff) > 3)
+				inc (&h, buff);
+		}
 
 
+		while (i<3)
+		{
+			char *temp = remMaisFreq (&h, &x );
+			printf("%s %d\n",temp, x);
+			i++;
+		}
 
+		r=0;
+	} 
+
+	
 	
 
 
-	
-	
 
-
-
-	return 0;
+	return r;
 }
