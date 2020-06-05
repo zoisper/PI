@@ -101,14 +101,16 @@ void maiusculas (char * t) /// coloca palavra em maisculas
 
 void limapaPal (char *p)  //// limpa carateres de pontuação da palavra
 {
-	int i = 0, j = 0;
+	int i = 0, j = 0, controlo =0;
 	while (p[i] && ! isalnum (p[i]))
 		i++;
 	
-	while (p[i])
+	while (p[i] && (isalnum (p[i]) || (p[i] == '-' && controlo < 2)))
 	{
-		if (isalnum (p[i]) || p[i] == '-')
-			p[j++] = p[i];
+		if (p[i] == '-')
+			controlo++;
+			
+		p[j++] = p[i];
 		i++;	
 	}
 	p[j] = '\0';
@@ -262,7 +264,18 @@ consideradas a mesma palavra: "GATO").
 • Utilize as funções definidas nas bibliotecas standard do C (em particular as de manipulação de
 strings e caracteres disponibilizadas em string.h e ctype.h).*/
 
+void freeHist (Hist *h)
+{
+	Hist *aux = NULL;
+	while (*h)
+	{
+		aux = h;
+		h = &((*h)->prox);
+		free(*aux);
+		*aux = NULL;
+	}
 
+}
 
 int main (int argc , char *argv[] )
 {
@@ -296,13 +309,9 @@ int main (int argc , char *argv[] )
 			printf("%s %d\n",temp, x);
 			i++;
 		}
-
+		freeHist (&h);
 		r=0;
 	} 
-
-	
-	
-
 
 
 	return r;
