@@ -56,28 +56,22 @@ void imprimeL (LInt l)
 /*4. Apresente uma definição não recursiva da função LInt reverseL (LInt) que inverte uma
 lista (sem criar uma nova lista). (https://codeboard.io/projects/16243)*/
 
-LInt inserecabeca (int x, LInt l)
-{
-    LInt r = malloc (sizeof(struct lligada));
-    r->valor = x;
-    r->prox = l;
-    return r;
-}
-
 LInt reverseL (LInt l)
 {
-	LInt r, freed;
-	freed = NULL;
-	r = NULL;
+	LInt r = NULL;
+	LInt aux = NULL;
+
 	while (l)
 	{
-		r = inserecabeca (l->valor, r);
-		freed = l;
+		aux = l;
 		l = l->prox;
-		free(freed);
+		aux->prox = r;
+		r = aux;
 	}
+	
 	return r;
 }
+
 
 /*5. Apresente uma definição não recursiva da função void insertOrd (LInt *, int) que in-
 sere ordenadamente um elemento numa lista ordenada. (https://codeboard.io/projects/

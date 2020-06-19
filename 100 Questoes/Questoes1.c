@@ -9,7 +9,7 @@ int main ()
 
   int var, maior = 0;
 
-  printf("Intorduza um Numero\n");
+  printf("Introduza um Numero\n");
   scanf ("%d", &var);
 
   while (var != 0)
@@ -47,7 +47,7 @@ int main ()
   }
   
   n--;
-  ac /= n;
+  ac != n;
   printf ("%.2f", ac);
 
 return 0;
@@ -235,13 +235,13 @@ void truncW (char t[], int n)
     int i, j, c;
     c = j = 0;
     for (i=0; t[i] != '\0'; i++)
-        {
-            if (t[i] == ' ')
-                	c = 0;
-            else 
-                c++;
-            if (c <= n)
-            		t[j++] = t[i];
+    {
+        if (t[i] == ' ')
+            c = 0;
+        else 
+            c++;
+        if (c <= n)
+            t[j++] = t[i];
                 
         }
     
