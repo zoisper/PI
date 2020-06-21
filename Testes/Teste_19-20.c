@@ -225,7 +225,16 @@ void imprime(ABin t)
 que dada uma árvore binária imprime segundo uma travessia posorder os
 valores da árvore, um por linha, precedidos do caminho para chegar a esse valor
 (no caminho um caracter ‘<’ representa uma ida para a esquerda e o
-caracter ‘>’ para a direita). Por exemplo, a árvore 
+caracter ‘>’ para a direita).*/ 
+
+
+typedef struct abin {
+int valor;
+struct abin *esq,
+*dir;
+} *ABin;
+
+/*Por exemplo, a árvore 
 
 ..4
 
@@ -249,6 +258,57 @@ deveria ser impressa como:
 
 4
 */
+
+ABin ABfromArray (int v[], int n)  /// cria arvore binaria de array
+{
+
+	ABin r = NULL;
+	if(n>0)
+	{
+		r = malloc (sizeof (struct abin));
+ 		r->valor = v[n/2];
+ 		r->esq = ABfromArray (v, n/2);
+ 		r->dir = ABfromArray (v+(n/2)+1, n - n/2 -1);
+	}
+
+return r;
+
+}
+
+void showABin (ABin a)  /////////////////////// imprime ABin
+{
+	if (a)
+	{
+		showABin (a->esq);
+		printf("%d\n",a->valor );
+		showABin (a->dir);
+
+	}
+}
+
+
+void imprimeAux (ABin a, char *c)
+{
+	if(a)
+	{
+		printf("%s%d\n\n",c, a->valor );
+		int len = strlen (c);
+		char e[len+1] , d[len+1];
+		strcpy (e, c);
+		strcpy (d, c);
+		strcat (e, "<");
+		strcat (d, ">");
+		imprimeAux (a->esq, e);
+		imprimeAux (a->dir, d);
+
+	}
+} 
+
+void imprime(ABin a)  
+{
+	if (a)
+	imprimeAux (a,"");
+}
 
 
 
@@ -309,10 +369,7 @@ No caso de k ser superior ao número de palavras do conjunto a função deverá 
 
 int main ()
 {
-	int x[4] = {1,2,2,1};
-	//DLint d = DLfromArray (x, 4);
-	//printf("%d\n", length(d.front));
-	//printf("%d\n", capicua(d));
+	int x[4] = {1,2,3,4,5};
 	
 	return 0;  
 }
