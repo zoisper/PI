@@ -321,6 +321,30 @@ deve fazer com que o array t passe a ter “teste   de   Programacao   Imperativ
 
 Assuma que o array recebido como argumento tem espaço suficiente para alojar os caracteres adicionais.*/
 
+void pad (char *texto, int p, int N)
+{
+	int i, j, k, len, numPal;
+	len = strlen (texto);
+	for (i=0, numPal=1; texto[i] && numPal<p; i++)
+	{
+		if (texto[i] == ' ' && texto[i+1] != ' ' && texto[i+1] != '\0' )
+		{
+			for (j=0; j<N; j++)
+			{
+				for(k=len; k>i; k--)
+					texto[k+1] = texto[k];
+				
+				texto[i+1] = ' ';
+				len++;				
+
+			}
+			numPal++;
+			i += N;
+				
+		}
+
+	}
+}
 
 
 
@@ -369,7 +393,7 @@ No caso de k ser superior ao número de palavras do conjunto a função deverá 
 
 int main ()
 {
-	int x[4] = {1,2,3,4,5};
+	int x[5] = {1,2,3,4,5};
 	
 	return 0;  
 }
