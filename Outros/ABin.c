@@ -8,30 +8,59 @@ struct abin *esq,
 *dir;
 } *ABin;
 
-
-ABin fromArray (int v[], int N)  //////////////////////// constroi abin de array
+ABin fromArray (int v[], int n)  /// cria arvore binaria de array
 {
-	ABin esq = NULL;
-	ABin dir = NULL;
+
 	ABin r = NULL;
-	
-	if (N>0)
+	if(n>0)
 	{
-
-		esq = fromArray (v, N/2 );
 		r = malloc (sizeof (struct abin));
-		r->valor = v[N/2];
-		dir = fromArray (v + N/2 +1 , N  - 1 - N/2);
-
-		r->esq = esq;
-		r->dir = dir;
-
+ 		r->valor = v[n/2];
+ 		r->esq = fromArray (v, n/2);
+ 		r->dir = fromArray (v+(n/2)+1, n - n/2 -1);
 	}
 
-	return r;
+return r;
+
 }
 
-void ABintoDL (ABin *a)   /////////////////////////////////// converte ABin em lista duplamente ligada sem malloc
+void showABin (ABin a)  /////////////////////// imprime ABin
+{
+	if (a)
+	{
+		showABin (a->esq);
+		printf("%d\n",a->valor );
+		showABin (a->dir);
+
+	}
+}
+
+
+void showPathsAux (ABin a, char *c)
+{
+	if(a)
+	{
+		printf("%s%d\n",c, a->valor );
+		int len = strlen (c);
+		char e[len+1] , d[len+1];
+		strcpy (e, c);
+		strcpy (d, c);
+		strcat (e, "<");
+		strcat (d, ">");
+		showPathsAux (a->esq, e);
+		showPathsAux (a->dir, d);
+
+	}
+} 
+
+void showPaths (ABin a)  //// imprime caminhos de arvore binaria
+{
+	if (a)
+	showPathsAux (a,"");
+}
+
+
+void ABintoDL (ABin *a)   ////converte ABin em lista duplamente ligada sem malloc
 {
 
 	if (*a)
@@ -65,19 +94,6 @@ void ABintoDL (ABin *a)   /////////////////////////////////// converte ABin em l
 
 
 
-
-
-void showABin (ABin a)  /////////////////////// imprime ABin
-{
-	if (a)
-	{
-		showABin (a->esq);
-		printf("%d\n",a->valor );
-		showABin (a->dir);
-
-	}
-}
-
 void showABinDL (ABin a)  //////////  imprime ABin convertida em DLint sem malloc
 {
 	while (a)
@@ -97,5 +113,3 @@ void showABinDLBack (ABin a)  /////////////  imprime ABin convertida em DLInt se
 		a = a->esq;
 	}
 }
-
-
