@@ -193,6 +193,26 @@ int capicua(DLint l)
 	return r; 
 }
 
+void reverse (DLint *l)
+{
+	if (l)
+	{
+		NodoD * aux = NULL;
+		l->last = l->front;
+		
+		while (l->front)
+		{
+			aux = l->front->ant;
+			l->front->ant = l->front->prox;
+			l->front->prox = aux;
+			aux = l->front;
+			l->front = l->front->ant;
+			
+		}
+		l->front = aux;
+	}
+}
+
 DLint DLfromArray(int v[], int N)   //// constoi lista duplamente ligada apartir de array
 {
 	DLint r;
@@ -217,6 +237,15 @@ DLint DLfromArray(int v[], int N)   //// constoi lista duplamente ligada apartir
 
 	return r;
 } 
+
+void showDL (DLint l)  /// imprime lista duplamente ligada
+{
+	while (l.front)
+	{
+		printf ("%d\n", l.front->valor);
+		l.front = l.front->prox;
+	}
+}
 
 
 
@@ -367,7 +396,26 @@ Diga ainda qual o significado do valor de retorno da função que definir.
 
 Serão valorizadas respostas que obtenham o resultado pretendido percorrendo a árvore uma única vez.*/
 
+int calculaQuantos (Palavras p)
+{
+	int r = 0;
 
+	if (p)
+	{
+		int e = 0;
+		int d = 0;
+		
+		if (p->esq)  
+			e = 1 + calculaQuantos (p->esq);
+		
+		d = calculaQuantos (p->dir);
+		
+		p->quantos = e;
+		r = e;
+	}
+
+	return r;
+}
 
 
 /*8 Defina uma função:
@@ -378,6 +426,48 @@ Note que essa inserção vai alterar o campo quantos de alguns (não necessariam
 
 A função deverá retornar 0 se a inserção for bem sucedida ou um valor diferente de zero se
 não houver memória disponível ou a palavra a inserir já se encontrar no conjunto.*/
+
+int acrescenta (Palavras *e, char *p)
+{
+	int r = 1;
+	int controlo = 0;
+	if (! *e)
+	{
+		*e = malloc (sizeof (struct nodo));
+		if (*e)
+		{
+			(*e)->raiz = strdup (p);
+			r = 0;
+		}
+		
+	}
+	
+	else
+	{
+		controlo = strcmp ((*e)->raiz, p);
+
+		if (controlo == 0)
+			r = 0;
+		else
+			if (controlo >0)
+				r = acrescenta (&(*e)->esq, p);
+			else 
+				r = acrescenta (&(*e)->dir, p);
+	}
+	
+	calculaQuantos (*e);
+	return r;
+}
+
+void showPal (Palavras p)
+{
+	if (p)
+	{
+		showPal (p->esq);
+		printf("%s %d\n", p->raiz, p->quantos);
+		showPal (p->dir);
+	}
+}
 
 
 
@@ -390,10 +480,23 @@ se encontra na posição k (isto é, a palavra para a qual existem exactamente k
 
 No caso de k ser superior ao número de palavras do conjunto a função deverá retornar NULL.*/
 
-
-int main ()
+char *atRank (Palavras p, int k)
 {
-	int x[5] = {1,2,3,4,5};
-	
-	return 0;  
+	char *r = NULL;
+	if (p && k>=0)
+	{
+		if (k == p->quantos)
+			r = p->raiz;
+		else
+			if (k < p->quantos)
+				r = atRank (p->esq, k);
+			else
+				r = atRank (p->dir, k - 1 - p->quantos);
+				
+	}
+
+	return r;
 }
+
+
+
