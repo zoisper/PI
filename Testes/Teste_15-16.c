@@ -452,16 +452,3 @@ void transpose (Mat *m)
             setEntry (m, c, l, b);
         }
 }
-
-int main ()
-{
-    float mtx [3][3] = {{1,3,2},{4,5,6},{7,8,9}};
-    Mat m = MatfromArray (3,3,mtx);
-    showMat(m);
-
-    transpose (&m);
-    putchar ('\n');
-    showMat (m);
-    
-    return 0;
-}
