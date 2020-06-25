@@ -153,8 +153,10 @@ Colunas ColformArray ( int N, float v[N])   /// cria coluna apartir de array
 
 void showCol (Colunas col)  /// imprime coluna
 {
+    int ant = 0, i =0;
+    float zero = 0;
     while (col)
-    {
+    { 
         printf ("%.1f ", col->valor);
         col = col->prox;
     }
@@ -451,3 +453,15 @@ void transpose (Mat *m)
         }
 }
 
+int main ()
+{
+    float mtx [3][3] = {{1,3,2},{4,5,6},{7,8,9}};
+    Mat m = MatfromArray (3,3,mtx);
+    showMat(m);
+
+    transpose (&m);
+    putchar ('\n');
+    showMat (m);
+    
+    return 0;
+}
