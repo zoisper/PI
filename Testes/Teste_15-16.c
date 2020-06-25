@@ -412,7 +412,7 @@ int numColunas (Mat m) /// calcula o numero de colunas da matriz
     {
         aux = compLinha (m->lcol);
         if (aux > r)
-        r = aux;
+            r = aux;
         m = m->prox;
     }
 
