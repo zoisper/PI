@@ -371,7 +371,7 @@ void addTo (Mat *m1, Mat m2)
 
 /*4. Defina a função void transpose (Mat *m) que transpõe a matriz *m.*/
 
-void troca (float *a, float *b)  /// troca dois floats
+void troca (float *a, float *b)  /// faz switch entre dois floats
 {
     float aux = *a;
     *a = *b;
@@ -385,20 +385,60 @@ int numLinhas (Mat m) /// calcula numumero de linhas da matriz
     int r = 0;
     while (m)
     {
+        r = m->linha;
         m = m-> prox;
-        r++;
+        
     }
 
     return r;
 }
 
+int compLinha (Colunas col) /// calcula comprimento de uma linha
+{
+    int r = 0;
+    while (col)
+    {
+        r = col->coluna;
+        col = col->prox;
+    }
+
+    return r;
+}
+
+int numColunas (Mat m) /// calcula o numero de colunas da matriz
+{
+    int r = 0, aux =0;
+    while (m)
+    {
+        aux = compLinha (m->lcol);
+        if (aux > r)
+        r = aux;
+        m = m->prox;
+    }
+
+    return r;
+}
+
+int dimMat (Mat m) ///calcula a dimensao da matriz
+{
+    int num_lin = numLinhas (m); 
+    int num_col = numColunas (m);
+
+    if (num_lin > num_col)
+        return num_lin;
+    else
+        return num_col; 
+
+}
+
+
+
 void transpose (Mat *m)
 {
-    int num_lin = numLinhas (*m);
-    int num_col = numCol (*m);
+    int dim = dimMat (*m);
     int l, c;
     float a, b;
-    for (l=1; l<=num_lin; l++)
+    for (l=1; l<=dim; l++)
         for (c=1; c<l; c++)
         {
             a = getEntry (*m, l, c);
