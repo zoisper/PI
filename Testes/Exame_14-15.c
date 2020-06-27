@@ -126,7 +126,7 @@ Alunos addAluno (Alunos a, struct nodo novo)  ///// acresenta um novo nodo a Alu
     return a;
 } 
 
-void formatAluno (Alunos a, int size) /// imprime formatado
+void showA (Alunos a, int size) /// imprime aluno
 {
     int len = strlen (a->nome);
     int i = size/5;
@@ -149,7 +149,7 @@ void showAlunos (Alunos a) /// Imprime os alunos armazenados na estrutura Alunos
     if (a)
     {
         showAlunos (a->esq);
-        formatAluno (a, 9);
+        showA (a, 9);
         putchar ('\n');
         showAlunos (a->dir);
     }
@@ -232,44 +232,111 @@ int rankAluno (Alunos a, int numero, int fnotas[21])
     return r;
 }
 
+/*3. Considere o seguinte tipo para representar uma lista de strings.*/
 
+typedef struct strlist {
+char * string ;
+struct strlist * prox ;
+} * StrList ;
 
+/*Defina uma função int comNota (Alunos a, int nota, StrList *l) que coloca em *l a lista dos
+nomes dos alunos da turma a que tiveram essa nota. A função deve retornar o número de alunos nessas
+condições (i.e., o comprimento da lista produzida).*/
 
-
-
-
-
-
-
-
-
-int main ()
+int comNota (Alunos a, int nota, StrList *l)
 {
-    struct nodo Pedro = {"Pedro", 5, 12};
-    struct nodo Maria = {"Maria", 3, 17};
-    struct nodo Tiago = {"Tiago", 8, 14};
-    struct nodo Teresa = {"Teresa", 7, 15};
-    struct nodo Vicente = {"Vicente", 9, 15};
-    Alunos a = NULL;
-    a = addAluno (a, Pedro);
-    a = addAluno (a, Maria);
-    a = addAluno (a, Teresa);
-    a = addAluno (a, Tiago);
-    a = addAluno (a, Vicente);
-
-    showAlunos (a);
-    putchar ('\n');
-
-    int notas[21];
-
-    fnotas (a, notas);
-    showfnotas (notas, 21);
-    putchar ('\n');
-
-    int rank = rankAluno (a, 7, notas);
-    printf("%d", rank);
-
-
+    int r = 0, aux = 0;
     
-    return 0;
+    if (a)
+    {
+        if(a->nota == nota)
+        {
+            *l = malloc (sizeof (struct strlist));
+            (*l)->string = strdup (a->nome);
+            (*l)->prox = NULL;
+            l = &((*l)->prox);
+            r++;
+                        
+        }
+        
+        aux = comNota (a->esq, nota, l);
+        r += aux;
+
+        while (aux > 0)
+        {
+            l = &((*l)->prox);
+            aux--;
+        }
+        
+        r += comNota (a->dir, nota, l );
+            
+    }
+
+
+    return r;
 }
+
+void showStrList (StrList l)
+{
+    if (l)
+    {
+        printf ("%s\n", l->string);
+        showStrList (l->prox);
+    }
+}
+
+/*4. Considere agora a seguinte função que se pretende que imprima os nomes dos vários alunos por ordem
+decrescente da sua nota:*/
+
+void preenche (Alunos a, Alunos t[], int freq[21]);
+
+void imprime ( Alunos a ) 
+{
+    int i;
+    int notas[21] ;
+    int quantos = fnotas( a, notas) ;
+    Alunos todos[quantos];
+
+    preenche (a , todos , notas) ;
+    for( i = 0; i <quantos ; i ++)
+    printf ("%d %s %d\n", todos[i]->numero , todos[i]->nome , todos[i]->nota ) ;
+}
+
+
+
+
+
+/*Apresente uma definição da função void preenche (Alunos a, Alunos t[], int freq[21]) de forma
+a que a função acima imprima por ordem decrescente da nota a informação sobre os alunos guardada
+na árvore.
+Note que o array deve ser preenchido com os endereços dos vários nodos da árvore sem que seja alocada
+qualquer memória adicional.
+Se possı́vel, use a informação presente no array freq para optimizar a função.*/
+
+
+void preencheAux (Alunos a, Alunos t[], int rank[])
+{
+    if (a)
+    {
+        t[rank[a->nota]] = a;
+        rank[a->nota]++;
+
+        preencheAux (a->esq, t, rank);
+        preencheAux (a->dir, t, rank);
+    }
+}
+
+void preenche (Alunos a, Alunos t[], int freq[21])
+{
+    
+    
+    int i, rank[21];
+    
+    for (i=0; i<21; i++)
+        rank[i] = rankNota (i, freq) - 1;
+
+    preencheAux (a, t, rank);
+}
+
+
+
