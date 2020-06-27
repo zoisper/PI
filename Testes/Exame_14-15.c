@@ -302,7 +302,6 @@ void imprime ( Alunos a )
     printf ("%d %s %d\n", todos[i]->numero , todos[i]->nome , todos[i]->nota ) ;
 }
 
-
 /*Apresente uma definição da função void preenche (Alunos a, Alunos t[], int freq[21]) de forma
 a que a função acima imprima por ordem decrescente da nota a informação sobre os alunos guardada
 na árvore.
