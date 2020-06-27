@@ -303,9 +303,6 @@ void imprime ( Alunos a )
 }
 
 
-
-
-
 /*Apresente uma definição da função void preenche (Alunos a, Alunos t[], int freq[21]) de forma
 a que a função acima imprima por ordem decrescente da nota a informação sobre os alunos guardada
 na árvore.
