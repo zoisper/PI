@@ -4,7 +4,7 @@
 
 typedef struct aluno {
 int numero;
-char *nome;
+char nome[30];
 int nota;
 } Aluno;
 
@@ -121,6 +121,42 @@ void printTurma (Turma t)
     }
 }
 
+/*
+2. Considere agora que se pretende disponibilizar funções de leitura e escrita de um elemento deste
+tipo (Turma) em ficheiro.
+Apresente duas alternativas para implementar tais funções:*/
+
+/*• A escrita da árvore deve permitir que ao ler essa estrutura do ficheiro, a árvore obtida tenha
+a mesma forma da árvore que foi escrita no ficheiro.*/
+
+int guardaTurma (Turma t, FILE *fp)
+{
+    if (t)
+    {
+        guardaTurma (t->esq, fp);
+        fwrite (&t, sizeof (Turma), 1, fp);
+        guardaTurma (t->dir, fp);
+
+        return 0;
+    }
+
+    return 1;
+}
+
+int lerTurma (Turma *t, FILE *fp)
+{
+    
+    if (fp)
+    {
+        Turma aux = NULL;
+        while (fread(&aux, sizeof (Turma), 1, fp ))
+            acrescentaAluno (t, aux->a);
+        return 0;
+    }
+
+    return 1;
+}
+
 
 int main ()
 {
@@ -131,33 +167,35 @@ int main ()
         a3 = {8744, "Anastacia Borges Pereia", 18},
         a4 = {3544, "Antonio João Rocha", 14};
 
-    Turma t = NULL;
+    Turma t1 = NULL, t2 = NULL;
     int aprov = 0;
     
 
-    acrescentaAluno (&t, a1);
-    acrescentaAluno (&t, a2);
-    acrescentaAluno (&t, a3);
-    acrescentaAluno (&t, a4);
+    acrescentaAluno (&t1, a1);
+    acrescentaAluno (&t1, a2);
+    acrescentaAluno (&t1, a3);
+    acrescentaAluno (&t1, a4);
 
     printf("Alunos: \n");
-    printTurma (t);
+    printTurma (t1);
 
     printf("......................................\n");
 
-    aprov = aprovados (t);
+    aprov = aprovados (t1);
     printf("Alunos Aprovados: %d\n", aprov);
     printf("......................................\n");
 
+    FILE * fp = fopen ("alunos.txt", "w");
+    guardaTurma (t1, fp);
+    fclose (fp);
 
+    fp = fopen ("alunos.txt", "r");
+    lerTurma (&t2, fp);
+    fclose (fp);
+    
+    printf("Alunos: \n");
+    printTurma (t2);
+    printf("......................................\n");
 
-    
-
-    
-
-
-    
-    
-    
     return 0;
 }
