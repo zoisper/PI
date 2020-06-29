@@ -129,33 +129,73 @@ Apresente duas alternativas para implementar tais funções:*/
 /*• A escrita da árvore deve permitir que ao ler essa estrutura do ficheiro, a árvore obtida tenha
 a mesma forma da árvore que foi escrita no ficheiro.*/
 
-int guardaTurma (Turma t, FILE *fp)
+ void guardaTurma (Turma t, FILE *fp)
 {
-    if (t)
+    if (t && fp)
     {
-        guardaTurma (t->esq, fp);
         fwrite (&t, sizeof (Turma), 1, fp);
+        guardaTurma (t->esq, fp);
         guardaTurma (t->dir, fp);
-
-        return 0;
     }
-
-    return 1;
+    
 }
 
-int lerTurma (Turma *t, FILE *fp)
+void lerTurma (Turma *t, FILE *fp)
 {
     
     if (fp)
     {
         Turma aux = NULL;
+        
         while (fread(&aux, sizeof (Turma), 1, fp ))
             acrescentaAluno (t, aux->a);
-        return 0;
+    }
+}
+
+/*• A escrita da árvore deverá permitir que ao ler a árvore se obtenha uma árvore equilibrada.*/
+
+void guardaTurmaEq (Turma t, FILE *fp)
+{
+    if (t && fp)
+    {
+        guardaTurmaEq (t->esq, fp);
+        fwrite (&t, sizeof (Turma), 1, fp);
+        guardaTurmaEq (t->dir, fp);
     }
 
-    return 1;
+    
 }
+
+void lerTurmaEqAux (Turma *t, FILE *fp, int inicio, int size)
+{
+    if (size > 0)
+    {
+        Turma aux = NULL;
+        fseek (fp, (inicio + (size/2)) * sizeof (Turma), SEEK_SET);
+        fread (&aux, sizeof(Turma), 1, fp);
+        acrescentaAluno (t, aux->a);
+        lerTurmaEqAux (t, fp, 0, size/2);
+        lerTurmaEqAux (t, fp, (size/2) + 1, size - size/2 -1 );
+
+        }
+
+}
+
+void lerTurmaEq (Turma *t, FILE *fp)
+{
+    if (fp)
+    {
+        fseek (fp, 0, SEEK_END);
+        int size = ftell(fp);
+        size /= sizeof (Turma);
+        lerTurmaEqAux (t, fp, 0, size);   
+    }
+    
+}
+
+
+
+
 
 
 int main ()
@@ -181,18 +221,23 @@ int main ()
 
     printf("......................................\n");
 
-    aprov = aprovados (t1);
-    printf("Alunos Aprovados: %d\n", aprov);
-    printf("......................................\n");
+    //aprov = aprovados (t1);
+    //printf("Alunos Aprovados: %d\n", aprov);
+    //printf("......................................\n");
 
     FILE * fp = fopen ("alunos.txt", "w");
     guardaTurma (t1, fp);
     fclose (fp);
 
     fp = fopen ("alunos.txt", "r");
-    lerTurma (&t2, fp);
-    fclose (fp);
+    //lerTurma (&t2, fp);
+    //fclose (fp);
     
+    //printf("Alunos: \n");
+    //printTurma (t2);
+    //printf("......................................\n");
+
+    lerTurmaEq(&t2, fp);
     printf("Alunos: \n");
     printTurma (t2);
     printf("......................................\n");
