@@ -178,7 +178,6 @@ void lerTurmaEqAux (Turma *t, FILE *fp, int inicio, int size)
         lerTurmaEqAux (t, fp, (size/2) + 1, size - size/2 -1 );
 
         }
-
 }
 
 void lerTurmaEq (Turma *t, FILE *fp)
@@ -193,9 +192,90 @@ void lerTurmaEq (Turma *t, FILE *fp)
     
 }
 
+/*3. Uma alternativa ao exposto atrás, consiste em ter a informação sobre a turma, implementada
+numa árvore binária de procura directamente num ficheiro. Note que neste caso, os endereços das
+sub-árvores não serão mais do que endereços de disco.
+Re-implemente as funções referidas na primeira alı́nea para esta solução alternativa.*/
 
+typedef struct farv {
+Aluno a;
+long int  esq, dir;
+} fTurma, buf, novo;
 
+long acrescentaAlunoF (FILE *fp, Aluno a)
+{
+    
+    long lugar, ant = 0L, endNovo;
+    fTurma buf, novo;
+    fseek (fp, 0L, SEEK_SET);
+    fread (&lugar, sizeof (long), 1, fp);
+    
+    while(lugar != 0L && buf.a.numero != a.numero)
+    {
+        fseek(fp, lugar, SEEK_SET);
+        fread (&buf,sizeof (struct farv), 1, fp);
+        ant = lugar;
+        
+        if (buf.a.numero > a.numero)
+            lugar = buf.esq;          
+        else
+            lugar = buf.dir;
+                
+    }
 
+    if (lugar != 0)
+        return 1;
+    
+    else
+    {
+        novo.a = a;
+        novo.dir = 0L;
+        novo.esq = 0L;
+        fseek (fp, 0L, SEEK_END);
+        endNovo = ftell (fp);
+        fwrite (&novo, sizeof (struct farv), 1, fp);
+        
+        if ( ant == 0L)
+        {
+            fseek (fp, 0L, SEEK_SET);
+            fwrite (&endNovo, sizeof (long), 1, fp);
+     
+        }
+        else
+        {
+            fseek (fp, ant, SEEK_SET);
+            fread (&buf, sizeof (struct farv), 1, fp);
+            if (buf.a.numero > a.numero)
+                buf.esq = endNovo;
+            else
+                buf.dir = endNovo;
+            fseek (fp, ant, SEEK_SET);
+            fwrite (&buf, sizeof (struct farv), 1, fp);
+        }
+        
+    }
+
+    return 0;
+       
+        
+}
+
+void printTurmaF (FILE *fp)
+{
+    long lugar;
+    fTurma buf;
+    fseek (fp, 0L, SEEK_SET);
+    fread (&lugar, sizeof (long), 1, fp);
+    while (lugar)
+    {
+        fseek (fp, lugar, SEEK_SET);
+        fread (&buf, sizeof (struct farv), 1, fp);
+        printf ("%d :: %s :: %d\n", buf.a.numero, buf.a.nome, buf.a.nota);
+        lugar = buf.dir;
+    }
+    
+
+}
 
 
 int main ()
@@ -207,40 +287,54 @@ int main ()
         a3 = {8744, "Anastacia Borges Pereia", 18},
         a4 = {3544, "Antonio João Rocha", 14};
 
-    Turma t1 = NULL, t2 = NULL;
-    int aprov = 0;
-    
+    //Turma t1 = NULL, t2 = NULL, t3 = NULL;
+    //int aprov = 0;
+    //
 
-    acrescentaAluno (&t1, a1);
-    acrescentaAluno (&t1, a2);
-    acrescentaAluno (&t1, a3);
-    acrescentaAluno (&t1, a4);
+    //acrescentaAluno (&t1, a1);
+    //acrescentaAluno (&t1, a2);
+    //acrescentaAluno (&t1, a3);
+    //acrescentaAluno (&t1, a4);
 
-    printf("Alunos: \n");
-    printTurma (t1);
+    //printf("Alunos: \n");
+    //printTurma (t1);
 
-    printf("......................................\n");
-
-    //aprov = aprovados (t1);
-    //printf("Alunos Aprovados: %d\n", aprov);
     //printf("......................................\n");
 
-    FILE * fp = fopen ("alunos.txt", "w");
-    guardaTurma (t1, fp);
-    fclose (fp);
+    ////aprov = aprovados (t1);
+    ////printf("Alunos Aprovados: %d\n", aprov);
+    ////printf("......................................\n");
 
-    fp = fopen ("alunos.txt", "r");
+    //FILE * fp = fopen ("alunos.txt", "w");
+    //guardaTurmaEq (t1, fp);
+    //fclose (fp);
+
+    //fp = fopen ("alunos.txt", "r");
     //lerTurma (&t2, fp);
     //fclose (fp);
-    
+    //
     //printf("Alunos: \n");
     //printTurma (t2);
     //printf("......................................\n");
 
-    lerTurmaEq(&t2, fp);
-    printf("Alunos: \n");
-    printTurma (t2);
-    printf("......................................\n");
+    //fp = fopen ("alunos.txt", "r");
+    //lerTurmaEq(&t3, fp);
+    //fclose (fp);
+    //printf("Alunos: \n");
+    //printTurma (t3);
+    //printf("......................................\n");
+
+    FILE * fp = fopen ("alunos.txt", "w+");
+    long x = 0L;
+	fwrite (&x, sizeof(long), 1, fp);
+    acrescentaAlunoF (fp, a1);
+    acrescentaAlunoF (fp, a2);
+    acrescentaAlunoF (fp, a3);
+    acrescentaAlunoF (fp, a4);
+    fclose (fp);
+    fp = fopen ("alunos.txt", "r");
+    printTurmaF (fp);
+
 
     return 0;
 }
