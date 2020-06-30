@@ -188,8 +188,7 @@ void lerTurmaEq (Turma *t, FILE *fp)
         int size = ftell(fp);
         size /= sizeof (Turma);
         lerTurmaEqAux (t, fp, 0, size);   
-    }
-    
+    }    
 }
 
 /*3. Uma alternativa ao exposto atrás, consiste em ter a informação sobre a turma, implementada
@@ -234,10 +233,8 @@ long acrescentaAlunoF (FILE *fp, Aluno a) // acresenta aluno numa árvore binár
             if (buf.a.numero < a.numero)
                 lugar = buf.dir;           
     }
-
     if (lugar != 0)
-        return 1;
-        
+        return 1;       
     else
     {
         novo.a = a;
@@ -250,8 +247,7 @@ long acrescentaAlunoF (FILE *fp, Aluno a) // acresenta aluno numa árvore binár
         if ( ant == 0L)
         {
             fseek (fp, 0L, SEEK_SET);
-            fwrite (&endNovo, sizeof (long), 1, fp);
-     
+            fwrite (&endNovo, sizeof (long), 1, fp);    
         }
         else
         {
@@ -263,8 +259,7 @@ long acrescentaAlunoF (FILE *fp, Aluno a) // acresenta aluno numa árvore binár
                 buf.dir = endNovo;
             fseek (fp, ant, SEEK_SET);
             fwrite (&buf, sizeof (struct farv), 1, fp);
-        }
-        
+        }       
     }
     return 0;        
 }
@@ -287,12 +282,10 @@ long procuraF (FILE *fp, int numero) // procura aluno numa árvore binária de p
             if (buf.a.numero < numero)
                 lugar = buf.dir;
     }
-    
     if (lugar != 0)
         return lugar;
     else
-        return 0;
-    
+        return 0;   
 }
 
 int aprovadosFAux (FILE *fp, long lugar) // função auxiliar para calcular o numero de alunos aprovados numa árvore binária de procura implementada directamente num ficheiro. 
@@ -308,12 +301,7 @@ int aprovadosFAux (FILE *fp, long lugar) // função auxiliar para calcular o nu
         r += aprovadosFAux (fp, buf.esq);
         r += aprovadosFAux (fp, buf.dir);
     }
-
-
-
-
     return r;
-
 }
 
 int aprovadosF (FILE *fp) // calcula o numero de alunos aprovados numa árvore binária de procura implementada directamente num ficheiro. 
@@ -351,77 +339,3 @@ void printTurmaF (FILE *fp) // imprime os alunos de uma turma guardada numa árv
     printTurmaFAux (fp, lugar);    
 }
 
-
-int main ()
-{
-    
-    Aluno 
-        a1 = {1011, "João Ferreira Matos", 1},
-        a2 = {4037, "Juliana Batos Marques", 15},
-        a3 = {8744, "Anastacia Borges Pereia", 7},
-        a4 = {3544, "Antonio João Rocha", 0},
-        a5 = {2544, "Marcos Andre Fernades", 20};
-
-    //Turma t1 = NULL, t2 = NULL, t3 = NULL;
-    int aprov = 0;
-    //
-
-    //acrescentaAluno (&t1, a1);
-    //acrescentaAluno (&t1, a2);
-    //acrescentaAluno (&t1, a3);
-    //acrescentaAluno (&t1, a4);
-
-    //printf("Alunos: \n");
-    //printTurma (t1);
-
-    //printf("......................................\n");
-
-    ////aprov = aprovados (t1);
-    ////printf("Alunos Aprovados: %d\n", aprov);
-    ////printf("......................................\n");
-
-    //FILE * fp = fopen ("alunos.txt", "w");
-    //guardaTurmaEq (t1, fp);
-    //fclose (fp);
-
-    //fp = fopen ("alunos.txt", "r");
-    //lerTurma (&t2, fp);
-    //fclose (fp);
-    //
-    //printf("Alunos: \n");
-    //printTurma (t2);
-    //printf("......................................\n");
-
-    //fp = fopen ("alunos.txt", "r");
-    //lerTurmaEq(&t3, fp);
-    //fclose (fp);
-    //printf("Alunos: \n");
-    //printTurma (t3);
-    //printf("......................................\n");
-
-    //FILE * fp = fopen ("alunos.txt", "w+");
-    //long x = 0L;
-	//fwrite (&x, sizeof(long), 1, fp);
-    FILE * fp = abreF ("alunos.txt");
-    fTurma buf;
-    acrescentaAlunoF (fp, a1);
-    acrescentaAlunoF (fp, a2);
-    acrescentaAlunoF (fp, a3);
-    acrescentaAlunoF (fp, a4);
-    acrescentaAlunoF (fp, a5);
-    fclose (fp);
-    fp = fopen ("alunos.txt", "r");
-    printTurmaF (fp);
-    printf("......................................\n");
-    long r = procuraF (fp, 4037);
-    printf ("%ld\n", r);
-    fseek (fp, r, SEEK_SET);
-    fread (&buf, sizeof (struct farv), 1, fp);
-    printf ("%d :: %s :: %d\n", buf.a.numero, buf.a.nome, buf.a.nota);
-    printf("......................................\n");
-    aprov = aprovadosF (fp);
-    printf("Alunos Aprovados: %d\n", aprov);
-    printf("......................................\n");
-
-    return 0;
-}
