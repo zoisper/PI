@@ -13,10 +13,10 @@ int minusculas (char s[])
     while (s[i])
     {
         if (isalpha (s[i]) && isupper (s[i]))
-            {
-                s[i] = tolower (s[i]);
-                r++;
-            }
+        {
+            s[i] = tolower (s[i]);
+            r++;
+        }
         i++;
     }    
     return r;
