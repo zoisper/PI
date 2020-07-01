@@ -18,9 +18,7 @@ int minusculas (char s[])
                 r++;
             }
         i++;
-    }
-    
-
+    }    
     return r;
 }
 
