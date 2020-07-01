@@ -12,9 +12,9 @@ int minusculas (char s[])
     int i = 0, r = 0;
     while (s[i])
     {
-        if (isalpha(s[i]) && isupper(s[i]))
+        if (isalpha (s[i]) && isupper (s[i]))
         {
-            s[i] = tolower(s[i]);
+            s[i] = tolower (s[i]);
             r++;
         }
         i++;
@@ -47,7 +47,7 @@ int contaPal (char s[])
     int i = 0, r = 0;
     while (s[i])
     {
-        if((!isspace(s[i]) && s[i]!= '\n') && (isspace(s[i+1]) || s[i+1] == '\n' || s[i+1] == '\0'))
+        if((!isspace (s[i]) && s[i]!= '\n') && (isspace (s[i+1]) || s[i+1] == '\n' || s[i+1] == '\0'))
             r++;
         i++;
     }
