@@ -13,17 +13,15 @@ Aluno a;
 struct arv *esq, *dir;
 } *Turma;
 
-/*Relembre o problema proposto na Ficha 7 sobre a gestão da
-informação sobre alunos.
-Uma forma de representar a informação de cada aluno definiu-
-se o tipo Aluno.
+// Nota: neste guião tive que alterar o campo "nome" na estrutura aluno de "*nome" para "nome[30]" de forma a conseguir resolver as alineas 2 e 3.
+
+
+/*Relembre o problema proposto na Ficha 7 sobre a gestão da informação sobre alunos.
+Uma forma de representar a informação de cada aluno definiu-se o tipo Aluno.
 Considere agora que os vários alunos são organizados numa
-árvore binária de procura, ordenada pelo número do aluno (o
-tipo Turma).*/
+árvore binária de procura, ordenada pelo número do aluno (otipo Turma).*/
 
 //1. Defina as seguintes funções sobre este tipo de dados.
-
-
 
 /*• int acrescentaAluno (Turma *t, Aluno a) que acrescenta a informação de um dado aluno
 a uma turma. A função deverá retornar 0 se a operação for feita com sucesso.
@@ -251,8 +249,6 @@ long acrescentaAlunoF (FILE *fp, Aluno a) // acresenta aluno numa árvore binár
         }
         else
         {
-            fseek (fp, ant, SEEK_SET);
-            fread (&buf, sizeof (struct farv), 1, fp);
             if (buf.a.numero > a.numero)
                 buf.esq = endNovo;
             else
