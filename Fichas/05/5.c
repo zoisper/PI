@@ -85,7 +85,6 @@ void maxSortAlt (int v[], int N)
         for (j=0; j<i; j++)
             if (v[j]>v[i])
                 swap (v, j, i);
-
 }
 
 /*6. Considere a definição a baixo da função bubble.*/
@@ -135,3 +134,4 @@ void bubbleSortOpt (int v[], int N)
     for (i=0; i<N && isOrd(v, N) == 0; i++)
         bubble (v, N-i);
 }
+
