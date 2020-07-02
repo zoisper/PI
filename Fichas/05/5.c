@@ -31,13 +31,6 @@ void swap (int v[], int a, int b) // troca dois elementos de um array de inteiro
     v[b] = aux;
 }
 
-void showV (int v[], int N)
-{
-    int i;
-    for (i=0; i<N; i++)
-        printf ("%d ",v[i]);
-}
-
 void iSortAlt (int v[], int N) 
 {
     int i, j;
