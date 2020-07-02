@@ -89,6 +89,7 @@ void bubble (int v[], int N)
         if (v[i-1] > v[i])
             swap (v, i-1, i);
 }
+
 /*Ilustre a execução da função com um pequeno exemplo. Verifique que após
 terminar, o maior elemento do vector se encontra na última posição.*/
 
