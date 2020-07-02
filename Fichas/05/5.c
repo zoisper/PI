@@ -96,7 +96,6 @@ terminar, o maior elemento do vector se encontra na última posição.*/
 // A função bubble compara dois elementos consecutivos e faz swap se o primeiro for maior que o segundo.
 // Ao percorrer o array todo, o maior elemento vai ficar colocado no fim do array.
 
-
 /*7. Use a função bubble na definição de uma função void bubbleSort (int v[], int N)
 que ordena o array v por sucessivas invocações da função bubble.*/
 
