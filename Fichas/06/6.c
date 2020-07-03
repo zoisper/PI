@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define MAX 100
 
 /*1. Considere o seguinte tipo para representar queues de números inteiros.*/
-
-#define MAX 100
 
 typedef struct squeue {
 int inicio, tamanho;
@@ -27,7 +26,6 @@ int isEmptySQ (SQUEUE *q)
 {
     return q->tamanho == 0;
 }
-
 
 /*(c) int ensqueue (SQUEUE *q, int x) que acrescenta x ao fim de q; a função deve retornar
 0 se a operação fôr feita com sucesso (i.e., se a queue ainda não estiver cheia) e 1 se a
@@ -77,13 +75,6 @@ int frontS (SQUEUE *q, int *x)
         r = 0;
     }   
     return r;
-}
-
-void showSqueue (SQUEUE q)
-{
-    int i;
-    for (i=0; i<q.tamanho; i++)
-        printf ("%d ", q.valores[(q.inicio + i) % MAX ]);
 }
 
 /*2. Na representação de queues sugerida na alı́nea anterior o array de valores tem um tamanho
@@ -186,45 +177,4 @@ int frontD (DQUEUE *q, int *x)
         r = 0;
     }
     return r;
-}
-
-
-
-void showDqueue (DQUEUE q)
-{
-    int i;
-    for (i=0; i<q.tamanho; i++)
-        printf ("%d ", q.valores[(q.inicio + i) % q.size ]);
-}
-
-
-int main ()
-{
-    int x = -1, r = -1, e = -1;
-    DQUEUE q;
-    initDQueue (&q);
-    r = isEmptyDQ (&q);
-    printf ("isEmptyDQ: %d\n", r);
-    //endqueue (&q, 2);
-    //endqueue (&q, 6);
-    endqueue (&q, 7);
-    int * v = q.valores;
-    showDqueue (q);
-    putchar ('\n');
-    e = dedqueue (&q, &x);
-    printf ("Sucesso: %d First: %d\n", e, x);
-    showDqueue (q);
-    putchar ('\n');
-    x = -1;
-    e = frontD (&q, &x);
-    printf ("Sucesso: %d First: %d\n", e, x);
-    showDqueue (q);
-    putchar ('\n');
-    r = -1;
-    r = isEmptyDQ (&q);
-    printf ("isEmptyDQ: %d\n", r);
-    
-
-
-    return 0;
 }
