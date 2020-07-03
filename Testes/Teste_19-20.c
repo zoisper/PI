@@ -365,13 +365,10 @@ void pad (char *texto, int p, int N)
 				
 				texto[i+1] = ' ';
 				len++;				
-
 			}
 			numPal++;
-			i += N;
-				
+			i += N;				
 		}
-
 	}
 }
 
@@ -484,23 +481,3 @@ char *atRank (Palavras p, int k)
 	return r;
 }
 
-
-
-int main ()
-{
-	Palavras pal = NULL;
-	acrescenta (&pal ,"k");
-	acrescenta (&pal ,"d");
-	acrescenta (&pal ,"o");
-	acrescenta (&pal ,"c");
-	acrescenta (&pal ,"v");
-	acrescenta (&pal ,"l");
-	int r = calculaQuantos (pal);
-	showPal (pal);
-	printf("Elementos da arvore: %d\n", r);
-	char * c = atRank (pal, 1);
-	printf ("atRank: %s\n", c); 
-	
-
-	return 0;
-}
