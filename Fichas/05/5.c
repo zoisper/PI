@@ -124,7 +124,7 @@ int isOrd (int v[], int N) // verifica se o array esta ordenado.
 void bubbleSortOpt (int v[], int N)
 {
     int i;
-    for (i=0; i<N && isOrd(v, N) == 0; i++)
+    for (i=0; i<N && isOrd(v, N-i) == 0; i++)
         bubble (v, N-i);
 }
 
