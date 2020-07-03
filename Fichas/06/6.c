@@ -178,3 +178,4 @@ int frontD (DQUEUE *q, int *x)
     }
     return r;
 }
+
