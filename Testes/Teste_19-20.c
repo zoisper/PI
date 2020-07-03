@@ -290,7 +290,6 @@ deveria ser impressa como:
 
 ABin ABfromArray (int v[], int n)  /// cria arvore binaria de array
 {
-
 	ABin r = NULL;
 	if(n>0)
 	{
@@ -299,9 +298,7 @@ ABin ABfromArray (int v[], int n)  /// cria arvore binaria de array
  		r->esq = ABfromArray (v, n/2);
  		r->dir = ABfromArray (v+(n/2)+1, n - n/2 -1);
 	}
-
 return r;
-
 }
 
 void showABin (ABin a)  /////////////////////// imprime ABin
@@ -314,7 +311,6 @@ void showABin (ABin a)  /////////////////////// imprime ABin
 
 	}
 }
-
 
 void imprimeAux (ABin a, char *c)
 {
@@ -329,7 +325,6 @@ void imprimeAux (ABin a, char *c)
 		strcat (d, ">");
 		imprimeAux (a->esq, e);
 		imprimeAux (a->dir, d);
-
 	}
 } 
 
@@ -338,8 +333,6 @@ void imprime(ABin a)
 	if (a)
 	imprimeAux (a,"");
 }
-
-
 
 /*6 Defina uma função:
 void pad (char *texto, int p, int N)
