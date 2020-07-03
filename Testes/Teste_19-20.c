@@ -375,8 +375,6 @@ void pad (char *texto, int p, int N)
 	}
 }
 
-
-
 /*7 Considere o seguinte tipo de dados para armazenar (por ordem alfabética) um conjunto de palavras.*/
 
 typedef struct nodo {
@@ -396,27 +394,21 @@ Diga ainda qual o significado do valor de retorno da função que definir.
 
 Serão valorizadas respostas que obtenham o resultado pretendido percorrendo a árvore uma única vez.*/
 
+// a função retorna o numero de elementos da arvore.
+
 int calculaQuantos (Palavras p)
 {
 	int r = 0;
-
 	if (p)
 	{
-		int e = 0;
-		int d = 0;
-		
-		if (p->esq)  
-			e = 1 + calculaQuantos (p->esq);
-		
-		d = calculaQuantos (p->dir);
-		
+		int e = 0, d =  0;
+		e = calculaQuantos (p->esq);
+		d = calculaQuantos (p->dir);	
 		p->quantos = e;
-		r = e;
+		r = 1 + e + d;
 	}
-
 	return r;
 }
-
 
 /*8 Defina uma função:
 
@@ -431,35 +423,33 @@ int acrescenta (Palavras *e, char *p)
 {
 	int r = 1;
 	int controlo = 0;
-	if (! *e)
+	if (!*e)
 	{
 		*e = malloc (sizeof (struct nodo));
 		if (*e)
 		{
 			(*e)->raiz = strdup (p);
 			r = 0;
-		}
-		
+		}	
 	}
-	
 	else
 	{
 		controlo = strcmp ((*e)->raiz, p);
-
 		if (controlo == 0)
 			r = 0;
 		else
-			if (controlo >0)
-				r = acrescenta (&(*e)->esq, p);
-			else 
+			if (controlo < 0)
 				r = acrescenta (&(*e)->dir, p);
+			else 
+			{
+				(*e)->quantos++;
+				r = acrescenta (&(*e)->esq, p);
+			}
 	}
-	
-	calculaQuantos (*e);
 	return r;
 }
 
-void showPal (Palavras p)
+void showPal (Palavras p) // imprime estrutura Palavras
 {
 	if (p)
 	{
@@ -468,8 +458,6 @@ void showPal (Palavras p)
 		showPal (p->dir);
 	}
 }
-
-
 
 /* 9 Defina uma função:
 
@@ -491,12 +479,28 @@ char *atRank (Palavras p, int k)
 			if (k < p->quantos)
 				r = atRank (p->esq, k);
 			else
-				r = atRank (p->dir, k - 1 - p->quantos);
-				
+				r = atRank (p->dir, k - 1 - p->quantos);				
 	}
-
 	return r;
 }
 
 
 
+int main ()
+{
+	Palavras pal = NULL;
+	acrescenta (&pal ,"k");
+	acrescenta (&pal ,"d");
+	acrescenta (&pal ,"o");
+	acrescenta (&pal ,"c");
+	acrescenta (&pal ,"v");
+	acrescenta (&pal ,"l");
+	int r = calculaQuantos (pal);
+	showPal (pal);
+	printf("Elementos da arvore: %d\n", r);
+	char * c = atRank (pal, 1);
+	printf ("atRank: %s\n", c); 
+	
+
+	return 0;
+}
