@@ -1,330 +1,193 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct slist *LInt;
+/*1. Considere a seguinte definição de um tipo para representar listas ligadas de inteiros.*/
+
 typedef struct slist {
 int valor;
-LInt prox;
-} Nodo;
+struct slist * prox;
+} Nodo, *LInt;
 
-typedef LInt Stack;
+/*(a) Apresente uma sequência de instruções que coloque na variável a do tipo LInt, uma lista
+com 3 elementos: 10, 5 e 15 (por esta ordem).*/
 
-int main ()
+/* Resposta:
+    LInt a = malloc (sizeof (Nodo));
+    a->valor = 10;
+    LInt b = malloc (sizeof (Nodo));
+    b->valor = 5;
+    LInt c = malloc (sizeof (Nodo));
+    c->valor = 15;
+    a->prox = b;
+    b->prox = c;
+    c->prox = NULL;*/
 
+void showL (LInt l) // imprime LInt
 {
-
-	void showL(LInt l)
-	{
-		while(l)
-		{
-			printf("%d ", l->valor);
-			l = l->prox;
-		}
-		putchar('\n');
-	}
-
-//ex 1
-
-//a)
-
-	LInt a, b, c;
-	a = malloc (sizeof(Nodo));
-	a->valor = 10;
-	b = malloc (sizeof(Nodo));
-	b->valor = 5;
-	c = malloc (sizeof(Nodo));
-	c->valor = 15;
-	c->prox = NULL;
-	b->prox = c;
-	a->prox = b;
-
-
-	showL(a);
-	putchar('\n');
-
-//b)
-
-//i.
-	LInt cons (LInt l, int x)
-	{
-		LInt h = malloc (sizeof(Nodo));
-		h->valor = x;
-		h->prox = l;
-		return h;
-	}
-
-	a = cons (a, 9);
-	showL(a);
-	putchar('\n');
-
-//ii.
-	LInt tail (LInt l)
-	{
-		LInt r = NULL;
-		if (l)
-		{
-			r = l->prox;
-			free(l);
-		}
-		return r;
-	}
-
-	a = tail (a);
-	printf("tail\n");
-	showL(a);
-	putchar('\n');
-
-//iii.
-	LInt init (LInt l)
-	{
-		LInt b, ant;
-		b = l;
-		if (!b || !b->prox)
-			return NULL;
-		while(b && b->prox)
-		{
-			ant = b;
-			b = b->prox;
-		}
-		ant->prox = NULL;
-		free(b);
-		return l;
-	}
-
-	a = init (a);
-	showL(a);
-	putchar('\n');
-
-//iv.
-	LInt snoc (LInt l, int x)
-	{
-		LInt b = l;
-		LInt c = malloc(sizeof(Nodo));
-		c->valor = x;
-		c->prox = NULL;
-		if (!b)
-			return c;
-		while (b && b->prox)
-			b = b->prox;
-		b->prox = c;
-		return l;
-	}
-
-	a = snoc (a, 42);
-	showL (a);
-	putchar('\n');
-
-//v.
-	LInt concat (LInt a, LInt b)
-	{
-		LInt c;
-		if (!a)
-			return b;
-		for (c = a; c->prox ; c = c->prox);
-		c->prox = b;
-		return a;
-	}
-
-	LInt x,y;
-	x = NULL;
-	y = NULL;
-
-	int i;
-	for(i=5; i>0; i--)
-		x = cons(x,i);
-	
-	for(i=10; i>5; i--)
-		y = cons(y,i);
-	
-	x = concat(x,y);
-	showL(x);
-	putchar('\n');
-
-//ex 2
-
-//a)
-	typedef struct aluno
-	{
-		char nome[61];
-		int numeroAluno, nota;
-	}Aluno;
-
-	typedef struct turma *Turma;
-
-	typedef struct turma
-	{
-		Aluno aluno;
-		Turma proxAluno;
-	}NodoTurma;
-
-	void showT (Turma t)
-	{
-		while (t)
-		{
-			printf("Nome:%s ",t->aluno.nome);
-			printf("Numero:%d ",t->aluno.numeroAluno);
-			printf("Nota:%d ",t->aluno.nota);
-			putchar('\n');
-			t = t->proxAluno;
-		}
-	}
-
-	void showAluno (Aluno a)
-	{
-		printf("Nome:%s ",a.nome);
-		printf("Numero:%d ",a.numeroAluno);
-		printf("Nota:%d ",a.nota);
-		putchar('\n');
-	}
-
-//b)
-
-	Aluno a1 = {"Jorge", 1, 5};
-	Aluno a2 = {"Ana", 2, 17};
-	Aluno a3 = {"Rui", 3, 14};
-	Aluno a4 = {"Francisco", 4, 10};
-	Aluno a5 = {"Joana", 5, 7};
-	Aluno a6 = {"Marta", 6, 11};
-
-	Turma t = NULL;
-
-	int acrescentaAluno (Turma *t, Aluno a)
-	{
-		Turma b,c; 
-		b = malloc(sizeof(NodoTurma));
-		if (!b)
-			return 1;
-		b->aluno = a;
-		b->proxAluno = NULL;
-		c = *t;
-		if (!c)
-		{
-			*t = b;
-			return 0;
-		}
-		while(c->proxAluno)
-			c = c->proxAluno;
-		c->proxAluno = b; 
-		return 0;
-	}
-
-	acrescentaAluno (&t, a1);
-	acrescentaAluno (&t, a2);
-	acrescentaAluno (&t, a3);
-	acrescentaAluno (&t, a4);
-	acrescentaAluno (&t, a5);
-	acrescentaAluno (&t, a6);
-
-
-	showT (t);
-	putchar('\n');
-
-//c)
-	Aluno *procura (Turma t, int numero)
-	{
-		while(t && t->aluno.numeroAluno != numero)
-			t = t->proxAluno;
-		if (t)
-			return &t->aluno;
-		else 
-			return NULL;
-	}
-
-	showAluno(*procura(t,2));
-	putchar('\n');
-
-//d)
-	int aprovados(Turma t)
-	{
-		int r = 0;
-		//Turma a = t;
-		while (t)
-		{
-			if (t->aluno.nota >= 10)
-				r++;
-			t = t->proxAluno;
-		}
-		return r;
-	}
-
-	int aprovadosRec (Turma t)
-	{
-		if (!t)
-			return 0;
-		return (t->aluno.nota >=10) + aprovadosRec(t->proxAluno);
-
-	}
-
-	int numero_aprovadados = aprovados(t);
-	printf("Aprovados = %d\n", numero_aprovadados );
-	putchar('\n');
-
-	int numero_aprovadadosRec = aprovadosRec(t);
-	printf("Aprovados = %d\n", numero_aprovadados );
-	putchar('\n');
-
-//ex 3
-
-	void initStack (Stack *s)
-	{
-		(*s) = NULL;
-	}
-	
-	int isEmptyS (Stack *s)
-	{
-		if (*s)
-			return 0;
-		else 
-			return 1;
-	}
-	int push (Stack *s, int x)
-	{
-		Stack aux = malloc (sizeof(Nodo));
-		if(aux)
-		{
-			aux->valor = x;
-			aux->prox = *s;
-			*s = aux;
-			return 0;
-		}
-		return 0;
-	}
-	
-	
-	int pop (Stack *s, int *x) 
-	{
-    	Stack aux;
-    	if(!isEmptyS(s)) 
-    	{
-        	*x = (*s)->valor;
-        	aux = (*s)->prox;
-        	free(*s);
-        	*s=aux;
-        return 0;
-   		} 
-    	else
-        	return 1;
-	}
-	
-
-	int top (Stack *s, int *x)
-	{
-    	if(!isEmptyS(s)) 
-    	{
-        	*x = (*s)->valor;
-        	return 0;
-   		} 
-    	else
-        	return 1;
-	}
-
-	void showStack(Stack s)
-	{
-		while (s)
-		{
-			printf("%d ",s->valor);
-			s=s->prox;
-		}
-	}
-	return 0;
+    if (l)
+    {
+        printf ("%d ", l->valor);
+        showL (l->prox);
+    }
 }
+
+/*(b) Apresente definições (preferencialmente não recursivas) das seguintes funções sobre listas
+ligadas:*/
+
+/*i. LInt cons (LInt l, int x) que acrescenta um elemento no inicio da lista.*/
+
+LInt cons (LInt l, int x)
+{
+    LInt r = malloc (sizeof (Nodo));
+    r->valor = x;
+    r->prox = l;
+    return r;
+}
+
+/*ii. LInt tail (LInt l) que remove o primeiro elemento de uma lista não vazia (liber-
+tando o correspondente espaço).*/
+
+LInt tail (LInt l)
+{
+    LInt r = NULL;
+    if (l)
+    {
+        r = l->prox;
+        free (l);
+    }
+    return r;
+}
+/*iii. LInt init (LInt l) que remove o último elemento de uma lista não vazia (libertando
+o correspondente espaço).*/
+
+LInt init (LInt l)
+{
+    LInt r = l;
+    LInt ant = NULL;
+    if (l)
+    {
+        while (l->prox)
+        {
+            ant = l;
+            l = l->prox;
+        }
+        free (l);
+        if (ant)
+            ant->prox = NULL;
+        else
+            r = NULL;
+    }
+    return r;
+}
+
+/*iv. LInt snoc (LInt l, int x) que acrescenta um elemento no fim da lista.*/
+
+LInt snoc (LInt l, int x)
+{
+    LInt * ptr = &l;
+    while (*ptr)
+        ptr = &((*ptr)->prox);
+    *ptr = malloc (sizeof (Nodo));
+    (*ptr)->valor = x;
+    (*ptr)->prox = NULL;
+    return l;
+}
+
+/*v. LInt concat (LInt a, LInt b) que acrescenta a lista b a a, retornando o inı́cio da
+lista resultante).*/
+
+LInt concat (LInt a, LInt b)
+{
+    LInt * ptr = &a;
+    while (*ptr)
+        ptr = &((*ptr)->prox);
+    *ptr = b;
+    return a;
+}
+
+/*2. Para gerir a informação sobre os alunos inscritos a uma dada disciplina, é necessário armazenar
+os seguintes dados:
+
+• Nome do aluno (string com no máximo 60 caracteres)
+• Número do aluno
+• Nota*/
+
+/*(a) Defina os tipos Aluno e Turma. Para o efeito considere que a informação referente aos
+alunos de uma turma é armazenada numa lista ligada de alunos.*/
+
+typedef struct aluno {
+    char * nome;
+    int numero;
+    int nota;
+} Aluno;
+
+typedef struct turma {
+    Aluno a;
+    struct turma * prox;
+} *Turma;
+
+void showA (Aluno a) // imprime aluno
+{
+    printf ("%s :: %d :: %d\n", a.nome, a.numero, a.nota);
+}
+
+void showT (Turma t) // imprime turma
+{
+    while (t)
+    {
+        showA (t->a);
+        t = t->prox;
+    }
+}
+
+/*(b) Defina uma função int acrescentaAluno (Turma *t, Aluno a) que acrescenta a in-
+formação de um dado aluno a uma turma. A função deverá retornar 0 se a operação
+for feita com sucesso.*/
+
+int acrescentaAluno (Turma *t, Aluno a)
+{
+    int r = 1;
+    while (*t)
+        t = &((*t)->prox);
+    *t = malloc (sizeof (struct turma));
+    if (*t)
+    {
+        (*t)->a = a;
+        (*t)->prox = NULL;
+        r = 0;
+    }
+    return r;
+}
+
+/*(c) Defina uma função Aluno *procura (Turma t, int numero) que procura o aluno com
+um dado número na turma. A função deve retornar NULL se a informação desse aluno não
+existir; caso exista deve retornar o endereço onde essa informação se encontra.*/
+
+Aluno *procura (Turma t, int numero)
+{
+    Aluno * r = NULL;
+    while (t && !r)
+    {
+        if (t->a.numero == numero)
+            r = &(t->a);
+        else
+            t = t->prox;
+    }
+    return r;
+}
+
+/*(d) Defina uma função que determine quantos alunos obtiveram aproveitamento à disciplina
+(nota final maior ou igual a 10).*/
+
+int aprovados (Turma t)
+{
+    int r = 0;
+    while (t)
+    {
+        if (t->a.nota >= 10)
+            r++;
+        t = t->prox;
+    }
+    return r;
+}
+
