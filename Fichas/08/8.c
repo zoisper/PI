@@ -119,7 +119,7 @@ char *maisFreq (Dicionario d, int *c)
 }
 
 
-void showD (Dicionario d)
+void showD (Dicionario d) // imprime Dicionario
 {
     while (d)
     {
@@ -288,7 +288,7 @@ char *maisFreqH (DicionarioH d, int *c)
     return r;
 }
 
-void showDH (DicionarioH d)
+void showDH (DicionarioH d) // imprime DicionarioH
 {
     int i = 0;
     while (i<HSIZE)
