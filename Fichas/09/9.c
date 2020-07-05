@@ -1,12 +1,133 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
-typedef struct dic {
+/*1. Relembre o problema proposto na Ficha ante-rior de calcular a 
+palavra mais frequente de umtexto.
+Considere ainda que se implementa o tipo Dicionario como uma árvore 
+binária deprocura (ordenada pela palavra).
+
+Apresente definições das funções*/
+
+
+typedef struct dicionario {
 char *pal;
 int ocorr;
-struct dic *esq, *dir;
+struct dicionario *esq, *dir;
 } *Dicionario;
+
+/*• void initDic (Dicionario *d) que inicializa o dicionário a vazio.*/
+
+void initDic (Dicionario *d)
+{
+    *d = NULL;
+}
+
+/*• int acrescenta (Dicionario *d, char *pal) que acrescenta uma ocorrência da palavra
+pal ao dicionário *d. A função deverá retornar o número de vezes que a palavra pal passou
+a ter após a inserção.*/
+
+void limpa (char * pal) // elimna carateres de pontuação
+{
+    int i = 0, j = 0;
+    while (pal[i])
+    {
+        if (isalnum(pal[i]) || pal[i] == '-' || pal[i] == '_' )
+            pal[j++] = pal[i];
+        i++;
+    }
+}
+
+void maisculas (char * pal) // coloca palavra em maisculas
+{
+    int i = 0;
+    while (pal[i])
+    {
+        pal[i] = toupper (pal[i]);
+        i++;
+    }
+}
+
+int acrescenta (Dicionario *d, char *pal)
+{
+    int r = 1;
+    char * palN = strdup (pal);
+    limpa (palN);
+    maisculas (palN);
+    if (*d)
+    {
+        int controlo = strcmp ((*d)->pal, palN);
+            if (controlo == 0)
+            {
+                r = (*d)->ocorr++;
+                free (palN);
+            }
+            else
+                if (controlo > 0)
+                {
+                    r = acrescenta (&((*d)->esq), pal);
+                    free (palN);
+                }
+                    
+                else
+                {
+                    r = acrescenta (&((*d)->dir), pal);
+                    free (palN);
+                }
+    }
+    else
+    {
+        *d = malloc (sizeof (struct dicionario));
+        (*d)->pal = palN;
+        (*d)->ocorr = 1;
+        (*d)->esq = NULL;
+        (*d)->dir = NULL;
+    }    
+    return r;
+}
+
+/*• char *maisFreq (Dicionario d, int *c) que calcula a palavra mais frequente de um di-
+cionario (retornando ainda em c o número de ocorrências dessa palavra).*/
+
+char *maisFreq (Dicionario d, int *c)
+{
+    char * r = NULL, * temp = NULL;
+    int aux = 0;
+    *c = 0;
+    
+    if (d)
+    {
+        *c = d->ocorr;
+        r = d->pal;
+        temp = maisFreq (d->esq, &aux);
+        if (aux > *c)
+        {
+            *c = aux;
+            r = temp; 
+        }
+        temp = maisFreq (d->dir, &aux);
+        if (aux > *c)
+        {
+            *c = aux;
+            r = temp; 
+        }
+    }
+    return r;
+}
+
+
+void showDic (Dicionario d) // imprime dicionario
+{
+    if (d)
+    {
+        showDic (d->esq);
+        printf ("%s :: %d\n", d->pal, d->ocorr);
+        showDic (d->dir);
+    }
+}
+
+/*2. Relembre as definições de listas ligadas e árvores binárias de inteiros.*/
 
 typedef struct abin {
 int valor;
@@ -14,339 +135,209 @@ struct abin *esq,
 *dir;
 } *ABin;
 
-
-typedef struct slista {
+typedef struct lista {
 int valor;
-struct slista *prox;
+struct lista *prox;
 } *LInt;
 
-typedef struct dlista {
-int valor;
-struct dlista *prox, *ant;
-} *DLInt;
+/*Defina as seguintes funções de conversão entre estes tipos de dados.*/
 
+/*• ABin fromList (LInt l) que produz uma árvore binária de procura balanceada a partir de
+uma lista ordenada.
+De forma a tornar essa função mais eficiente pode definir uma função auxiliar Lint fromListN
+(LInt l, int N, ABin *a) que produz (em *a) uma árvore binária de procura balanceada
+a partir dos N primeiros elementos da lista l, retornando a lista dos restantes elementos.*/
 
-void imprimeDic (Dicionario d)   ///////////////// Imprime dicionario
+int compList (LInt l) // calcula comprimento LInt
 {
-	if (d)
-	{
-		imprimeDic(d->esq);
-		printf("%s %d\n", d->pal, d->ocorr );
-		imprimeDic(d->dir);
-	}
+    int r = 0;
+    while (l)
+    {
+        r++;
+        l = l->prox;
+    }
+    return r;
+} 
+
+ABin fromListAux (LInt l, int len)
+{
+    ABin r = NULL;
+    int m = 0;
+    if (len>0)
+    {
+        r = malloc (sizeof (struct abin));
+        r->esq = fromListAux (l, len/2);
+        while (m < len/2)
+        {
+            l = l->prox;
+            m++;
+        }
+        r->valor = l->valor;
+        r->dir = fromListAux (l->prox, len - len/2 -1 );             
+    }
+    return r;
 }
 
-
-void initDic (Dicionario *d)
+ABin fromList (LInt l) 
 {
-	*d = NULL;
+    int len = compList (l);
+    return fromListAux (l, len);
 }
 
+/*• LInt inorderL (ABin a) que produz uma lista ligada ordenada a partir de uma árvore
+binária de procura.
+De forma a tornar essa função mais eficiente pode definir uma função auxiliar LInt inorderLAux
+(ABin a, LInt *end) que coloca em *end o endereço do último elemento da lista produzida.*/
 
-int acrescenta (Dicionario *d, char *pal)
-{
-	int r=1;
-	int controlo;
-
-	while (*d && (controlo = strcmp ((*d)->pal, pal)) !=0 )
-	{
-		if (controlo > 0)
-			d = &((*d)->esq);
-		else
-			d = &((*d)->dir);
-
-	}
-
-	if (*d)
-		{
-		 (*d)->ocorr ++;
-		 r = (*d)->ocorr;
-		}
-	else
-	{
-		*d = malloc (sizeof (struct dic ));
-		(*d)->pal = pal;
-		(*d)->ocorr = 1;
-		(*d)->esq = NULL;
-		(*d)->dir = NULL;
-
-		
-	}
-	
-
-
-	return r;
-
-}
-
-char *maisFreq (Dicionario d, int *c)
-{
-	*c = 0;
-	char * mf = NULL;
-	
-	if (d)
-	{
-		int fdir = 0, fesq = 0;
-		char * direita = maisFreq (d->dir, &fdir );
-		char * esquerda = maisFreq (d->esq, &fesq);	
-	
-
-		if (fesq >= fdir && fesq >= d->ocorr )
-		{
-			*c = fesq;
-			mf = esquerda;
-		}	
-
-		else
-			if (fdir > d->ocorr)
-			{
-				*c = fdir;
-				mf = direita;
-			}
-			else
-			{	
-				*c = d->ocorr;
-				mf = d->pal;
-			}	
-	}
-	
-	return mf;
-
-}
-////////////////////////////////////////////////////////////////////////////////
-
-
-void showL (LInt l) /////// Imprime lista ligada
-{
-	while (l)
-	{
-		printf("%d\n", l->valor);
-		l = l->prox;
-	}
-}
-
-
-LInt fromArray (int *v, int N)  /////////////// Constroi lista apartir de array
-{
-	LInt r=NULL;
-	LInt *ptr = &r;
-	int i = 0;
-	
-	while (i < N)
-	{
-		*ptr = malloc (sizeof (struct slista));
-		(*ptr)->valor = v[i];
-		(*ptr)->prox = NULL;
-		ptr = &((*ptr)->prox);
-
-		i++;
-	}
-	return r;
-
-}
-
-/////////////////////////////////////////////////////////////////////////////////
-
-
-
-void showABin (ABin a) /////////////////////////// Imprime ABin
-{
-	if (a)
-	{
-		showABin (a->esq);
-		printf ("%d\n", a->valor);
-		showABin (a->dir);
-	}
-}
-
-
-ABin fromListAux (LInt l, int N) 
-{
-	ABin r = NULL;
-	LInt meio = l;
-	
-	if (N>0 && l)
-	{
-		int i = N/2;
-		
-		while (i)
-		{
-			meio = meio->prox;
-			i--;
-		}
-
-		r = malloc (sizeof (struct abin));
-		r-> valor = meio->valor;
-		r->esq = fromListAux (l, N/2);
-		if (meio)
-		r->dir = fromListAux (meio->prox, N - N/2 -1);
-
-
-	}
-
-	return r;
-}
-
-
-ABin fromList (LInt l)  
-{
-	
-	LInt aux = l;
-	int len = 0;
-	
-	while (aux)
-	{
-		aux = aux->prox;
-		len++;
-	}
-
-
-	ABin r = fromListAux (l, len);
-
-	return r; 
-}
-
-LInt inorderL (ABin a)
-{
-	LInt r = NULL;
-	if (a)
-	{
-		LInt dir = inorderL (a->dir);
-		r = malloc (sizeof (struct slista));
-		r->valor = a->valor;
-		r->prox = dir;
-		LInt esq = inorderL (a->esq);
-
-		if (esq)
-		{
-			LInt aux = esq;
-			while (aux->prox)
-				aux = aux->prox;
-			aux->prox = r;
-			r = esq;
-		}
-		
-	}
-
-	return r;
-}
 
 LInt inorderLAux (ABin a, LInt *end)
 {
-	LInt r = NULL;
-	LInt new = NULL;
-	LInt aux = NULL;
-
-	*end = NULL;
-	
-	if (a)
-	{
-		new = malloc (sizeof (struct slista));
-		new->valor = a->valor;
-		new->prox = inorderLAux (a->dir, end);
-		r = inorderLAux (a->esq, &aux);
-
-		if (*end==NULL)
-			*end = new;
-	
-		if (r)
-			aux->prox = new;
-		else
-			r = new;
-	}
-
-	return r;
-
-
-
-
+    LInt novo = NULL, r = NULL, aux = NULL;
+    *end = NULL;
+    if (a)
+    {
+        novo = malloc (sizeof (struct lista));
+        novo->valor = a->valor;
+        novo->prox = inorderLAux (a->dir, end);
+        r = inorderLAux (a->esq, &aux);
+        if (!*end)
+            *end = novo;
+        if (r)
+            aux->prox = novo;
+        else
+            r = novo;
+    }
+    return r;
 }
 
-LInt inorderL2 (ABin a)
+
+LInt inorderL (ABin a) 
 {
-	LInt end = NULL;
-	LInt r = inorderLAux (a, &end);
-
-	return r;
+    LInt end = NULL;
+    return inorderLAux(a, &end);
 }
 
-////////////////////////////////////////////////////
+/*Alternativamente pode definir uma função LInt inorderLAcc (ABin a, LInt l) que acres-
+centa no final da lista l o resultado de percorrer a árvore.*/
 
-
-void showDL (DLInt dl)  ///////////////////// imprime lista duplamente ligada
+LInt inorderLAcc (ABin a, LInt l)
 {
-	while (dl)
-	{
-		
-		printf("%d\n",dl->valor);
-		dl = dl->prox;
-	}
+    LInt *ptr =  &l;
+    if (a)
+    {
+        l = inorderLAcc (a->esq, l);
+        while (*ptr)
+            ptr = &((*ptr)->prox);
+        *ptr = malloc (sizeof (struct lista));
+        (*ptr)->valor = a->valor;
+        (*ptr)->prox = NULL;
+        l = inorderLAcc (a->dir, l);
+    }
+    return l;
 }
 
-void showDLrec (DLInt dl)   ////////////////// imprime lista duplamente ligada recursivamente
+LInt inorderLAlt (ABin a)
 {
-	if (dl)
-	{
-		printf("%d\n", dl->valor );
-		showDLrec (dl->prox);
-	}
+    return inorderLAcc (a, NULL);
 }
 
-void showDLback (DLInt dl)   /////////////////// imprime lista duplamente liga ao contrario
+
+LInt ListfromArray (int v[], int N) // cria LInt apartir de array
 {
-	while (dl && dl->prox)
-		dl = dl->prox;
-	
-	while (dl)
-	{
-		printf("%d\n",dl->valor );
-		dl = dl->ant;
-	}
+    LInt r = NULL;
+    LInt * ptr = &r;
+    int i = 0;
+    while (i<N)
+    {
+        *ptr = malloc (sizeof (struct lista));
+        (*ptr)->valor = v[i];
+        (*ptr)->prox = NULL;
+        ptr = &((*ptr)->prox);
+        i++;
+    }
+    return r;
 }
+
+void showL (LInt l) // imprime LInt
+{
+    while (l)
+    {
+        printf ("%d ", l->valor);
+        l = l->prox;
+    }
+}
+
+void showAB (ABin a) // imprime ABin
+{
+    if (a)
+    {
+        showAB (a->esq);
+        printf ("%d ", a->valor);
+        showAB (a->dir);
+    }
+}
+
+/*3. Considere o tipo DLInt para representar listas duplamente ligadas 
+(em cada célula contem o endereço da próxima e da anterior).*/
+
+typedef struct dlista {
+int valor;
+struct dlista *prox,
+*ant;
+} *DLInt;
+
+/*Defina a função DLInt inorderDL (ABin a) que produz uma lista duplamente ligada ordenada a
+partir de uma árvore binária de procura (retornando o endereço do menor elemento da lista).*/
 
 DLInt inorderDL (ABin a)
 {
-	DLInt new = NULL;
-	DLInt d = NULL;
-	DLInt e = NULL;
-	DLInt r = NULL;
+    DLInt aux = NULL, novo = NULL, r = NULL;
+    if (a)
+    {
+        aux = inorderDL (a->dir);
+        novo = malloc (sizeof (struct dlista));
+        novo->valor = a->valor;
+        novo->prox = aux;
+        novo->ant = NULL;
+        if (aux)
+            aux->ant = novo;
+        r = inorderDL (a->esq);
+        if (r)
+        {
+            aux = r;
+            while (aux->prox)
+                aux = aux->prox;
+            aux->prox = novo;
+            novo->ant = aux;
+        }
+        else
+            r = novo;     
+    }
+    return r;
+}
 
-	if (a)
-	{
-		d = inorderDL (a->dir);
-		e = inorderDL (a->esq);
-		
-		new = malloc (sizeof (struct dlista));
-		new->valor = a->valor;
-		new->prox = d;
+void showDL (DLInt d)
+{
+    while (d)
+    {
+        printf ("%d ", d->valor);
+        d = d->prox;
+    }
+}
 
-		if (d)
-			d->ant = new;
-		
-		if (e)
-		{
-			r=e;
-			
-			while (e->prox)
-				e = e->prox;
+void showDLrev (DLInt d) // imprime DLInt no sentido inverso
+{
+    while (d)
+    {
+        printf ("%d ", d->valor);
+        d = d->ant;
+    }
+}
 
-			e->prox = new;
-			new->ant = e;
-			
-		}
-
-		else
-		{
-			new->ant = NULL;
-			r=new;
-
-		}
-
-
-	}
-
-	
-	return r;
-
+DLInt lastDL (DLInt d) // devolve o ultimo elemnto da DLInt sem a alterar.
+{
+    while (d && d->prox)
+        d = d->prox;
+    return d;
 }
 
