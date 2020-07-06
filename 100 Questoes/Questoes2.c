@@ -33,9 +33,10 @@ ocupado por uma lista.*/
 
 void freeL (LInt l)
 {
+	LInt aux = NULL;
 	while(l)
 	{
-		LInt aux = l;
+		aux = l;
 		l = l->prox;
 		free (aux);	
 	}
