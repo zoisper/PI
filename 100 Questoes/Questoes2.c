@@ -112,7 +112,41 @@ int removeOneOrd (LInt *l, int x)
 /*7. Defina uma função merge (LInt *r, LInt a, LInt b) que junta duas listas ordenadas (a
 e b) numa única lista ordenada (r). (https://codeboard.io/projects/16246)*/
 
-void merge (LInt *r, LInt l1, LInt l2){
+void merge (LInt *r, LInt l1, LInt l2)
+{
+    if (l1 && !l2)
+        *r = l1;
+    else
+        if (!l1 && l2)
+            *r = l2;
+        else
+            if (l1 && l2)
+            {
+                if (l1->valor <= l2->valor)  
+                {
+                    *r = l1;
+                    l1 = l1->prox;
+                    (*r)->prox = NULL;
+                    r = &((*r)->prox);
+                    merge (r, l1, l2);
+                }
+                else
+                {
+                    *r = l2;
+                    l2 = l2->prox;
+                    (*r)->prox = NULL;
+                    r = &((*r)->prox);
+                    merge (r, l1, l2);
+                }
+            }
+            else
+                *r = NULL;    
+}
+
+// ou 
+
+void merge2 (LInt *r, LInt l1, LInt l2)  // esta versao usa malloc 
+{
    int controlo =  1;
     while ((l1 || l2) && controlo )
     {
