@@ -266,27 +266,21 @@ LInt parteAmeio (LInt *l){
 todas as ocorrências de um dado inteiro de uma lista, retornando o número de células removi-
 das. (https://codeboard.io/projects/16249)*/
 
-int removeAll (LInt *l, int x){
-    int n = 0;
-    LInt ant=NULL;
+int removeAll (LInt *l, int x)
+{
+    int r = 0;
     while (*l)
     {
-        if ((*l)-> valor != x)
-            l = &((*l)->prox);
+        if ((*l)->valor == x)
+        {
+            (*l) = (*l)->prox;
+            r++;
+        }
         else
-            if ((*l)->prox)
-            {
-                *l = (*l)->prox;
-                n++;
-            }
-            else 
-                {
-                    *l=NULL;
-                    n++;
-                }
+        	l = &((*l)->prox);
+            
     }
-    
-    return n;
+    return r;
 }
 
 /*11. Apresente uma definição da função int removeDups (LInt *) que remove os valores repeti-
