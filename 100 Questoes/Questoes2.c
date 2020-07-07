@@ -189,22 +189,48 @@ void splitQS (LInt l, int x, LInt *mx, LInt *Mx)
 {
     while (l)
     {
-        if (l->valor<x)
+        if (l->valor <x)
         {
-            *mx = malloc(sizeof(struct lligada));
-            (*mx)->valor = l->valor;
+            *mx = l;
+            l = l->prox;
+            (*mx)->prox = NULL; 
             mx = &((*mx)->prox);
+            
         }
         else
         {
-            *Mx = malloc(sizeof(struct lligada));
-            (*Mx)->valor = l->valor;
+            *Mx = l;
+            l = l->prox;
+            (*Mx)->prox = NULL; 
             Mx = &((*Mx)->prox);
-        }
-        l=l->prox;
+        
+        }         
     }
-    
 }
+
+void splitQSRec (LInt l, int x, LInt *mx, LInt *Mx)  // versao recursiva
+{
+    if (l)
+    {
+        if (l->valor <x)
+        {
+            *mx = l;
+            l = l->prox;
+            (*mx)->prox = NULL; 
+            mx = &((*mx)->prox);
+            splitQS (l, x, mx, Mx);
+        }
+        else
+        {
+            *Mx = l;
+            l = l->prox;
+            (*Mx)->prox = NULL; 
+            Mx = &((*Mx)->prox);
+            splitQS (l, x, mx, Mx);
+        }         
+    }
+}
+
 
 /*9. Defina uma função LLig parteAmeio (LLig *l) que, parte uma lista não vazia *l a meio.
 Se x contiver os elementos {1,2,3,4,5}, após a invocação y=parteAmeio(&x) a lista y de-
