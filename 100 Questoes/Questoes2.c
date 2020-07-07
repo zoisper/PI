@@ -287,47 +287,35 @@ int removeAll (LInt *l, int x)
 dos de uma lista (deixando apenas a primeira ocorrência). (https://codeboard.io/projects/
 16250)*/
 
-int isDup (LInt l, int x, int len)  // funçao auxiliar que verifica se algum elemento é repetido
+int isDup (LInt l, int N, int x) // verficca se ha repetidos
 {
-   
-    int r=0;
-    while (l && len>0)
+    int i, r=0;
+    for (i=0; i<N && r==0; i++)
     {
         if (l->valor == x)
-            r=1;
+            r = 1;
         l = l->prox;
-        len--;
     }
+    
     return r;
 }
 
 int removeDups (LInt *l){
-    int r=0;
-    int len=0;
+    int i = 0, r = 0;
     LInt init = *l;
-    
-    while(*l)
+    while (*l)
     {
-        if (isDup (init, (*l)->valor, len) ==0)
+        if (isDup (init, i, (*l)->valor))
         {
-        	l = &((*l)->prox);
-            len++;
+            *l = (*l)->prox;
+            r++;
         }
         else
-            if ((*l)->prox)
             {
-                *l = (*l)->prox;
-                r++;
+                l = &((*l)->prox);
+                i++;
             }
-        else
-            {
-                *l = NULL;
-                r++;
-            }
-
-            
     }
-    
     return r;
 }
 
@@ -335,42 +323,20 @@ int removeDups (LInt *l){
 ocorrência) o maior elemento de uma lista não vazia, retornando o valor desse elemento.
 (https://codeboard.io/projects/16251)*/
 
-int maior (LInt l)  //funçao auxiliar que obtem o maior elemento da lista
-{
-    int r = l->valor;
-    
-    while (l)
-    {
-     	if (l->valor >r)
-        	r = l->valor;
-    	l = l->prox;
-    }
-    return r;
-    
-}
-
 int removeMaiorL (LInt *l)
 {
-    int r = maior (*l);
-    int controlo = 1;
-    
-    while (*l && controlo)
+    int r = (*l)->valor;
+    LInt *aux = l;
+    while (*l)
     {
-        if((*l)->valor != r)
-            l = &((*l)->prox);
-        else 
-            if ((*l)->prox)
-            {
-                *l = (*l)->prox;
-                controlo = 0;
-            }
-        	else
-            	{
-                	*l = NULL;
-                	controlo = 0;
-           		}
+        if ((*l)->valor >r)
+        {
+            r = (*l)->valor;
+            aux = l;
+        }
+        l = &((*l)->prox);
     }
-    
+    *aux = (*aux)->prox;  
     return r;
 }
 
