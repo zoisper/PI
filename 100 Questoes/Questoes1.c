@@ -203,7 +203,6 @@ void strrev (char s[])
         s[i] = s[len];
         s[len] = c;
     }
-
 }
 
 
@@ -219,7 +218,6 @@ void strnoV (char t[])
             t[i] != 'A' && t[i] != 'E' && t[i] != 'I' && t[i] != 'O' && t[i] != 'U' )
             t[h++] = t[i];
     }    
-
     t[h] = '\0';
 }
 
@@ -241,8 +239,7 @@ void truncW (char t[], int n)
         else 
             c++;
         if (c <= n)
-            t[j++] = t[i];
-                
+            t[j++] = t[i];               
         }
     
     t[j] = '\0';
@@ -297,32 +294,29 @@ int iguaisConsecutivos (char s[])
 comprimento da maior sub-string com caracteres diferentes. Por exemplo, difConsecutivos
 ("aabcccaac") deve dar como resultado 3, correspondendo à string "abc". (https://
 codeboard.io/projects/14579)*/
-int dif (char s[], int i, int j)
-{
-    for (; i<j; i++ )
-        if (s[i] == s[j])
-            return 0;
-    return 1;
-}
 
+int isDif (char s[], int n)
+{
+    int i, r = 1;
+    for(i=0;i<n && r; i++)
+        if (s[i]==s[n])
+            r=0;
+    
+    return r;
+}
 
 int difConsecutivos(char s[]) 
 {
-    int i, j, ac, difcons;
-    difcons = 0;
-    if (s[0]=='\0')
-        return 0;
-        
-    for (i=0; s[i]!='\0'; i++)
-        {
-            for (j=i, ac=0; s[j]!='\0' && dif(s,i,j); j++, ac++ )
-                	;
-            if (ac > difcons)
-                difcons = ac;
-        }
-        
-        return difcons;
+    int i, j, r = 0;
+    for (i=0; s[i]; i++)
+    {
+        for (j=0; s[j+i] && isDif (s+i,j); j++);
+            if (j > r)
+                r = j;
+    }        
+ return r;   
 }
+
 /*17. Defina uma função int maiorPrefixo (char s1 [], char s2 []) que calcula o compri-
 mento do maior prefixo comum entre as duas strings. (https://codeboard.io/projects/
 14580)*/

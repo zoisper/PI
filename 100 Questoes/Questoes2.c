@@ -218,7 +218,7 @@ void splitQSRec (LInt l, int x, LInt *mx, LInt *Mx)  // versao recursiva
             l = l->prox;
             (*mx)->prox = NULL; 
             mx = &((*mx)->prox);
-            splitQS (l, x, mx, Mx);
+            splitQSRec (l, x, mx, Mx);
         }
         else
         {
@@ -226,7 +226,7 @@ void splitQSRec (LInt l, int x, LInt *mx, LInt *Mx)  // versao recursiva
             l = l->prox;
             (*Mx)->prox = NULL; 
             Mx = &((*Mx)->prox);
-            splitQS (l, x, mx, Mx);
+            splitQSRec (l, x, mx, Mx);
         }         
     }
 }
