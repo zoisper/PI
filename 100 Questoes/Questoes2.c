@@ -114,11 +114,41 @@ e b) numa única lista ordenada (r). (https://codeboard.io/projects/16246)*/
 
 void merge (LInt *r, LInt l1, LInt l2)
 {
+	while (l1 && l2)
+    {
+        if (l1->valor < l2->valor)
+        {
+            *r = l1;
+            l1 = l1->prox;
+            (*r)->prox = NULL;
+            r = &((*r)->prox);
+        }
+        else
+        {
+            *r = l2;
+            l2 = l2->prox;
+            (*r)->prox = NULL;
+            r = &((*r)->prox);
+        }
+    }
+    if (!l1)
+        *r = l2;
+    else
+        if (!l2)
+            *r = l1;
+        else
+            *r = NULL;
+}
+
+//ou 
+
+void mergeRec (LInt *r, LInt l1, LInt l2) // verão recursiva
+{
     if (l1 && !l2)
         *r = l1;
     else
         if (!l1 && l2)
-            *r = l2;
+        	*r = l2;
         else
             if (l1 && l2)
             {
@@ -143,41 +173,9 @@ void merge (LInt *r, LInt l1, LInt l2)
                 *r = NULL;    
 }
 
-// ou 
 
-void merge2 (LInt *r, LInt l1, LInt l2)  // esta versao usa malloc 
-{
-   int controlo =  1;
-    while ((l1 || l2) && controlo )
-    {
-        if (!l2)
-            {
-                *r = l1;
-                controlo = 0;
-            }
-        else if (!l1)
-            {
-                *r = l2;
-                controlo = 0;
-            }
-            
-        else if (l1->valor < l2->valor)
-        {
-            *r = (LInt) malloc (sizeof (struct lligada));
-            (*r)->valor = l1->valor;
-            (*r)->prox = NULL;
-            l1 = l1->prox;
-        }
-        else 
-        {
-            *r = (LInt) malloc (sizeof (struct lligada));
-            (*r)->valor = l2->valor;
-            (*r)->prox = NULL;
-            l2 = l2->prox;
-        }
-        r = &((*r)->prox);
-    }
-}
+
+
 
 /*8. Defina uma função void splitQS (LInt l, int x, LInt *mx, LInt *Mx) que, dada uma
 lista ligada l e um inteiro x, parte a lista em duas (retornando os endereços dos primeiros
@@ -208,7 +206,9 @@ void splitQS (LInt l, int x, LInt *mx, LInt *Mx)
     }
 }
 
-void splitQSRec (LInt l, int x, LInt *mx, LInt *Mx)  // versao recursiva
+//ou
+
+void splitQSRec (LInt l, int x, LInt *mx, LInt *Mx)  // versão recursiva
 {
     if (l)
     {
@@ -237,7 +237,8 @@ Se x contiver os elementos {1,2,3,4,5}, após a invocação y=parteAmeio(&x) a l
 verá conter os elementos {1,2} e a lista x os restantes {3,4,5} (https://codeboard.io/
 projects/17392)*/
 
-LInt parteAmeio (LInt *l){
+LInt parteAmeio (LInt *l)
+{
     int len;
     LInt aux = *l;
     LInt ant =NULL;
@@ -249,10 +250,10 @@ LInt parteAmeio (LInt *l){
     aux = *l;
     
     for(len /= 2; len>0; len--)
-        {
-            ant = aux;
-            aux=aux->prox;
-        }
+    {
+    	ant = aux;
+        aux=aux->prox;
+    }
     
     *l = aux;
     if (ant== NULL)
@@ -329,7 +330,7 @@ int removeMaiorL (LInt *l)
     LInt *aux = l;
     while (*l)
     {
-        if ((*l)->valor >r)
+        if ((*l)->valor > r)
         {
             r = (*l)->valor;
             aux = l;
@@ -344,23 +345,12 @@ int removeMaiorL (LInt *l)
 elemento de uma lista não vazia (libertando o correspondente espaço). (https://codeboard.
 io/projects/16252)*/
 
-void init (LInt *l){
-    LInt ant=NULL;
+void init (LInt *l)
+{
     while ((*l)->prox)
-        {
-            ant = *l;
-            l = &((*l)->prox);
-        }
-    if (!ant)
-    {
-        free (*l);
-        *l = NULL;
-    }
-    else
-    {
-        free(*l);
-        ant->prox = NULL;   
-    }   
+        l = &((*l)->prox);
+    free (*l);
+    (*l) = NULL;
 }
 
 /*14. Apresente uma definição não recursiva da função void appendL (LInt *, int) que acres-
@@ -368,21 +358,11 @@ centa um elemento no fim da lista. (https://codeboard.io/projects/16253)*/
 
 void appendL (LInt *l, int x)
 {
-    
-    LInt new = malloc(sizeof(struct lligada));
-    new->valor = x;
-    new->prox = NULL;
-    
-    if (*l == NULL)
-        *l = new;
-    
-    else
-    {
-    	while((*l)->prox)
-        	l = &((*l)->prox);
-
-        (*l)->prox = new;
-    }
+	while (*l)
+        l = &((*l)->prox);
+    *l = malloc (sizeof (struct lligada));
+    (*l)->valor = x;
+    (*l)->prox = NULL;
 }
 
 /*15. Apresente uma definição da função void concatL (LInt *a, LInt b) que acrescenta a lista
@@ -390,16 +370,9 @@ b à lista *a. (https://codeboard.io/projects/16254)*/
 
 void concatL (LInt *a, LInt b)
 {
-   
-   if(! *a)
-    *a = b;
-    
-    else
-    {
-       while ((*a)->prox)
-            a = &((*a)->prox);
-        (*a)->prox = b; 
-    }
+	while (*a)
+		a = &((*a)->prox);
+    *a = b;    
 }
 
 /*16. Apresente uma definição da função LInt cloneL (LInt) que cria uma nova lista ligada com
@@ -409,15 +382,14 @@ LInt cloneL (LInt l)
 {
 	LInt r = NULL;
 	LInt *ptr = & r;
-
 	while (l)
 	{
 		*ptr = malloc (sizeof (struct lligada));
 		(*ptr)->valor = l->valor;
+		(*ptr)->prox = NULL;
 		ptr = &((*ptr)->prox);
 		l = l->prox; 
 	}
-
 	return r;
 }
 
@@ -429,14 +401,13 @@ por esta ordem. (https://codeboard.io/projects/16256)*/
 
 LInt cloneRev (LInt l)
 {
-    LInt a = NULL;
-    LInt r = NULL;
-    while (l)
+    LInt aux = NULL, r = NULL;
+    while(l)
     {
-        a = malloc (sizeof (struct lligada));
-        a->valor = l->valor;
-        a->prox = r;
-        r = a;
+        aux = malloc (sizeof (struct lligada));
+        aux->valor = l->valor;
+        aux->prox = r;
+        r = aux;
         l = l->prox;
     }
     return r;
@@ -484,12 +455,9 @@ int take (int n, LInt *l)
      	{
      		aux = *l;
      		l = &((*l)->prox);
-     		free(aux);
-       
+     		free(aux);       
      	}
-    }
-    
-   
+    }  
     return r;
 }
 
@@ -511,8 +479,7 @@ int drop (int n, LInt *l)
        aux->prox = NULL;
        free (aux);
        r++;
-   }
-   
+   }  
     return r;
 }
 
