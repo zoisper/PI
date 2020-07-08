@@ -335,8 +335,8 @@ int maiorSufixo (char s1 [], char s2 [])
 {
     int i, j, r;
     for (i=0; s1[i]; i++);
-    for (j=0; s2[j]; j++);
     i--;
+    for (j=0; s2[j]; j++);
     j--;
     for (r=0; i>=0 && j>=0 && s1[i]==s2[j]; i--, j--)
         r++;
