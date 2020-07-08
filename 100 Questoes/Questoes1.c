@@ -320,15 +320,11 @@ int difConsecutivos(char s[])
 /*17. Defina uma função int maiorPrefixo (char s1 [], char s2 []) que calcula o compri-
 mento do maior prefixo comum entre as duas strings. (https://codeboard.io/projects/
 14580)*/
-int maiorPrefixo (char s1 [], char s2 [])
+int maiorPrefixo (char s1 [], char s2 []) 
 {
-	int i, ac;
-	ac = 0;
-	if (s1[0]== '\0' || s2[0]== '\0')
-   		return 0;
-    for (i=0; s1[i]==s2[i] && s1[i] !='\0' && s2[i]!='\0'; i++)
-        ac++;
-    return ac;
+    int i;
+    for(i=0; s1[i] && s1[i]==s2[i]; i++);
+    return i;
 }
 
 /*18. Defina uma função int maiorSufixo (char s1 [], char s2 []) que calcula o compri-
