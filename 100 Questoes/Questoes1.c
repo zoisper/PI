@@ -348,20 +348,16 @@ sufixo de s1 que é um prefixo de s2. Por exemplo sufPref("batota","totalidade")
 dar como resultado 4, uma vez que a string "tota" é um sufixo de "batota" e um prefixo de
 "totalidade". (https://codeboard.io/projects/14582)*/
 
-int sufPref (char s1[], char s2[])
+int sufPref (char s1[], char s2[]) 
 {
-    int i, j, k, tamanho;
-    
-    for (i=0; s1[i]!='\0'; i++);
-
-    for(i--; i >=0; i--)
+    int i, j ,r = 0;
+    for(i=0; s1[i] && !r; i++)
     {
-       for(j=0, k=i; s1[k]==s2[j] && s1[k]!='\0'; k++, j++ ) 
-            ;
-        if (s1[k] == '\0')
-            tamanho = j;
-    }    
-    return tamanho;
+      for (j=0; s1[i+j] && s2[j] && s1[i+j] == s2[j];j++);
+      if (s1[i+j] == '\0' && j>r)
+        r = j;      
+    }
+    return r;
 }
 
 /*20. Defina uma função int contaPal (char s[]) que conta as palavras de uma string. Uma
@@ -369,30 +365,27 @@ palavra é uma sequência de caracteres (diferentes de espaço) terminada por um
 espaços. Assim se a string p tiver o valor "a a bb a", o resultado de contaPal (p) deve ser
 4. (https://codeboard.io/projects/14583)*/
 
-int contaPal (char s[]) 
+int contaPal (char s[])
 {
-	int i, j;
-    for (i=0, j=0; s[i]!='\0'; i++)
-        if (s[i] != ' ' &&  s[i] != '\n' && (s[i+1] == ' ' || s[i+1] == '\0')) 
-            j++;
-	return j;
+    int i, r = 0;
+    for(i=0; s[i]; i++)
+      if(s[i] != ' ' && s[i] != '\n' && (s[i+1] == ' ' || s[i+1] == '\0'))
+        r++;
+    return r;
 }
 
 /*21. Defina uma função int contaVogais (char s[]) que retorna o número de vogais da string
 s. Não se esqueça de considerar tanto maiúsculas como minúsculas. (https://codeboard.
 io/projects/14585)*/
 
-int contaVogais (char s[]) 
+int contaVogais (char s[])
 {
-    int i, j;
-    for (i=0, j=0; s[i]!='\0'; i++)
-    if (s[i] == 'a' || s[i] == 'A' ||
-        s[i] == 'e' || s[i] == 'E' ||
-        s[i] == 'i' || s[i] == 'I' ||
-        s[i] == 'o' || s[i] == 'O' ||
-        s[i] == 'u' || s[i] == 'U')
-            j++;
-	return j;
+  int i, r = 0;
+  for(i=0; s[i]; i++)
+    if (s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u' ||
+        s[i] == 'A' || s[i] == 'E' || s[i] == 'I' || s[i] == 'O' || s[i] == 'U')
+          r++;
+    return r;
 }
 
 
@@ -402,32 +395,28 @@ primeira string também aparecem na segunda. Por exemplo, contida "braga" "braca
 augusta" deve retornar verdadeiro enquanto que contida "braga" "bracarense" deve re-
 tornar falso. (https://codeboard.io/projects/14586)*/
 
-int contida (char a[], char b[]) 
+int contida (char a[], char b[])
 {
-    int i, j, controlo;
-    for(i=0; a[i]!= '\0'; i++)
-    {    
-        for(j=0, controlo = 0; b[j]!= '\0'; j++)
-            if (a[i] == b[j])
-                controlo = 1;
-        if (controlo == 0)
-            return 0;      
-    }         
-    return 1;
+  int i, j, r = 1;
+  for(i=0; a[i] && r; i++)
+    for(j=0, r=0; b[j] && !r; j++)
+      if (a[i] == b[j])
+        r = 1;  
+  return r;
 }
 
 /*23. Defina uma função int palindorome (char s[]) que testa se uma palavra é palı́ndrome,
 i.e., lê-se de igual forma nos dois sentidos. (https://codeboard.io/projects/14587)*/
 
-int palindroma (char s[]) 
+int palindroma (char s[])
 {
-    int i, j;
-    for (i=0; s[i]!='\0'; i++)
-            ;
-    for (i--, j=0; s[i]==s[j]; i--, j++)
-        if (j>=i)
-            return 1;
-    return 0;
+  int i, j, r = 1;
+  for(i=0; s[i]; i++);
+  i--;
+  for (j=0; j<i && r; j++, i--)
+    if (s[i] != s[j])
+      r=0;
+  return r;
 }
 
 /*24. Defina uma função int remRep (char x[]) que elimina de uma string todos os caracteres
