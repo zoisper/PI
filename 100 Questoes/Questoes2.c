@@ -418,11 +418,10 @@ lista não vazia. (https://codeboard.io/projects/16257)*/
 
 int maximo (LInt l)
 {
-    int r = l->valor;
-    
+	int r = l->valor;
     while (l)
     {
-        if (l->valor >r)
+    	if (l->valor >r)
         	r = l->valor;
         l = l->prox;
     }
@@ -438,26 +437,20 @@ A função deve retornar o comprimento final da lista. (https://codeboard.io/pro
 
 int take (int n, LInt *l)
 {
-	int r=0;
-	LInt aux = NULL;
-    while (*l  && n>0)
-        {
-            aux = *l;
-            l = &((*l)->prox);
-            n--;
-            r++;
-        }
-    
-    if (*l && n == 0)
+	int r = 0;
+    LInt * aux = NULL;
+    while (*l && r<n)
     {
-    	aux->prox = NULL;
-     	while (*l)
-     	{
-     		aux = *l;
-     		l = &((*l)->prox);
-     		free(aux);       
-     	}
-    }  
+        l = &((*l)->prox);
+        r++;
+    }
+    while (*l)
+    {
+    	aux = l;
+        l = &((*l)->prox);
+        free(*aux);
+        *aux = NULL;
+    }
     return r;
 }
 
@@ -469,17 +462,15 @@ A função deve retornar o número de elementos removidos. (https://codeboard.io
 
 int drop (int n, LInt *l)
 {
-   int r = 0;
-   LInt aux = NULL; 
-   
-   while (*l && r<n)
-   {
-       aux = *l;
-       *l = (*l)->prox;
-       aux->prox = NULL;
-       free (aux);
-       r++;
-   }  
+    int r = 0;
+    LInt aux = NULL;
+    while (*l && r<n)
+    {
+        aux = (*l)->prox;
+        free (*l);
+        *l = aux;
+        r++;
+    }
     return r;
 }
 
@@ -514,6 +505,21 @@ int listToArray (LInt l, int v[], int N)
     return r;
 }
 
+//ou 
+
+int listToArrayRec (LInt l, int v[], int N) // versão recursiva
+{
+    int r = 0;
+    if (l && N>0)
+    {
+        *v = l->valor;
+        l = l->prox;
+        r++;
+        r += listToArray (l, v+1, N-1);
+    }
+    return r;
+}
+
 /*23. Defina uma função LInt arrayToList (int v[], int N) que constrói uma lista com os
 elementos de um array, pela mesma ordem em que aparecem no array.. (https://codeboard.
 io/projects/16262)*/
@@ -535,6 +541,20 @@ LInt arrayToList (int v[], int N)
     return r;
 }
 
+//ou
+
+LInt arrayToListRec (int v[], int N) // versão recursiva
+{
+    LInt r = NULL;
+    LInt * ptr = &r;
+    if (N>0)
+    {
+        *ptr = malloc (sizeof (struct lligada));
+        (*ptr)->valor = *v;
+        (*ptr)->prox = arrayToList (v+1, N-1);
+    }
+    return r;
+}
 
 /*24. Defina uma função LInt somasAcL (LInt l) que, dada uma lista de inteiros, constrói uma
 nova lista de inteiros contendo as somas acumuladas da lista original (que deverá permanecer
