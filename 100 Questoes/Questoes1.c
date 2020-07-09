@@ -380,11 +380,11 @@ io/projects/14585)*/
 
 int contaVogais (char s[])
 {
-  int i, r = 0;
-  for(i=0; s[i]; i++)
-    if (s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u' ||
-        s[i] == 'A' || s[i] == 'E' || s[i] == 'I' || s[i] == 'O' || s[i] == 'U')
-          r++;
+	int i, r = 0;
+  	for(i=0; s[i]; i++)
+    	if (s[i] == 'a' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' || s[i] == 'u' ||
+        	s[i] == 'A' || s[i] == 'E' || s[i] == 'I' || s[i] == 'O' || s[i] == 'U')
+          		r++;
     return r;
 }
 
@@ -397,12 +397,12 @@ tornar falso. (https://codeboard.io/projects/14586)*/
 
 int contida (char a[], char b[])
 {
-  int i, j, r = 1;
-  for(i=0; a[i] && r; i++)
-    for(j=0, r=0; b[j] && !r; j++)
-      if (a[i] == b[j])
-        r = 1;  
-  return r;
+  	int i, j, r = 1;
+  	for(i=0; a[i] && r; i++)
+    	for(j=0, r=0; b[j] && !r; j++)
+      		if (a[i] == b[j])
+        		r = 1;  
+  	return r;
 }
 
 /*23. Defina uma função int palindorome (char s[]) que testa se uma palavra é palı́ndrome,
@@ -410,12 +410,12 @@ i.e., lê-se de igual forma nos dois sentidos. (https://codeboard.io/projects/14
 
 int palindroma (char s[])
 {
-  int i, j, r = 1;
-  for(i=0; s[i]; i++);
-  i--;
-  for (j=0; j<i && r; j++, i--)
-    if (s[i] != s[j])
-      r=0;
+  	int i, j, r = 1;
+  	for(i=0; s[i]; i++);
+  	i--;
+  	for (j=0; j<i && r; j++, i--)
+    	if (s[i] != s[j])
+      	r=0;
   return r;
 }
 
@@ -526,23 +526,21 @@ aparecer no ı́ndice mais baixo. (https://codeboard.io/projects/14840)*/
 
 int menosFreq (int v[], int N)
 {
-  int i, j,ac=0, pos=v[0], val=N;
-
-  for (i=0; i <N; i++)
-  {
-    for (j=0; j<N; j++)
-      if (v[i] == v[j])
-        ac++;
-
-    if (ac < val)
-    {
-      val = ac;
-      pos = v[i];
-    } 
-  ac=0;
-  }
-  return pos;
- }
+	int i, j,ac=0, pos=v[0], val=N;
+	for (i=0; i <N; i++)
+  	{
+    	for (j=0; j<N; j++)
+      	if (v[i] == v[j])
+        	ac++;
+        if (ac < val)
+    	{
+      		val = ac;
+      		pos = v[i];
+    	} 
+  		ac=0;
+  	}
+  	return pos;
+}
 
 /*31. Defina uma função int maisFreq (int v[], int N) que recebe um vector v com N elemen-
 tos ordenado por ordem crescente e retorna o mais frequente dos elementos do vector.
