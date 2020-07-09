@@ -551,7 +551,7 @@ LInt arrayToListRec (int v[], int N) // versão recursiva
     {
         *ptr = malloc (sizeof (struct lligada));
         (*ptr)->valor = *v;
-        (*ptr)->prox = arrayToList (v+1, N-1);
+        (*ptr)->prox = arrayToListRec (v+1, N-1);
     }
     return r;
 }
