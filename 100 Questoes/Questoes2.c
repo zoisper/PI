@@ -648,12 +648,17 @@ binária. (https://codeboard.io/projects/16220)*/
 
 int altura (ABin a)
 {
-	if (!a)
-    return 0;
-	if (altura (a->esq)> altura (a->dir))
-		return 1 + altura (a->esq);
-    else
-        return 1 +altura (a->dir);
+    int r = 0;
+    if (a)
+    {
+        int e = altura (a->esq);
+        int d = altura (a->dir);
+        if (d > e)
+            r = 1 + d;
+        else
+            r = 1 + e;
+    }
+    return r;
 }
 
 /*29. Defina uma função ABin cloneAB (ABin) que cria uma cópia de uma árvore. (https://
@@ -662,15 +667,13 @@ codeboard.io/projects/16267)*/
 ABin cloneAB (ABin a) 
 {
     ABin r = NULL;
-    
-    if (!a)
-    return NULL;
-    
-    r = malloc (sizeof(struct nodo));
-    r->valor = a->valor;
-    r->dir = cloneAB (a->dir);
-    r->esq = cloneAB (a->esq);
-    
+    if (a)
+    {
+        r = malloc (sizeof (struct nodo));
+        r->valor = a->valor;
+        r->esq = cloneAB (a->esq);
+        r->dir = cloneAB (a->dir);
+    }
     return r;
 }
 
@@ -694,15 +697,14 @@ void mirror (ABin *a)
 /*31. Defina a função void inorder (ABin , LInt *) que cria uma lista ligada de inteiros a partir
 de uma travessia inorder de uma árvore binária. (https://codeboard.io/projects/16269)*/
 
-void inorder (ABin a, LInt * l) 
-{
-    if(a)
+void inorder (ABin a, LInt * l) {
+    if (a)
     {
-        inorder (a->dir, l );
-        LInt aux = malloc (sizeof(struct lligada));
-        aux->valor = a->valor;
-        aux->prox = *l;
-        *l = aux;
+        inorder (a->dir, l);
+        LInt new = malloc (sizeof (struct lligada));
+        new->valor = a->valor;
+        new->prox = *l;
+        *l = new;
         inorder (a->esq, l);
     }
 }
@@ -762,28 +764,29 @@ projects/16273)*/
 
 int depth (ABin a, int x) 
 {
-    if (!a)
-        return -1;
-    else 
-        if (x == a-> valor)
-            return 1;
-    	else 
-        	{
-            	int e = depth (a->esq, x);
-            	int d = depth (a->dir, x);
-            
-            	if (e<d && e>0)
-                	return 1 + e;
-            	else 
-                	if (d<e && d>0)
-                    	return 1 + d;
-            		else 
-                		if (e>0 && d<0)
-                    		return 1 + e;
-                		else
-                    		if (d>0 && e<0)
-                        		return 1 + d;
+    int r = -1;
+    if (a)
+    {
+        if (a->valor == x)
+            r = 1;
+        else
+            {
+                int d = depth (a->dir, x);
+                int e = depth (a->esq, x);
+                if (d>0 && d<e)
+                    r = 1 + d;
+                else
+                    if(e>0 && e<d)
+                        r = 1 + e;
+                    else
+                        if (e>0)
+                            r = 1 + e;
+                        else
+                            if (d>0)
+                                r = 1+d;                
             }
+    }
+    return r;
 }
 
 /*35. Defina uma função int freeAB (ABin a) que liberta o espaço ocupado por uma árvore
@@ -791,15 +794,15 @@ binária, retornando o número de nodos libertados. (https://codeboard.io/projec
 
 int freeAB (ABin a) 
 {
-    if (!a)
-        return 0;
-    else
+    int r = 0;
+    if (a)
     {
         int e = freeAB (a->esq);
         int d = freeAB (a->dir);
         free(a);
-        return 1 + e + d;
+        r = 1 + e + d;
     }
+    return r;
 }
 
 /*36. Defina uma função int pruneAB (ABin *a, int l) que remove (libertando o espaço respec-

@@ -543,24 +543,17 @@ tos ordenado por ordem crescente e retorna o mais frequente dos elementos do vec
 Se houver mais do que um elemento nessas condições deve retornar o que começa por aparecer
 no ı́ndice mais baixo. (https://codeboard.io/projects/14841)*/
 
-int maisFreq (int v[], int N)
-{
-  int i, j,ac=0, pos=v[0], val=0;
-
-  for (i=0; i <N; i++)
-  {
-    for (j=i; j<N; j++)
-      if (v[i] == v[j])
-        ac++;
-
-    if (ac > val)
-    {
-      val = ac;
-      pos = v[i];
-    } 
-    ac=0;
-  }
-return pos;
+ int maisFreq (int v[], int N)
+ {
+    int i, j, acc = 0, r = v[0];
+    for (i=0; i<N; i += j)
+    for(j=0; j + i < N && v[i+j] == v[i]; j++)
+    	if (j>acc)
+        {
+            acc = j;
+            r = v[i];
+        }
+    return r;
 }
 
 
@@ -570,19 +563,17 @@ se o vector contiver 10 elementos pela seguinte ordem: 1, 2, 3, 2, 1, 4, 10, 12,
 função deverá retornar 4, correspondendo ao tamanho da sequência 1, 4, 10, 12. (https:
 //codeboard.io/projects/14842)*/
 
-int maxCresc (int v[], int N) 
-{
-       
-  int i, j, ac=0;
-
-  for (i=0; i<N; i++)
-  {
-    for(j = 0; i + j < N && v[i+j]<=v[i+j+1]; j++);
-      if (ac < ++j)
-            ac=j;
-  }
-  return ac;
- }
+ int maxCresc (int v[], int N) 
+ {
+    int i, j, r = 0;
+    for(i=0; i<N; i+=j)
+    {
+    	for (j=0; j + i < N && v[j+i] <= v[j+i+1]; j++);
+        if (++j > r)
+        	r = j;    
+    }
+    return r;
+}
 
  /*33. Defina uma função int elimRep (int v[], int n) que recebe um vector v com n inteiros e
 elimina as repetições. A função deverá retornar o número de elementos do vector resultante.
@@ -592,52 +583,37 @@ primeiras 5 posições do vector os elementos {1,2,3,4,5}. (https://codeboard.io
 
 int elimRep (int v[], int N) 
 {
-  int i,j,k;
-  for (i=0; i<N; i++)
-    for (j=i+1; j<N; j++)
-      if (v[i]==v[j])
-      {
-        for (k=j; k<N-1; k++)
-            v[k] = v[k+1];
-        j--;
-        N--;
-      }
-
-  return N;
+	int i,j,k;
+	for (i=0; i<N; i++)
+		for (j=i+1; j<N; j++)
+	    	if (v[i]==v[j])
+	    	{
+	      		for (k=j; k<N-1; k++)
+	          		v[k] = v[k+1];
+	     		j--;
+	      		N--;
+	      	}
+	    	
+	return N;
 }
 
 /* 34. Defina uma função int elimRepOrd (int v[], int n) que recebe um vector v com n in-
 teiros ordenado por ordem crescente e elimina as repetições. A função deverá retornar o
 número de elementos do vector resultante. (https://codeboard.io/projects/14844)*/
 
+
 int elimRepOrd (int v[], int N) 
 {
-	int i,j;
-
-	for (i=0; i < N-1; i++)
-		if (v[i]==v[i+1])
-		{
-			for (j = i;j < N-1; j++)
- 				[j]=v[j+1];
-			i--;
-			N--;
-		}
+	int i, j;
+	for(i = 0 ; i<N-1; i++)
+	if(v[i] == v[i+1])
+	{
+	    N--;
+	    for (j=i+1; j<N; j++)
+	    	v[j] = v[j+1];
+	    i--;
+	}
 	return N;
-}
-
-//ou 
-
-int elimRepOrd (int v[], int N)
-{
-    int i,j;
-    for(i=0,j=0; i<N; i++,j++)
-    {
-		v[j]=v[i];
-        	if (v[i]==v[i+1] && i+1<N)
-            	j--;
-    }
-       
-     return j;
 }
 
 
@@ -646,24 +622,24 @@ tos elementos os vectores a (com na elementos) e b (com nb elementos) têm em co
 suma que os vectores a e b estão ordenados por ordem crescente. (https://codeboard.io/
 projects/14845)*/
 
-int comunsOrd (int a[], int na, int b[], int nb)
-{
-	int i,j,r=0;
-
-	for (i=0,j=0; i<na && j<nb;)
-    	if (a[i] < b[j])
-        	i++;
-        else 
-        	if (a[i]>b[j])
-                    j++;
-            else 
-            {
-            	r++;
-                i++;
-                j++;
-            }    
-
-    return r;
+ int comunsOrd (int a[], int na, int b[], int nb)
+ {
+ 	int i=0,j=0, r = 0;
+ 	while (i < na && j < nb)
+ 	{
+ 		if (a[i] == b[j])
+ 	    {
+ 	    	r++;
+ 	    	i++;
+ 	    	j++;
+ 	    }
+ 	    else
+ 	   		if (a[i] > b[j])
+ 	        	j++;
+ 	        else
+ 	        	i++;
+ 	}
+ 	return r;
 }
 
 /*36. Defina uma função int comuns (int a[], int na, int b[], int nb) que calcula quantos
