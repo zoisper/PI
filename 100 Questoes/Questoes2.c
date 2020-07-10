@@ -563,20 +563,21 @@ Por exemplo, se a lista l tiver os valores [1,2,3,4] a lista contruı́da pela i
 somasAcL (l) deverá conter os valores [1,3,6,10]. (https://codeboard.io/projects/
 16263)*/
 
-LInt somasAcL (LInt l) {
-    int r = 0;
-    LInt a = NULL;
-    LInt * ptr = &a;
+LInt somasAcL (LInt l) 
+{
+    LInt r = NULL;
+    LInt * ptr = &r;
+    int acc = 0;
     while (l)
     {
-    	r += l->valor;
-    	*ptr = malloc(sizeof(struct lligada));
-    	(*ptr)->valor = r;
-    	(*ptr)->prox = NULL;
-    	ptr = &((*ptr)->prox);
-    	l = l->prox;
+        acc += l->valor;
+        *ptr = malloc (sizeof (struct lligada));
+        (*ptr)->valor = acc;
+        (*ptr)->prox = NULL;
+        ptr = &((*ptr)->prox);
+        l = l->prox;
     }
-    return a;
+    return r;
 }
 
 /*25. Defina uma função void remreps (LInt l) que, dada uma lista ordenada de inteiros, elimina
@@ -585,24 +586,18 @@ aos nós removidos é correctamente libertado. (https://codeboard.io/projects/16
 
 void remreps (LInt l)
 {
-    LInt ant = NULL;
     LInt aux = NULL;
-    while (l)
+    while (l && l->prox)
     {
-        if (ant != NULL && l->valor == ant->valor)
+        if (l->valor == l->prox->valor)
         {
-            ant->prox = l->prox;
-            aux = l;
-            l = l->prox; 
-            free(aux);
+            aux = l->prox;
+            l->prox = l->prox->prox;
+            free (aux);
         }
         else
-            {
-                ant = l;
-                l = l->prox; 
-            }
+            l = l->prox;
     }
-    
 }
 
 /*26. Defina uma função LInt rotateL (LInt l) que coloca o primeiro elemento de uma lista no
@@ -611,25 +606,19 @@ fim. Se a lista for vazia ou tiver apenas um elemento, a função não tem qualq
 Note que a sua função não deve alocar nem libertar memória. Apenas re-organizar as células
 da lista. (https://codeboard.io/projects/16265)*/
 
-LInt rotateL (LInt l){
-    int i = 0;
-    LInt r = l;
-    LInt a = l;
-    while (l && l->prox)
+LInt rotateL (LInt l)
+{
+	LInt first = l;
+    LInt *ptr = &l;
+    if (l && l->prox)
     {
-        l = l->prox;
-        i++;
+    	*ptr = (*ptr)->prox;
+        while (*ptr)
+        	ptr = &((*ptr)->prox);
+        *ptr = first;
+        (*ptr)->prox = NULL;
     }
-    
-    if (i>0)
-    {
-        r = r->prox;
-        a->prox = NULL;
-        l->prox = a;
-    }
-    
-    
-    return r;
+    return l;
 }
 
 /*27. Defina uma função LInt parte (LInt l) que parte uma lista l em duas: na lista l ficam

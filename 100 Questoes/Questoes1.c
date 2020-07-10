@@ -427,12 +427,12 @@ deverá retornar o valor 5. (https://codeboard.io/projects/13663)*/
 
 int remRep (char texto []) 
 {
-    int i, j;
-    for(i=0, j=0; texto[i]!='\0'; i++)
-        if (texto[i] != texto[i+1])
-            texto[j++] = texto[i];
-    texto[j] = '\0';
-    return j;
+	int i, r = 0;
+    for(i=0; texto[i]; i++)
+    	if(texto[i] != texto [i+1])
+            texto[r++] = texto[i];
+    texto[r] = '\0';
+    return r;
 }
 
 /*25. Defina uma função int limpaEspacos (char t[]) que elimina repetições sucessivas de espaços
@@ -441,16 +441,12 @@ por um único espaço. A função deve retornar o comprimento da string resultan
 
 int limpaEspacos (char texto[]) 
 {
-    int i, j;
-    for (i=0, j=0; texto[i]!='\0'; i++)
-        {
-            texto [j++] = texto[i];    
-            if(texto[i] == ' ' && texto[i+1] == ' ')
-            	j--;
-        }
-    texto[j] = '\0';
-    
-    return j;
+    int i, r=0;
+    for(i=0; texto[i]; i++)
+        if (texto [i] != ' ' || texto[i+1] != ' ')
+            texto[r++] = texto[i];
+    texto[r] = '\0';
+    return r;
 }
 
 /*26. Defina uma função void insere (int v[], int N, int x) que insere um elemento (x) num
@@ -461,15 +457,12 @@ io/projects/14836)
 
 void insere (int s[], int N, int x)
 {
-  int i, j;
-
-	for (i=0; i<N && s[i]<x; i++);
-
-		for (j=N; j>i; j--)
+	int i, j;
+	for(i=0; i<N && s[i]<x; i++);
+	for(j=N; j>i; j--)
 		s[j] = s[j-1];
-	
-	s[j] = x;
-   }
+	s[i] = x;
+}
 
 /*27.  Defina uma função void merge (int r [], int a[], int b[], int na, int nb) que, da-
 dos vectores ordenados a (com na elementos) e b (com nb elementos), preenche o vector r (com
@@ -478,15 +471,19 @@ na+nb elementos) com os elementos de a e b ordenados. (https://codeboard.io/proj
 */
 void merge (int r [], int a[], int b[], int na, int nb)
 {
-  int k, i=0,j=0;
-
-  for (k=0; k < na + nb; k++)
+	int i = 0, j = 0;
+    while (i + j < na + nb)
     {
-      if (a[i] <= b[j] && i < na|| j == nb)
-        r[k] = a[i++];
-      else
-        if (b[j] < a[i] && j < nb || i == na)
-              r[k] = b[j++];
+    	if (i >= na)
+        	r[i+j] = b[j++];
+     	else
+        	if (j >= nb)
+            	r[i+j] = a[i++];
+         	else
+             	if (a[i] > b[j])
+                 	r[i+j] = b[j++];
+             	else
+                 	r[i+j] = a[i++];
     }
 }
 
@@ -498,11 +495,14 @@ projects/14838)*/
 
 int crescente (int a[], int i, int j)
 {
-  int k;
-  for(k=i; k < j; k++)
-    if (a[k]>a[k+1])
-      return 0;
-  return 1;
+	int r = 1;
+    while (i<j && r)
+    {
+    	if (a[i] > a[i+1])
+     		r = 0;
+        i++;
+    }       
+    return r;
 }
 
 
@@ -512,13 +512,12 @@ retirados. (https://codeboard.io/projects/14839)*/
 
 int retiraNeg (int v[], int N)
 {
-  int r,i=0;
-  for (r=0; r<N; r++)
-    if (v[r] >=0)
-      v[i++] = v[r];
-  return i;
+	int i, r=0;
+    for(i=0; i<N; i++)
+    	if (v[i] >= 0)
+        	v[r++] = v[i];
+    return r;
 }
-
 /*30. Defina uma função int menosFreq (int v[], int N) que recebe um vector v com N ele-
 mentos ordenado por ordem crescente e retorna o menos frequente dos elementos do
 vector. Se houver mais do que um elemento nessas condições deve retornar o que começa por
@@ -526,20 +525,17 @@ aparecer no ı́ndice mais baixo. (https://codeboard.io/projects/14840)*/
 
 int menosFreq (int v[], int N)
 {
-	int i, j,ac=0, pos=v[0], val=N;
-	for (i=0; i <N; i++)
-  	{
-    	for (j=0; j<N; j++)
-      	if (v[i] == v[j])
-        	ac++;
-        if (ac < val)
-    	{
-      		val = ac;
-      		pos = v[i];
-    	} 
-  		ac=0;
-  	}
-  	return pos;
+	int i,j, freq = N, r = v[0];
+    for (i = 0; i < N; i += j)
+   	{
+		for(j = 0; i + j < N && v[i] == v[i+j]; j++);
+			if (j < freq)
+			{
+		    	freq = j;
+		    	r = v[i];
+			}           
+    }
+    return r;
 }
 
 /*31. Defina uma função int maisFreq (int v[], int N) que recebe um vector v com N elemen-
