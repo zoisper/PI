@@ -77,14 +77,10 @@ void insertOrd (LInt *l, int x)
    LInt new = (LInt) malloc (sizeof (struct lligada));
    new->valor = x;
    new->prox = NULL;
-   
    while (*l && (*l)->valor < x)
    		l = (&(*l)->prox);
-    
     new->prox = *l;
-    *l = new;
-    
-   
+    *l = new;   
 }
 
 /*6. Apresente uma definição não recursiva da função int removeOneOrd (LInt *, int) que
@@ -94,12 +90,11 @@ remove um elemento de uma lista ordenada. Retorna 1 caso o elemento a remover n�
 int removeOneOrd (LInt *l, int x)
 {
 	while (*l && (*l)->valor != x)
-    	l = (&(*l)->prox);
+        l = (&(*l)->prox);
     if (! *l)
-    	return 1;
+        return 1;
     else 
         *l = (*l)->prox;
-    
     return 0;
 }
 
