@@ -1035,28 +1035,21 @@ int lookupAB (ABin a, int x)
 um elemento está numa árvore binária de procura (-1 caso não exista). (https://codeboard.
 io/projects/16285)*/
 
-int depthOrd (ABin a, int x) 
-{
-	int r = -1;
-	if (a) 
-    	if (a->valor == x)
-    		r = 1;
+int depthOrd (ABin a, int x) {
+    int r = -1;
+    if (a) 
+        if (a->valor == x)
+            r = 1;
         else
+        {
             if (a->valor > x)
-            {
-            	r = depthOrd (a->esq, x);
-            	if (r>0)
-            		r++;    
-            }
-            
+                r = depthOrd (a->esq, x);
             else
-            {
-            	r = depthOrd (a->dir, x);
-            	if (r>0)
-            		r++;
-            }
-    
-    return r;       
+                r = depthOrd (a->dir, x); 
+            if (r>0)
+                    r++;
+        }
+    return r;
 }
 
 /*47. Apresente uma definição não recursiva da função int maiorAB (ABin) que calcula o maior
@@ -1065,15 +1058,9 @@ elemento de uma árvore binária de procura não vazia. (https://codeboard.io/pr
 
 int maiorAB (ABin a) 
 {
-    int r = a->valor;
-    while (a)
-    {
-        if (a->valor > r)
-            r = a->valor;
+    while(a->dir)
         a = a->dir;
-    }
-    
-    return r;
+    return a->valor;
 }
 
 /*48. Defina uma função void removeMaiorA (ABin *) que remove o maior elemento de uma
@@ -1081,15 +1068,10 @@ int maiorAB (ABin a)
 
 void removeMaiorA (ABin *a) 
 {
-
-    ABin aux = NULL;
-    
     while ((*a)->dir)
-        a = &((*a)->dir);
-        
-        aux = *a;
-        *a = (*a)->esq;
-        free(aux);
+        a = &((*a)->dir);    
+    free (*a);
+    *a = (*a)->esq;      
 }
 
 /*49. Apresente uma definição da função int quantosMaiores (ABin a, int x) que, dada uma
@@ -1115,7 +1097,41 @@ int quantosMaiores (ABin a, int x)
 árvore binária de procura a partir de uma lista ligada ordenada. (https://codeboard.io/
 projects/16289)*/
 
+void listToBTreeAux (LInt l,int size, ABin *a)
+{
+    if (size >0)
+    {
+        int i = 0;
+        *a = malloc (sizeof (struct nodo));
+        (*a)->esq = NULL;
+        (*a)->dir = NULL;
+        listToBTreeAux (l, size/2, &((*a))->esq);
+        while (i < size/2)
+        {
+            l = l->prox;
+            i++;
+        }
+        (*a)->valor = l->valor;
+        
+        listToBTreeAux (l->prox, size - size/2 -1 , &((*a))->dir); 
+    }   
+}
+
 void listToBTree (LInt l, ABin *a) 
+{
+    int len = 0;
+    LInt aux = l;
+    while (aux)
+    {
+        aux = aux->prox;
+        len++;
+    }
+    listToBTreeAux (l, len, a);
+}
+
+// ou
+
+void listToBTreeNB (LInt l, ABin *a) // nesta versao a arvore resultante não está balanceada 
 {
     while (l)
     {
@@ -1123,26 +1139,39 @@ void listToBTree (LInt l, ABin *a)
         (*a)->valor = l->valor;
         (*a)->esq = NULL;
         a = &((*a)->dir);
-        l = l->prox;
-       
+        l = l->prox;       
     }
 }
 
 /*51. Apresente uma definição da função int deProcura (ABin a) que testa se uma árvore é de
 procura. (https://codeboard.io/projects/16290)*/
-int deProcura (ABin a) 
+
+int maiorAB (ABin a) // calcula maior elemento de uma arvore de procura não vazia
 {
-    if (!a)
-        return 1;
-    else
-    {
-        if (a->esq && (a->esq->valor > a->valor || a->esq->dir && a->esq->dir->valor > a->valor))
-            return 0;
-        if (a->dir && (a->dir->valor < a->valor || a->dir->esq && a->dir->esq->valor < a->valor))
-            return 0;
-    }
-    
-    return deProcura ( a->esq) && deProcura ( a->dir); 
-   
+    while (a && a->dir)
+        a = a->dir;
+    return a->valor;
 }
 
+int menorAB (ABin a) // calcula menor elemento de uma arvore de procura não vazia
+{
+    while (a && a->esq)
+        a = a->esq;
+    return a->valor;
+}
+
+int deProcura (ABin a) 
+{
+    int r = 1;
+    if(a)
+    {
+        if (a->esq && maiorAB(a->esq) > a->valor)
+            r = 0;
+        else
+            if (a->dir && menorAB(a->dir) < a->valor)
+                r = 0;
+            else
+                r = deProcura (a->esq) && deProcura(a->dir);          
+    }
+    return r;
+}
