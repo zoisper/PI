@@ -8,10 +8,6 @@ int valor;
 struct lligada *prox;
 } *LInt;
 
-
-
-
-
 /*1. Apresente uma definição não recursiva da função int length (LInt) que calcula o compri-
 mento de uma lista ligada. (https://codeboard.io/projects/16161).*/
 
@@ -25,7 +21,6 @@ int length (LInt l)
     }   
     return r;
 }
-
 
 /*2. Apresente uma definição não recursiva da função void freeL (LInt) que liberta o espaço
 ocupado por uma lista.*/
