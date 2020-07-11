@@ -814,26 +814,24 @@ corresponde a remover todos os elementos da árvore a. (https://codeboard.io/pro
 
 int pruneAB (ABin *a, int l) 
 {
-	int e, d  = 0;
-	if (! *a)
-		return 0;
-    
-    if (l==0)
+    int r = 0;
+    if (*a)
     {
-        e = pruneAB (&((*a)->esq),0);
-        d = pruneAB (&((*a)->dir),0);
-        free(*a);
-        *a = NULL;
-        return  1 + e + d;
+        if (l <= 0)
+        {
+            r += pruneAB (&((*a)->esq),l);
+            r += pruneAB (&((*a)->dir),l);
+            r++;
+            free(*a);
+            *a = NULL;
+        }
+        else
+        {
+            r += pruneAB (&((*a)->esq),l-1);
+            r += pruneAB (&((*a)->dir),l-1);
+        }
     }
-    else
-    {
-        
-        e = pruneAB (&((*a)->esq),l-1);
-        d = pruneAB (&((*a)->dir),l-1);
-        return e + d;
-    }
-        
+    return r;
 }
 
 /*37. Defina uma função int iguaisAB (ABin a, ABin b) que testa se duas árvores são iguais
@@ -841,66 +839,43 @@ int pruneAB (ABin *a, int l)
 
 int iguaisAB (ABin a, ABin b) 
 {
-	if (!a && ! b)
-		return 1;
-     else 
-     	if (!b && a)
-     		return 0;
-         else
-         	if (!a && b)
-         		return 0;
-         	else
-         		if (a->valor != b->valor)
-         			return 0;
-         		else
-         			return (iguaisAB (a->esq, b->esq) && iguaisAB (a->dir, b->dir));
-                     
- }
+    int r = 0;
+    if (!a && !b)
+        r = 1;
+    else
+        if (a && b)
+            r = (a->valor == b->valor && iguaisAB (a->esq, b->esq) && iguaisAB (a->dir, b->dir));
+    return r;
+}
 
 /*38. Defina uma função LInt nivelL (ABin a, int n) que, dada uma árvore binária, constrói
 uma lista com os valores dos elementos que estão armazenados na árvore ao nı́vel n (assuma
 que a raiz da árvore está ao nı́vel 1). (https://codeboard.io/projects/16277)*/
 
-LInt concatenaL (LInt a, LInt b)
-{
-	LInt r = a;
-	if (!a)
-		return b;
-	else
-		while (a->prox)
-			a = a->prox;
-	
-	a->prox = b;
-	return r;
-         
-}
-
 LInt nivelL (ABin a, int n) 
 {
-	LInt r = NULL;
-	LInt d = NULL;
-	LInt e = NULL;
-
-	if (!a)
-		return NULL;
-	else
-		if (n == 1)
-		{
-			r = malloc (sizeof (struct lligada));
-			r->valor = a->valor;
-            r->prox = NULL;
-            return r;
+    LInt r = NULL;
+    LInt * ptr = &r;
+    if (a)
+    {
+        if (n == 1)
+        {
+            *ptr = malloc (sizeof (struct lligada));
+            (*ptr)->valor = a->valor;
+            (*ptr)->prox = NULL;
+            ptr = &((*ptr)->prox);   
         }
         else
-        {
-        	d = nivelL (a->dir, n-1);
-            e = nivelL (a->esq, n-1);
-            r = concatenaL (e,d);
-            return r;
-        }  
-     
+            if (n > 1)
+            {
+                *ptr = nivelL(a->esq, n-1);
+                while(*ptr)
+                    ptr = &((*ptr)->prox);
+                *ptr = nivelL(a->dir, n-1);
+            }           
+    }
+    return r;
 }
-
 
 /*39. Defina uma função int nivelV (ABin a, int n, int v[]) que preenche o vector v com os
 elementos de a que se encontram no nı́vel n.
@@ -910,21 +885,22 @@ io/projects/16278)*/
 
 int nivelV (ABin a, int n, int v[]) 
 {
-	if (!a)
-		return 0;
-    else
-    	if (n == 1)
+    int r = 0;
+    if (a)
+    {
+        if (n==1)
         {
-        	*v = a->valor;
-        	return 1;
+            *v = a->valor;
+            r++;
         }
         else
-        {
-        	int e = nivelV (a->esq,n-1, v);
-            int d = nivelV (a->dir, n-1, v+e);
-            return e+d;
-             
-        }
+            if (n>1)
+            {
+                r+= nivelV (a->esq, n-1, v);
+                r+= nivelV (a->dir, n-1, v+r);
+            }
+    }
+    return r;
 }
 
 /*40. Defina uma função int dumpAbin (ABin a, int v[], int N) que dada uma árvore a, preenche
@@ -934,23 +910,16 @@ preencher no máximo N elementos e retornar o número de elementos preenchidos. 
 
 int dumpAbin (ABin a, int v[], int N) 
 {
-	if (a && N>0)
-	{
-		int e = dumpAbin (a->esq, v, N);
-        if (e<N)
-        {
-        	*(v+e) = a->valor;
-        	int d = dumpAbin (a->dir, v+e+1, N-1-e);
-        	return e+d+1; 
-        }
-        else
-        	return N;
+    int r = 0;
+    if(a)
+    {        
+        r += dumpAbin (a->esq, v, N);
+        if (r<N)
+            v[r++] = a->valor;
+        r += dumpAbin (a->dir, v+r, N-r);       
     }
-    else 
-    	return 0;
+    return r;
 }
-
-
 
 
 /*41. Defina uma função ABin somasAcA (ABin a) que, dada uma árvore de inteiros, calcula a
@@ -961,30 +930,23 @@ io/projects/16280)*/
 
 ABin somasAcA (ABin a) 
 {
-    
     ABin r = NULL;
-    if (!a)
-    	return NULL;
-    else
+    if (a)
     {
-    	r = malloc (sizeof (ABin));
-    	r->valor = a->valor;
-    	ABin e = somasAcA (a->esq);
-    	ABin d = somasAcA (a->dir);
-
-    	if (e && d)
-    		r->valor = r->valor + e->valor +  d->valor ;
-    	else
-    		if (e)
-    			r->valor = r->valor + e->valor;
-    		else
-    			if (d)
-    				r->valor = r->valor + d->valor ;
-    	r->esq = e;
-    	r->dir = d;
-    	return r;
-                
+        r = malloc (sizeof (struct nodo));
+        r->valor = a->valor;
+        r->esq = somasAcA (a->esq);
+        r->dir = somasAcA (a->dir);
+        if(r->esq && r->dir)
+            r->valor += r->esq->valor + r->dir->valor;
+        else
+            if(r->esq)
+                r->valor += r->esq->valor;
+            else
+                if(r->dir)
+                    r->valor += r->dir->valor;    
     }
+    return r;
 }
 
 /*42. Apresente uma definição da função int contaFolhas (ABin a) que dada uma árvore binária
@@ -993,19 +955,18 @@ de inteiros, conta quantos dos seus nodos são folhas, i.e., que não têm nenhu
 
 int contaFolhas (ABin a) 
 {
-	if (!a)
-        return 0;
-    else
-        if(!a->esq && !a->dir)
-            return 1;
+    int r = 0;
+    if (a)
+    {
+        if (!a->esq && !a->dir)
+            r++;
         else
-            if (!a->esq && a->dir)
-                return contaFolhas (a->dir);
-            else
-                if (!a->dir && a->esq)
-                    return contaFolhas (a->esq);
-                else
-                    return contaFolhas (a->dir) + contaFolhas (a->esq);
+            {
+                r += contaFolhas (a->esq);
+                r += contaFolhas (a->dir);
+            }
+    }
+    return r;
 }
 
 /*43. Defina uma função ABin cloneMirror (ABin a) que cria uma árvore nova, com o resultado
@@ -1013,17 +974,14 @@ de inverter a árvore (efeito de espelho). (https://codeboard.io/projects/16282)
 
 ABin cloneMirror (ABin a) 
 {
-	ABin r;
-	if (!a)
-		r = NULL;
-    else 
+    ABin r = NULL;
+    if (a)
     {
-        r = malloc (sizeof (ABin));
+        r = malloc (sizeof (struct nodo));
         r->valor = a->valor;
-        r->dir = cloneMirror (a->esq);
         r->esq = cloneMirror (a->dir);
+        r->dir = cloneMirror (a->esq);   
     }
-        
     return r;
 }
 
@@ -1033,7 +991,7 @@ a inserir já existir na árvore ou 0 no outro caso. (https://codeboard.io/proje
 
 int addOrd (ABin *a, int x) 
 {
-	int r = 0;
+    int r = 0;
     while (*a && r!= 1)
     {
     	if ((*a)->valor == x)
@@ -1043,16 +1001,14 @@ int addOrd (ABin *a, int x)
                 a = &((*a)->esq);
             else
                 a = &((*a)->dir);
-    }
-        
+    }    
     if (!*a)
     {
         *a = malloc (sizeof (ABin));
         (*a)->valor = x;
         (*a)->esq = NULL;
         (*a)->dir = NULL;
-    }
-        
+    }       
     return r;
 }
 
@@ -1064,7 +1020,7 @@ se um elemento pertence a uma árvore binária de procura. (https://codeboard.io
 int lookupAB (ABin a, int x) 
 {
     int r = 0;
-    while (a && r == 0)
+    while (a && !r)
     {
     	if (a->valor == x)
             r = 1;
@@ -1074,7 +1030,6 @@ int lookupAB (ABin a, int x)
             else
                 a = a->dir;
     }
-    
     return r;
 }
 
