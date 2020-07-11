@@ -1,15 +1,14 @@
 #include <stdlib.h>
 
+
+// Considere o seguinte tipo para representar listas ligadas de inteiros
+
 typedef struct lligada {
 int valor;
 struct lligada *prox;
 } *LInt;
 
-typedef struct nodo 
-{
-	int valor;
-	struct nodo *esq, *dir;	
-} *ABin;
+
 
 
 
@@ -643,6 +642,15 @@ LInt parte (LInt l)
     return r;
 }
 
+// Considere o seguinte tipo para representar árvores binárias de inteiros
+
+typedef struct nodo 
+{
+    int valor;
+    struct nodo *esq, *dir; 
+} *ABin;
+
+
 /*28. Apresente uma definição da função int altura (ABin) que calcula a altura de uma árvore
 binária. (https://codeboard.io/projects/16220)*/
 
@@ -1146,18 +1154,5 @@ int deProcura (ABin a)
     
     return deProcura ( a->esq) && deProcura ( a->dir); 
    
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-int main ()
-{
-
-	int v[5] = {1,2,3,4,5};
-	
-	LInt a = arrayToList (v, 5);
-	
-	return 0;
-
 }
 
