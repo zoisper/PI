@@ -813,39 +813,36 @@ int cardinalMSet (int N, int v[N])
 	return r;
 }
 
+//Considere as seguintes definições para representar as posições e movimentos de um robot.
 
-/*47. Considere as seguintes definições para representar as posições e movimentos de um robot.
 typedef enum movimento {Norte, Oeste, Sul, Este} Movimento;
 typedef struct posicao {
 int x, y;
 } Posicao;
-Defina a função Posicao posFinal (Posicao inicial, Movimento mov[], int N) que,
+
+/*47. Defina a função Posicao posFinal (Posicao inicial, Movimento mov[], int N) que,
 dada uma posição inicial e um array com N movimentos, calcula a posição final do robot depois
 de efectuar essa sequência de movimentos. (https://codeboard.io/projects/73018)*/
 
 Posicao posFinal (Posicao inicial, Movimento mov[], int N)
 {
-	int i;
-	for(i=0; i<N; i++)
-	{
-		if (mov[i] == Norte)
-			inicial.y++;
-		if (mov[i] == Sul)
-			inicial.y--;
-		if (mov[i] == Este)
-			inicial.x++;
-		if (mov[i] == Oeste)
-			inicial.x--;
-	}
-	return inicial;
+    int i;
+    for(i=0; i<N; i++)
+    
+        if (mov[i] == Norte)
+            inicial.y++;
+        else
+            if (mov[i] == Sul)
+                inicial.y--;
+            else
+                if (mov[i] == Este)
+                    inicial.x++;
+                else
+                    inicial.x--;
+    return inicial;
 }
 
-/*48. Considere as seguintes definições para representar as posições e movimentos de um robot.
-typedef enum movimento {Norte, Oeste, Sul, Este} Movimento;
-typedef struct posicao {
-int x, y;
-} Posicao;
-Defina a função int caminho (Posicao inicial, Posicao final, Movimento mov[], int
+/*48. Defina a função int caminho (Posicao inicial, Posicao final, Movimento mov[], int
 N) que, dadas as posições inicial e final do robot, preenche o array com os movimentos sufi-
 cientes para que o robot passe de uma posição para a outra.
 A função deverá preencher no máximo N elementos do array e retornar o número de elementos
@@ -854,82 +851,59 @@ retornar um número negativo. (https://codeboard.io/projects/73019)*/
 
 int caminho (Posicao inicial, Posicao final, Movimento mov[], int N)
 {
-	int i;
-	for(i=0; i<N; i++)
-	{
-		if (inicial.y > final.y )
-		{
-			inicial.y--;
-			mov[i] = Sul;
-		}	
-		else
-			if (inicial.y < final.y )
-		{
-			inicial.y++;
-			mov[i] = Norte;
-		}
-		else 
-			if (inicial.x > final.x )
-		{
-			inicial.x--;
-			mov[i] = Oeste;
-		}
-		else 
-			if (inicial.x < final.x )
-		{
-			inicial.x++;
-			mov[i] = Este;
-		}
-		else
-			break;
-	}
-	if (inicial.x != final.x || inicial.y != inicial.y)
-		return -1;
-	else 
-		return i;
+    int r = 0;
+    for(r=0; r<N && (inicial.x != final.x || inicial.y != final.y); r++ )
+    	if (inicial.y < final.y )
+        {
+            inicial.y++;
+            mov[r] = Norte;
+        }
+        else
+            if (inicial.y > final.y)
+            {
+                inicial.y--;
+                mov[r] = Sul;
+            }
+            else
+                if (inicial.x > final.x)
+                {
+                    inicial.x--;
+                    mov[r] = Oeste;
+                }
+                else
+                {
+                    inicial.x++;
+                    mov[r] = Este;
+                }             
+    if (inicial.x != final.x || inicial.y != final.y)
+        r = -1;
+    return r;
 }
-
-/*49. Considere o seguinte tipo para representar a posição de um robot numa grelha.
-typedef struct posicao {int x, y;} Posicao;
-Defina a função int maisCentral (Posicao pos[], int N) que, dado um array com N
+/*49. Defina a função int maisCentral (Posicao pos[], int N) que, dado um array com N
 posições, determina o ı́ndice da posição que está mais perto da origem (note que as coor-
 denadas de cada ponto são números inteiros). (https://codeboard.io/projects/73020)*/
 
 int maiscentral (Posicao pos[], int N) 
 {
-	int i,c,r;
-	c = 0;
-	r = pos[0].x * pos[0].x + pos[0].y * pos[0].y;
-	for(i=1; i<N; i++)
-	{
-		if (r > pos[i].x * pos[i].x + pos[i].y * pos[i].y)
-		{
-			c = i;
-			r = pos[i].x * pos[i].x + pos[i].y * pos[i].y;
-		}
-	}
-
-	return c;
+    int i, r = 0;
+    for (i=1; i<N; i++)
+        if(pos[r].x * pos[r].x + pos[r].y * pos[r].y > pos[i].x * pos[i].x + pos[i].y * pos[i].y)
+            r = i;
+    return r;
 }
 
-/*50. Considere o seguinte tipo para representar a posição de um robot numa grelha.
-typedef struct posicao {int x, y;} Posicao;
-Defina a função int vizinhos (Posicao p, Posicao pos[], int N) que, dada uma posição
+/*50. Defina a função int vizinhos (Posicao p, Posicao pos[], int N) que, dada uma posição
 e um array com N posições, calcula quantas dessas posições são adjacentes à posição dada.
 (https://codeboard.io/projects/73021)*/
 
-int vizinhos (Posicao p, Posicao pos[], int N)
+int vizinhos (Posicao p, Posicao pos[], int N) 
 {
-	int i,c;
-	c = 0;
-	for (i=0; i<N; i++)
-	{
-		if (p.x == pos[i].x && (p.y - pos[i].y == 1 || p.y - pos[i].y == -1))
-			c++;
-		if (p.y == pos[i].y && (p.x - pos[i].x == 1 || p.x - pos[i].x == -1))
-			c++;
-	}
-	return c;
-
+    int i, r = 0;
+    for(i=0; i<N; i++)
+    {
+        if ((p.x - pos[i].x == 0 && (p.y - pos[i].y == 1 || p.y - pos[i].y == -1)) || (p.y - pos[i].y == 0 && (p.x - pos[i].x == 1 || p.x - pos[i].x == -1)))
+            r++;
+    }
+    return r;
 }
     
