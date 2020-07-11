@@ -649,16 +649,16 @@ que os vectores a e b não estão ordenados e defina a função sem alterar os v
 
 int comuns (int a[], int na, int b[], int nb)
 {
-	int j,i,r=0;
-      
-    for (i = 0; i < na; i++)
-    	for( j = 0; j < nb; j++ )
-        	if (a[i] == b [j])
-            {
-            	r++;
-                break;
-            }
-    return r;
+	int i, j, controlo, r=0;
+	for(i=0; i<na; i++)
+		for (j=0, controlo = 0; j<nb && !controlo; j++)
+		      if (a[i]==b[j])
+		      {
+		          r++;
+		          controlo = 1;
+		      }
+	
+	return r;
 }
 
 
@@ -680,14 +680,12 @@ lado como v[0]+v[1]+v[2]+v[3]. (https://codeboard.io/projects/14848)*/
 
 void somasAc (int v[], int Ac [], int N)
 {
-  int i,j;
-
-	for (i=0; i <N; i++)
-	{
-		Ac[i] = 0;
-		for (j=0; j <=i; j++)
-			Ac[i] += v[j];
-   }
+	int i, acc = 0;
+   	for(i=0; i<N; i++)
+   	{
+   		acc += v[i];
+   		Ac[i] = acc;
+   	}   
 }
 
 /*39. Defina uma função int triSup (int N, float m [N][N]) que testa se uma matriz quadra-
@@ -696,31 +694,31 @@ da é triangular superior, i.e., que todos os elementos abaixo da diagonal são 
 
 int triSup (int N, int m [N][N]) 
 {
-    
-int i, j,r;
-r=1;
-
-for(i=0; i<N; i++)
-	for(j=0; j<i; j++ )
-		if (m[i][j] != 0)
-			r=0;
-return r;
+    int i, j, r = 1;
+    for(i=0; i<N && r; i++)
+        for(j=0; j<i && r; j++)
+            if (m[i][j] != 0)
+                r = 0;  
+    return r;
 }
+
 
 /*40. Defina uma função void transposta (int N, float m [N][N]) que transforma uma ma-
 triz na sua transposta. (https://codeboard.io/projects/14850)*/
 
-void transposta (int N, float m [N][N])
+void transposta (int N, float m [N][N]) 
 {
-    int i, j, float ac;
-    for (i=0; i<N ;i++)
-    	for (j=0; j<i; j++)
-    	{
-    		ac = m[i][j];
-    		m[i][j] = m[j][i];
-    		m[j][i] =ac;
-    	}
+    int i, j; 
+    float aux ;
+    for (i=0; i<N; i++)
+    	for(j=0; j<i; j++)
+        {
+            aux = m[i][j];
+            m[i][j] = m[j][i];
+            m[j][i] = aux;
+        }
 }
+
 
 /*41. Defina uma função void addTo (int N, int M, int a [N][M], int b[N][M]) que adi-
 ciona a segunda matriz à primeira. (https://codeboard.io/projects/14851)*/
@@ -761,6 +759,60 @@ int intersectSet (int N, int v1[N], int v2[N], int r[N])
 	for (i=0; i<N; i++)
 		r[i] = v1[i] && v2[i];
 }
+
+/*44. Uma forma de representar multi-conjuntos de ı́ndices consiste em usar um array de inteiros
+contendo em cada posição o número de ocorrências desse ı́ndice. Assim o multi-conjunto
+{1, 1, 4, 7, 7, 7} seria representado por um array em que as primeiras 8 posições conteriam
+{0,2,0,0,1,0,0,3}.
+Apresente uma definição da função int intersectMSet (int N, int v1[N], int v2[N],
+int r[N]) que coloca no array r o resultado da intersecção dos multi-conjuntos v1 e v2.
+(https://codeboard.io/projects/14733)*/
+
+int intersectMSet (int N, int v1[N], int v2[N], int r[N])
+{
+	int i;
+	for(i=0; i<N; i++)
+		if (v1[i]<v2[i])
+	    	r[i] = v1[i];
+	 	else
+	     	r[i] = v2[i];
+	return 0;
+}
+
+/*45. Uma forma de representar multi-conjuntos de ı́ndices consiste em usar um array de inteiros
+contendo em cada posição o número de ocorrências desse ı́ndice. Assim o multi-conjunto
+{1, 1, 4, 7, 7, 7} seria representado por um array em que as primeiras 8 posições conteriam
+{0,2,0,0,1,0,0,3}.
+Apresente uma definição da função int unionMSet (int N, int v1[N], int v2[N], int
+r[N]) que coloca no array r o resultado da união dos multi-conjuntos v1 e v2. (https:
+//codeboard.io/projects/14734)*/
+
+int unionMSet (int N, int v1[N], int v2[N], int r[N])
+{
+    int i;
+	for(i=0; i<N; i++)
+		if (v1[i]>v2[i])
+	    	r[i] = v1[i];
+	 	else
+	     	r[i] = v2[i];
+	return 0;
+}
+
+/*46. Uma forma de representar multi-conjuntos de ı́ndices consiste em usar um array de inteiros
+contendo em cada posição o número de ocorrências desse ı́ndice. Assim o multi-conjunto
+{1, 1, 4, 7, 7, 7} seria representado por um array em que as primeiras 8 posições conteriam
+{0,2,0,0,1,0,0,3}.
+Apresente uma definição da função int cardinalMSet (int N, int v[N]) que calcula a
+número de elementos do multi-conjunto v. (https://codeboard.io/projects/14740)*/
+
+int cardinalMSet (int N, int v[N])
+{
+	int i, r = 0;
+	for(i=0; i<N; i++)
+		r+= v[i];
+	return r;
+}
+
 
 /*47. Considere as seguintes definições para representar as posições e movimentos de um robot.
 typedef enum movimento {Norte, Oeste, Sul, Este} Movimento;
