@@ -7,32 +7,36 @@ typedef struct slist {
 	struct slist *prox;
 } *Lista;
 
-
-Lista acrescentaL (Lista l, char *n){
-	Lista pt, ant, novo;
-	pt = l; ant = NULL;
-	// procurar onde inserir
-	while (pt!=NULL && strcmp (pt->nome,n) < 0) {
-		ant = pt; pt = pt->prox;
-	}
-    
-    if (pt == NULL || strcmp (pt->nome,n) != 0) {// n ainda não existe
-     	novo = malloc (sizeof (struct slist));
-    	strcpy (novo->nome, n);
-    	// ligar para a frente
-    	novo->prox = pt;
-    	// ligar para trás 
-    	if (ant == NULL) l = novo;
-    	else ant->prox = novo;
+Lista acrescentaL (Lista l, char *n)
+{
+    Lista aux = NULL;
+    Lista * ptr = &l;
+    while (*ptr && strcmp ((*ptr)->nome, n) < 0)
+        ptr = &((*ptr)->prox);
+    if(!*ptr)
+    {
+        *ptr = malloc (sizeof (struct slist));
+        strcpy((*ptr)->nome, n);
+        (*ptr)->prox = NULL;
     }
-    return l;
+    else
+        if (strcmp ((*ptr)->nome, n) != 0)
+        {
+            aux = malloc (sizeof (struct slist));
+            strcpy(aux->nome, n);
+            aux->prox = *ptr;
+            *ptr = aux;
+        }
+    return l;  
 }
 
-void imprimeL (Lista l) {
-	while (l!=NULL){
-		printf ("%s\n", l->nome);
-		l = l->prox;
-	}
+void imprimeL (Lista l)
+{
+    while (l)
+    {
+        printf ("%s\n", l->nome);
+        l = l->prox;
+    }
 }
 
 typedef struct flist {
@@ -40,75 +44,69 @@ typedef struct flist {
 	long int prox;
 } Nodo;
 
-// no endereço 0 está o endereco do primeiro nodo 
-// fim da lista é 0
-
-void acrescentaF (FILE *f, char *n){
-	//assumir que o ficheiro está aberto para leitura/escrita
-	long pt, ant, endNovo;
-	ant = 0L;
-	Nodo buf, novo;
-
-	fseek (f, 0L, SEEK_SET);
-	fread (&pt, sizeof(long) ,1, f);
-
-	while (pt != 0L) {
-        fseek (f, pt, SEEK_SET);
-        fread (&buf, sizeof (Nodo), 1, f);
-        if (strcmp (buf.nome, n) >= 0) break;
-        ant = pt; pt = buf.prox;
-	}
-    if (pt == 0L || strcmp (buf.nome,n) != 0) {// n ainda não existe
-       strcpy (novo.nome, n);
-       novo.prox = pt;
-       fseek (f, 0L, SEEK_END);
-       endNovo = ftell(f); // guardo a posição do novo nodo
-       fwrite (&novo, sizeof(Nodo), 1, f);
-       if (ant == 0L) {
-       	  // l = novo; inicio da lista vai mudar!!!
-       	  fseek (f, 0L, SEEK_SET);
-       	  fwrite(&endNovo, sizeof (long), 1, f);
-       }
-       else {
-       	 // ant->prox = novo;
-       	fseek(f, ant, SEEK_SET);
-       	fread (&buf, sizeof(Nodo), 1, f);
-       	buf.prox = endNovo;
-        fseek(f, ant, SEEK_SET);
-        // ou então fazendo: fseek(f, (-1) * sizeof(Nodo), SEEK_CUR);
-       	fwrite (&buf, sizeof(Nodo), 1, f);
-       }
-       
+void acrescentaF (FILE *fp, char *n)
+{
+    long int ant = 0L, pt = 0L, endN;
+    Nodo novo, buff;
+    fseek(fp, 0L, SEEK_SET);
+    fread (&pt, sizeof (long int), 1, fp);
+    fseek(fp, pt, SEEK_SET);
+    fread (&buff, sizeof (struct flist), 1, fp);
+    while(pt && strcmp (buff.nome, n) < 0)
+    {
+        ant = pt;
+        pt = buff.prox;
+        fseek (fp, pt, SEEK_SET);
+        fread (&buff, sizeof (struct slist), 1, fp);
+    }
+    if (!pt || strcmp (buff.nome, n) != 0)
+    {
+        strcpy (novo.nome, n);
+        novo.prox = pt;
+        fseek (fp, 0L, SEEK_END);
+        endN = ftell(fp);
+        fwrite (&novo, sizeof (struct slist), 1, fp);
+        if (!ant)
+        {
+            fseek(fp, 0L, SEEK_SET);
+            fwrite (&endN, sizeof (long int), 1, fp);
+        }
+        else
+        {
+            fseek (fp, ant, SEEK_SET);
+            fread (&buff, sizeof (struct slist), 1, fp);
+            buff.prox = endN;
+            fseek (fp, ant, SEEK_SET);
+            fwrite (&buff, sizeof (struct slist), 1, fp);
+        }
     }
 }
 
-int main () {
+void imprimeF (FILE * fp)
+{
+    long int pt = 0L;
+    Nodo buff;
+    fseek(fp, 0L, SEEK_SET);
+    fread (&pt, sizeof (long int), 1, fp);
+    while (pt)
+    {
+        fseek (fp, pt, SEEK_SET);
+        fread (&buff, sizeof (struct slist), 1, fp);
+        printf ("%s\n", buff.nome);
+        pt = buff.prox;
+    }
+}
 
-	FILE *f;
-	Lista l1;
-
-	long x;
-
-	l1 = NULL;
-	l1 = acrescentaL (l1, "Maria");
-	l1 = acrescentaL (l1, "Ana");
-	l1 = acrescentaL (l1, "Rita");
-
-	imprimeL (l1);
-
-	f = fopen ("Lista", "r+");
-	if (f == NULL) {
-		f = fopen ("Lista", "w+");
-		x = 0L;
-		fwrite (&x, sizeof(long), 1, f);
-	}
-
-	acrescentaF (f, "Maria");
-	acrescentaF (f, "Ana");
-	acrescentaF (f, "Rita");
-
-	fclose (f);
-
-    
-	return 0;
+FILE * abreF (char *nome) // usar esta função para abrir o ficheiro
+{
+    FILE * fp = NULL;
+    long int pt = 0L;
+    fp = fopen (nome, "r+");
+    if(!fp)
+    {
+        fp = fopen (nome, "w+");
+        fseek (fp, 0L, SEEK_SET);
+        fwrite (&pt, sizeof (long int), 1, fp);
+    }   
+    return fp;
 }
