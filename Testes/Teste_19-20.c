@@ -17,12 +17,13 @@ verifica ({1,4,8,13,19}, 5) deve retornar 0 (False).*/
 
 int verifica(int s[], int N)
 {
-	int r = 1;
+	int razao = 0, r = 1;
 	if (N>1)
 	{
-		int controlo = s[1]/s[0];
-		for (int i=1; i<N; i++)
-			if (s[i]/s[i-1] != controlo)
+		if (s[0] != 0)
+			razao = s[1]/s[0];
+		for (int i=2; i<N && r; i++)
+			if (razao * s[i-1] != s[i])
 				r=0;
 	}
 	
@@ -89,20 +90,18 @@ que calcula o tamanho de uma lista ligada circular
 int tamanho(LInt l) 
 {
 	int r = 0;
+	LInt init = l;
 	if (l)
 	{
 		r++;
-		int controlo = l->valor;
 		l = l->prox;
 		
-		while (l && l->valor != controlo)
+		while (l != init)
 		{
 			l = l->prox;
 			r++;
 		}
 	}
-
-
 	return r;
 
 }
@@ -134,10 +133,6 @@ void liga (LInt *l) /// liga o ulitimo elemnto da lista ao primeiro
 		(*l)->prox = inicio;
 	}
 }
-
-
-
-
 
 
 
@@ -179,7 +174,7 @@ int capicua(DLint l)
 	NodoD *f = l.front;
 	NodoD *u = l.last;
 
-	while (i<len)
+	while (i<len && r)
 	{
 		if (f->valor != u->valor)
 			r=0;
@@ -330,7 +325,6 @@ void imprimeAux (ABin a, char *c)
 
 void imprime(ABin a)  
 {
-	if (a)
 	imprimeAux (a,"");
 }
 
@@ -411,29 +405,34 @@ não houver memória disponível ou a palavra a inserir já se encontrar no conj
 
 int acrescenta (Palavras *e, char *p)
 {
-	int r = 1;
-	int controlo = 0;
+	int r = 0;
+	int cmp = 0;
 	if (!*e)
 	{
 		*e = malloc (sizeof (struct nodo));
 		if (*e)
 		{
 			(*e)->raiz = strdup (p);
-			r = 0;
-		}	
+			(*e)->quantos = 0;
+			(*e)->esq = NULL;
+			(*e)->dir = NULL;
+		}
+		else
+			r = 1;
 	}
 	else
 	{
-		controlo = strcmp ((*e)->raiz, p);
-		if (controlo == 0)
-			r = 0;
+		cmp = strcmp ((*e)->raiz, p);
+		if (cmp== 0)
+			r = 1;
 		else
-			if (controlo < 0)
+			if (cmp < 0)
 				r = acrescenta (&(*e)->dir, p);
 			else 
 			{
-				(*e)->quantos++;
 				r = acrescenta (&(*e)->esq, p);
+				if (r == 0)
+					(*e)->quantos++;
 			}
 	}
 	return r;
@@ -473,4 +472,5 @@ char *atRank (Palavras p, int k)
 	}
 	return r;
 }
+
 
