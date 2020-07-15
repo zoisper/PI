@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+# include <string.h>
 
 typedef struct abin {
 int valor;
@@ -7,16 +8,16 @@ struct abin *esq,
 *dir;
 } *ABin;
 
-ABin ABinfromArray (int v[], int N)  // cria arvore binaria apartir de array
+ABin ABinFromArray (int v[], int N)  // cria arvore binaria apartir de array
 {
 
 	ABin r = NULL;
-	if(n>0)
+	if(N>0)
 	{
 		r = malloc (sizeof (struct abin));
  		r->valor = v[N/2];
- 		r->esq = ABinfromArray (v, N/2);
- 		r->dir = ABinfromArray (v+ N/2 +1, N - N/2 - 1);
+ 		r->esq = ABinFromArray (v, N/2);
+ 		r->dir = ABinFromArray (v+ N/2 +1, N - N/2 - 1);
 	}
 return r;
 }
@@ -123,7 +124,7 @@ void showDL (ABin a)  // imprime ABin convertida em lista duplamente ligada
 {
 	while (a)
 	{
-		printf("%d\n", a->valor);
+		printf("%d ", a->valor);
 		a = a->dir;
 	}
 }
@@ -134,27 +135,7 @@ void showDLBack (ABin a)  // imprime ABin convertida em em lista duplamente liga
 		a = a->dir;
 	while (a)
 	{
-		printf("%d\n", a->valor );
+		printf("%d ", a->valor );
 		a = a->esq;
 	}
-}
-
-
-int main ()
-{
-    int v[10] = {0,1,2,3,4,5,6,7,8,9};
-    ABin a = ABinFromArray (v, 10);
-    showABin (a);
-    putchar ('\n');
-    DLFromAbin (&a);
-    showDL (a);
-    putchar ('\n');
-    showDLBack (a);
-    putchar ('\n');
-    ABinFromDL (&a);
-    putchar ('\n');
-    showABin (a);
-    
-    
-    return 0;
 }
