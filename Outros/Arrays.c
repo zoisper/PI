@@ -25,10 +25,8 @@ void quickSort (int v[], int N)
             swap (v, v+j);
             quickSort (v, j);
             quickSort (v+j+1, N-j-1);
-    }
-    
+    }   
 }
-
 
 void showArray (int v[], int N)
 {
