@@ -10,20 +10,24 @@ void swap (int * a, int * b)
 
 void quickSort (int v[], int N)
 {
-    int i, j, k, r = N-1;
+    int i = 0, j = N-1;
     if (N>0)
     {
-        
-    
-        quickSort (v, r);
-        quickSort (v+r+1, N-r-1);
+        while (i<j)
+        {
+            while (v[i]<v[0])
+                i++;
+            while (v[j] > v[0])
+                j--;
+            if (i<j)
+                swap (v+i, v+j);
+        }
+            swap (v, v+j);
+            quickSort (v, j);
+            quickSort (v+j+1, N-j-1);
     }
+    
 }
-
-
-
-
-
 
 
 void showArray (int v[], int N)
@@ -35,11 +39,11 @@ void showArray (int v[], int N)
 
 int main ()
 {
-    int v[12] = {2,5,1,7,6, 13, 0, 11, 12, 15, 100, 7};
-    showArray (v, 7);
+    int v[5] = {1,7,-1,4,-3};
+    showArray (v,5);
     putchar ('\n');
-    quickSort (v,7);
-    showArray (v, 7);
+    quickSort (v,5);
+    showArray (v,5);
     putchar ('\n');
 
     return 0;
