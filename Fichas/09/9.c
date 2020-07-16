@@ -37,6 +37,7 @@ void limpa (char * pal) // elimna carateres de pontuação
             pal[j++] = pal[i];
         i++;
     }
+    pal[j] = '\0';
 }
 
 void maisculas (char * pal) // coloca palavra em maisculas
