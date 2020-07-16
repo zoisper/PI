@@ -469,22 +469,22 @@ dos vectores ordenados a (com na elementos) e b (com nb elementos), preenche o v
 na+nb elementos) com os elementos de a e b ordenados. (https://codeboard.io/projects/
 14837)
 */
-void merge (int r [], int a[], int b[], int na, int nb)
+void merge (int r[], int a[], int b[], int na,  int nb)
 {
-	int i = 0, j = 0;
-    while (i + j < na + nb)
+    int i = 0, j = 0, k = 0;
+    while (k < na + nb)
     {
-    	if (i >= na)
-        	r[i+j] = b[j++];
-     	else
-        	if (j >= nb)
-            	r[i+j] = a[i++];
-         	else
-             	if (a[i] > b[j])
-                 	r[i+j] = b[j++];
-             	else
-                 	r[i+j] = a[i++];
-    }
+        if (i >= na)
+            r[k++] = b[j++];
+        else 
+            if (j >= nb)
+                r[k++] = a[i++];
+            else 
+                if (a[i] > b[j])
+                    r[k++] = b[j++];
+                else
+                    r[k++] = a[i++];             
+    }    
 }
 
 
