@@ -179,16 +179,18 @@ NULL caso s2 não ocorra em s1. (https://codeboard.io/projects/14493)*/
 
 char *mystrstr (char s1[], char s2[]) 
 {
-    int i, h, j;
-    if (s2[0] == '\0')
-    	return s1;
-    for (i=0; s1[i] != '\0'; i++ )
-        for (j=0, h =i; s2[j] == s1[h]; j++, h++)
-            if (s2[j+1] =='\0')
-                return (s1+i);
-    return NULL;
+    int i, j;
+    char *r = NULL;
+    if (! *s2)
+        return s1;
+    for (i=0; s1[i] && !r; i++)
+    {
+        for (j=0; s2[j] && s1[i+j] == s2[j]; j++);
+        if (!s2[j])
+             r = (s1+i);    
+    }
+    return r;
 }
-
 /*11. Defina uma função void strrev (char s[]) que inverte uma string. (https://codeboard.
 io/projects/14494)*/
 
