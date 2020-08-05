@@ -232,19 +232,17 @@ com que passe a estar lá armazenada a string "libe igua e frat". (https://codeb
 io/projects/13659)*/
 void truncW (char t[], int n)
 {
-    int i, j, c;
-    c = j = 0;
-    for (i=0; t[i] != '\0'; i++)
+    int i, j, acc;
+    for (i=0, j=0, acc = 0; t[i]; i++)
     {
         if (t[i] == ' ')
-            c = 0;
-        else 
-            c++;
-        if (c <= n)
-            t[j++] = t[i];               
-        }
-    
-    t[j] = '\0';
+            acc = 0;
+        else
+            acc++;
+        if (acc<=n)
+        	t[j++] = t[i];
+    }
+    t[j]='\0';
 }
 
 
@@ -254,42 +252,38 @@ quente numa string. A função deverá retornar 0 no caso de s ser a string vazi
 
 char charMaisfreq (char s[]) 
 {
-    int i, j, ac, mf; 
-    char letra;
-    mf = 0;
-    if (s[0] == '\0')
-        return 0;
-    for (i=0; s[i]!='\0'; i++)
+    char r = '\0';
+    int i, j, freq, maisFreq;
+    for (i=0, maisFreq=0; s[i]; i++)
     {
-    	for(j=0, ac=0; s[j]!='\0'; j++)
+        for (j=i+1, freq=1; s[j]; j++)
             if (s[j] == s[i])
-                ac++;
-        if(ac > mf)
+                freq++;
+        if (freq > maisFreq)
         {
-            mf = ac;
-            letra = s[i];
-        }      
+            maisFreq = freq;
+            r = s[i];
+        }
     }
-     return letra;
+    return r;
 }
+
 
 /*15. Defina uma função int iguaisConsecutivos (char s[]) que, dada uma string s calcula o
 comprimento da maior sub-string com caracteres iguais. Por exemplo, iguaisConsecutivos
 ("aabcccaac") deve dar como resultado 3, correspondendo à repetição "ccc". (https://
 codeboard.io/projects/14578)*/
 
-int iguaisConsecutivos (char s[])
+int iguaisConsecutivos (char s[]) 
 {
-    int i, j, ac, ic;
-    ic = 0;
-    for (i=0; s[i]!='\0'; i++)
+    int i, j, r = 0;
+    for (i=0; s[i]; i++)
     {
-        for (j=i, ac=0; s[i]==s[j]; ac++, j++)
-                ;
-        if (ac > ic)
-            ic = ac;
-    }    
-    return ic;
+        for (j=i+1; s[j] && s[j] == s[i]; j++);
+        if (j-i > r)
+            r = j-i;
+    }
+    return r;
 }
 
 /*16. Defina uma função int difConsecutivos (char s[]) que, dada uma string s calcula o
@@ -302,8 +296,7 @@ int isDif (char s[], int n)
     int i, r = 1;
     for(i=0;i<n && r; i++)
         if (s[i]==s[n])
-            r=0;
-    
+            r=0; 
     return r;
 }
 
@@ -352,16 +345,15 @@ dar como resultado 4, uma vez que a string "tota" é um sufixo de "batota" e um 
 
 int sufPref (char s1[], char s2[]) 
 {
-    int i, j ,r = 0;
-    for(i=0; s1[i] && !r; i++)
+    int i,j,r=0;
+    for (i=0; s1[i] && !r; i++)
     {
-      for (j=0; s1[i+j] && s2[j] && s1[i+j] == s2[j];j++);
-      if (s1[i+j] == '\0' && j>r)
-        r = j;      
+        for(j=0; s2[j] && s1[i+j] == s2[j]; j++);
+        if(! s1[i+j] && j> r)
+            r = j;
     }
     return r;
 }
-
 /*20. Defina uma função int contaPal (char s[]) que conta as palavras de uma string. Uma
 palavra é uma sequência de caracteres (diferentes de espaço) terminada por um ou mais
 espaços. Assim se a string p tiver o valor "a a bb a", o resultado de contaPal (p) deve ser
