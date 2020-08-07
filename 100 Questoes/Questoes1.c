@@ -95,8 +95,8 @@ usados na representação binária de um dado número n. (https://codeboard.io/p
 13548)*/
 int bitsUm (unsigned int x)
 {
-	int r=0;
-    while (x!=0)
+	int r = 0;
+    while (x != 0)
     {
     	if (x%2 == 1)
       		r++;
@@ -111,9 +111,9 @@ divisor desse número). (https://codeboard.io/projects/13549)*/
 int trailingZ (unsigned int n)
  {
 	int r;
-	if (n==0)
+	if (n == 0)
 		return 32;
-	for(r=0; n%2==0; n/=2 )
+	for(r = 0; n%2 == 0; n /= 2)
     	r++;
 	return r;   
 }
@@ -125,7 +125,7 @@ para escrever o inteiro n em base decimal. Por exemplo, qDig (440) deve retornar
 int qDig (int n) 
 {
 	int i ;
-	for ( i = 1; n/10 >0; i++)
+	for (i = 1; n/10 > 0; i++)
 		n /= 10;
     return i;    
 }
@@ -137,9 +137,9 @@ codeboard.io/projects/14490)*/
 char *mystrcat(char s1[], char s2[]) 
 {
    int i,j;
-   for (i=0; s1[i] != '\0'; i++)
+   for (i = 0; s1[i] != '\0'; i++)
 		;
-    for (j=0; s1[i] = s2[j]; i++, j++ )
+    for (j = 0; s1[i] = s2[j]; i++, j++ )
         ;    
 	return s1;
 }
@@ -151,7 +151,7 @@ source[]) que copia a string source para dest retornando o valor desta última. 
 char *mystrcpy(char s1[], char s2[])
 {
     int i;
-    for (i=0; s1[i]=s2[i]; i++)
+    for (i = 0; s1[i] = s2[i]; i++)
             ;
     return s1;
 }
@@ -168,7 +168,7 @@ que compara (lexicograficamente) duas strings. O resultado deverá ser
 int mystrcmp(char s1[], char s2[]) 
 {
     int i;
-    for (i=0; s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0'; i++); 
+    for (i = 0; s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0'; i++); 
     
     return s1[i] - s2[i];
 }
@@ -183,9 +183,9 @@ char *mystrstr (char s1[], char s2[])
     char *r = NULL;
     if (! *s2)
         return s1;
-    for (i=0; s1[i] && !r; i++)
+    for (i = 0; s1[i] && !r; i++)
     {
-        for (j=0; s2[j] && s1[i+j] == s2[j]; j++);
+        for (j = 0; s2[j] && s1[i+j] == s2[j]; j++);
         if (!s2[j])
              r = (s1+i);    
     }
@@ -197,9 +197,9 @@ io/projects/14494)*/
 void strrev (char s[]) 
 {
 	int i, len, c;
-    for (len=0; s[len] != '\0'; len++)
+    for (len = 0; s[len] != '\0'; len++)
             ;
-    for (i=0, len--; i < len; i++, len--)
+    for (i = 0, len--; i < len; i++, len--)
     {              
     	c = s[i];
         s[i] = s[len];
@@ -214,7 +214,7 @@ void strrev (char s[])
 void strnoV (char t[])
 {
 	int i, h;
-    for ( i=0, h=0; t[i] != '\0'; i++)
+    for ( i = 0, h = 0; t[i] != '\0'; i++)
     {
     	if (t[i] != 'a' && t[i] != 'e' && t[i] != 'i' && t[i] != 'o' && t[i] != 'u' &&
             t[i] != 'A' && t[i] != 'E' && t[i] != 'I' && t[i] != 'O' && t[i] != 'U' )
@@ -233,7 +233,7 @@ io/projects/13659)*/
 void truncW (char t[], int n)
 {
     int i, j, acc;
-    for (i=0, j=0, acc = 0; t[i]; i++)
+    for (i = 0, j = 0, acc = 0; t[i]; i++)
     {
         if (t[i] == ' ')
             acc = 0;
@@ -254,9 +254,9 @@ char charMaisfreq (char s[])
 {
     char r = '\0';
     int i, j, freq, maisFreq;
-    for (i=0, maisFreq=0; s[i]; i++)
+    for (i = 0, maisFreq = 0; s[i]; i++)
     {
-        for (j=i+1, freq=1; s[j]; j++)
+        for (j = i+1, freq = 1; s[j]; j++)
             if (s[j] == s[i])
                 freq++;
         if (freq > maisFreq)
@@ -277,9 +277,9 @@ codeboard.io/projects/14578)*/
 int iguaisConsecutivos (char s[]) 
 {
     int i, j, r = 0;
-    for (i=0; s[i]; i++)
+    for (i = 0; s[i]; i++)
     {
-        for (j=i+1; s[j] && s[j] == s[i]; j++);
+        for (j = i+1; s[j] && s[j] == s[i]; j++);
         if (j-i > r)
             r = j-i;
     }
@@ -294,18 +294,18 @@ codeboard.io/projects/14579)*/
 int isDif (char s[], int n)
 {
     int i, r = 1;
-    for(i=0;i<n && r; i++)
-        if (s[i]==s[n])
-            r=0; 
+    for(i = 0; i<n && r; i++)
+        if (s[i] == s[n])
+            r = 0; 
     return r;
 }
 
 int difConsecutivos(char s[]) 
 {
     int i, j, r = 0;
-    for (i=0; s[i]; i++)
+    for (i = 0; s[i]; i++)
     {
-        for (j=0; s[j+i] && isDif (s+i,j); j++);
+        for (j = 0; s[j+i] && isDif (s+i,j); j++);
             if (j > r)
                 r = j;
     }        
@@ -318,7 +318,7 @@ mento do maior prefixo comum entre as duas strings. (https://codeboard.io/projec
 int maiorPrefixo (char s1 [], char s2 []) 
 {
     int i;
-    for(i=0; s1[i] && s1[i]==s2[i]; i++);
+    for(i = 0; s1[i] && s1[i] == s2[i]; i++);
     return i;
 }
 
@@ -329,11 +329,11 @@ mento do maior sufixo comum entre as duas strings. (https://codeboard.io/project
 int maiorSufixo (char s1 [], char s2 []) 
 {
     int i, j, r;
-    for (i=0; s1[i]; i++);
+    for (i = 0; s1[i]; i++);
     i--;
-    for (j=0; s2[j]; j++);
+    for (j = 0; s2[j]; j++);
     j--;
-    for (r=0; i>=0 && j>=0 && s1[i]==s2[j]; i--, j--)
+    for (r = 0; i >= 0 && j >= 0 && s1[i] == s2[j]; i--, j--)
         r++;
     return r;
 }
@@ -345,11 +345,11 @@ dar como resultado 4, uma vez que a string "tota" é um sufixo de "batota" e um 
 
 int sufPref (char s1[], char s2[]) 
 {
-    int i,j,r=0;
-    for (i=0; s1[i] && !r; i++)
+    int i, j, r = 0;
+    for (i = 0; s1[i] && !r; i++)
     {
-        for(j=0; s2[j] && s1[i+j] == s2[j]; j++);
-        if(! s1[i+j] && j> r)
+        for(j = 0; s2[j] && s1[i+j] == s2[j]; j++);
+        if(!s1[i+j] && j> r)
             r = j;
     }
     return r;
@@ -359,12 +359,11 @@ palavra é uma sequência de caracteres (diferentes de espaço) terminada por um
 espaços. Assim se a string p tiver o valor "a a bb a", o resultado de contaPal (p) deve ser
 4. (https://codeboard.io/projects/14583)*/
 
-int contaPal (char s[])
-{
+int contaPal (char s[]) {
     int i, r = 0;
-    for(i=0; s[i]; i++)
-      if(s[i] != ' ' && s[i] != '\n' && (s[i+1] == ' ' || s[i+1] == '\0'))
-        r++;
+    for (i = 0; s[i]; i++)
+        if (s[i] != ' ' && s[i] != '\n' &&  (s[i+1] == ' ' || s[i+1] == '\0' || s[i+1] == '\n'))
+            r++;
     return r;
 }
 
@@ -392,8 +391,8 @@ tornar falso. (https://codeboard.io/projects/14586)*/
 int contida (char a[], char b[])
 {
   	int i, j, r = 1;
-  	for(i=0; a[i] && r; i++)
-    	for(j=0, r=0; b[j] && !r; j++)
+  	for(i = 0; a[i] && r; i++)
+    	for(j = 0, r = 0; b[j] && !r; j++)
       		if (a[i] == b[j])
         		r = 1;  
   	return r;
@@ -405,9 +404,9 @@ i.e., lê-se de igual forma nos dois sentidos. (https://codeboard.io/projects/14
 int palindroma (char s[])
 {
   	int i, j, r = 1;
-  	for(i=0; s[i]; i++);
+  	for(i = 0; s[i]; i++);
   	i--;
-  	for (j=0; j<i && r; j++, i--)
+  	for (j = 0; j<i && r; j++, i--)
     	if (s[i] != s[j])
       	r=0;
   return r;
@@ -422,11 +421,26 @@ deverá retornar o valor 5. (https://codeboard.io/projects/13663)*/
 int remRep (char texto []) 
 {
 	int i, r = 0;
-    for(i=0; texto[i]; i++)
+    for(i = 0; texto[i]; i++)
     	if(texto[i] != texto [i+1])
             texto[r++] = texto[i];
     texto[r] = '\0';
     return r;
+}
+
+//ou
+
+int remRep2 (char texto []) 
+{
+    int i, j;
+    for (i = 0; texto[i]; i++)
+        if(texto [i] == texto[i+1])
+        {
+            for(j = i; texto[j]; j++)
+                texto[j] = texto [j+1];
+            i--; 
+        }
+      return i;
 }
 
 /*25. Defina uma função int limpaEspacos (char t[]) que elimina repetições sucessivas de espaços
@@ -435,8 +449,8 @@ por um único espaço. A função deve retornar o comprimento da string resultan
 
 int limpaEspacos (char texto[]) 
 {
-    int i, r=0;
-    for(i=0; texto[i]; i++)
+    int i, r = 0;
+    for(i = 0; texto[i]; i++)
         if (texto [i] != ' ' || texto[i+1] != ' ')
             texto[r++] = texto[i];
     texto[r] = '\0';
@@ -452,8 +466,8 @@ io/projects/14836)
 void insere (int s[], int N, int x)
 {
 	int i, j;
-	for(i=0; i<N && s[i]<x; i++);
-	for(j=N; j>i; j--)
+	for(i = 0; i < N && s[i] < x; i++);
+	for(j = N; j > i; j--)
 		s[j] = s[j-1];
 	s[i] = x;
 }
@@ -506,8 +520,8 @@ retirados. (https://codeboard.io/projects/14839)*/
 
 int retiraNeg (int v[], int N)
 {
-	int i, r=0;
-    for(i=0; i<N; i++)
+	int i, r = 0;
+    for(i = 0; i<N; i++)
     	if (v[i] >= 0)
         	v[r++] = v[i];
     return r;
@@ -523,11 +537,11 @@ int menosFreq (int v[], int N)
     for (i = 0; i < N; i += j)
    	{
 		for(j = 0; i + j < N && v[i] == v[i+j]; j++);
-			if (j < freq)
-			{
-		    	freq = j;
-		    	r = v[i];
-			}           
+		if (j < freq)
+		{
+		    freq = j;
+		    r = v[i];
+		}           
     }
     return r;
 }
@@ -540,7 +554,7 @@ no ı́ndice mais baixo. (https://codeboard.io/projects/14841)*/
  int maisFreq (int v[], int N)
  {
     int i, j, acc = 0, r = v[0];
-    for (i=0; i<N; i += j)
+    for (i = 0; i<N; i += j)
     for(j=0; j + i < N && v[i+j] == v[i]; j++)
     	if (j>acc)
         {
@@ -559,12 +573,12 @@ função deverá retornar 4, correspondendo ao tamanho da sequência 1, 4, 10, 1
 
  int maxCresc (int v[], int N) 
  {
-    int i, j, r = 0;
-    for(i=0; i<N; i+=j)
+    int i,j,r = 0;
+    for (i = 0; i<N; i+=j-i)
     {
-    	for (j=0; j + i < N && v[j+i] <= v[j+i+1]; j++);
-        if (++j > r)
-        	r = j;    
+        for (j = i+1; v[j] && v[j-1] <= v[j]; j++ );
+    	if (j-i > r)
+        	r = j-i;
     }
     return r;
 }
@@ -578,17 +592,36 @@ primeiras 5 posições do vector os elementos {1,2,3,4,5}. (https://codeboard.io
 int elimRep (int v[], int N) 
 {
 	int i,j,k;
-	for (i=0; i<N; i++)
-		for (j=i+1; j<N; j++)
-	    	if (v[i]==v[j])
+	for (i = 0; i < N; i++)
+		for (j = i+1; j < N; j++)
+	    	if (v[i] == v[j])
 	    	{
-	      		for (k=j; k<N-1; k++)
+	      		for (k = j; k <N-1; k++)
 	          		v[k] = v[k+1];
 	     		j--;
 	      		N--;
-	      	}
-	    	
+	      	}   	
 	return N;
+}
+
+//ou 
+
+int isRep (int v[], int x)
+{
+    int i, r = 0;
+    for(i = 0; i < x && !r ; i++)
+        if (v[i] == v[x])
+            r = 1;
+    return r;
+}
+   
+int elimRep2 (int v[], int N) 
+{
+	int i, r = 0;
+	for(i = 0; i<N; i++)
+		if (!isRep (v, i))
+	    	v[r++] = v[i];
+	return r;
 }
 
 /* 34. Defina uma função int elimRepOrd (int v[], int n) que recebe um vector v com n in-
@@ -598,16 +631,15 @@ número de elementos do vector resultante. (https://codeboard.io/projects/14844)
 
 int elimRepOrd (int v[], int N) 
 {
-	int i, j;
-	for(i = 0 ; i<N-1; i++)
-	if(v[i] == v[i+1])
+	int i, r = 0;
+	if (N>0)
 	{
-	    N--;
-	    for (j=i+1; j<N; j++)
-	    	v[j] = v[j+1];
-	    i--;
+		r++;
+		for (i = 1; i<N; i++)
+	 		if (v[i] != v[i-1] )
+	    		v[r++] = v[i];
 	}
-	return N;
+	return r;
 }
 
 
@@ -618,7 +650,7 @@ projects/14845)*/
 
  int comunsOrd (int a[], int na, int b[], int nb)
  {
- 	int i=0,j=0, r = 0;
+ 	int i = 0,j = 0, r = 0;
  	while (i < na && j < nb)
  	{
  		if (a[i] == b[j])
@@ -644,14 +676,13 @@ que os vectores a e b não estão ordenados e defina a função sem alterar os v
 int comuns (int a[], int na, int b[], int nb)
 {
 	int i, j, controlo, r=0;
-	for(i=0; i<na; i++)
-		for (j=0, controlo = 0; j<nb && !controlo; j++)
-		      if (a[i]==b[j])
-		      {
-		          r++;
-		          controlo = 1;
-		      }
-	
+	for(i = 0; i < na; i++)
+		for (j = 0, controlo = 0; j < nb && !controlo; j++)
+			if (a[i] == b[j])
+		    {
+		    	r++;
+		        controlo = 1;
+		    }	
 	return r;
 }
 
@@ -663,7 +694,7 @@ int minInd (int v[], int n)
 {
 	int i, r = 0;
 	for (i = 1; i < n; i++)
-		if (v[i]<v[r])
+		if (v[i] < v[r])
      		r = i; 
    return r;
 }
@@ -675,7 +706,7 @@ lado como v[0]+v[1]+v[2]+v[3]. (https://codeboard.io/projects/14848)*/
 void somasAc (int v[], int Ac [], int N)
 {
 	int i, acc = 0;
-   	for(i=0; i<N; i++)
+   	for(i = 0; i < N; i++)
    	{
    		acc += v[i];
    		Ac[i] = acc;
@@ -689,8 +720,8 @@ da é triangular superior, i.e., que todos os elementos abaixo da diagonal são 
 int triSup (int N, int m [N][N]) 
 {
     int i, j, r = 1;
-    for(i=0; i<N && r; i++)
-        for(j=0; j<i && r; j++)
+    for(i = 0; i < N && r; i++)
+        for(j = 0; j < i && r; j++)
             if (m[i][j] != 0)
                 r = 0;  
     return r;
