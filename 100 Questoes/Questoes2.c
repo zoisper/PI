@@ -55,7 +55,6 @@ LInt reverseL (LInt l)
 {
 	LInt r = NULL;
 	LInt aux = NULL;
-
 	while (l)
 	{
 		aux = l;
@@ -63,7 +62,6 @@ LInt reverseL (LInt l)
 		aux->prox = r;
 		r = aux;
 	}
-	
 	return r;
 }
 
@@ -123,10 +121,7 @@ void merge (LInt *r, LInt l1, LInt l2)
     if (!l1)
         *r = l2;
     else
-        if (!l2)
             *r = l1;
-        else
-            *r = NULL;
 }
 
 //ou 
@@ -164,8 +159,6 @@ void mergeRec (LInt *r, LInt l1, LInt l2) // verão recursiva
 
 
 
-
-
 /*8. Defina uma função void splitQS (LInt l, int x, LInt *mx, LInt *Mx) que, dada uma
 lista ligada l e um inteiro x, parte a lista em duas (retornando os endereços dos primeiros
 elementos da lista em *mx e *Mx): uma com os elementos de l menores do que x e a outra com
@@ -176,13 +169,12 @@ void splitQS (LInt l, int x, LInt *mx, LInt *Mx)
 {
     while (l)
     {
-        if (l->valor <x)
+        if (l->valor < x)
         {
             *mx = l;
             l = l->prox;
             (*mx)->prox = NULL; 
-            mx = &((*mx)->prox);
-            
+            mx = &((*mx)->prox);    
         }
         else
         {
@@ -190,7 +182,6 @@ void splitQS (LInt l, int x, LInt *mx, LInt *Mx)
             l = l->prox;
             (*Mx)->prox = NULL; 
             Mx = &((*Mx)->prox);
-        
         }         
     }
 }
@@ -201,7 +192,7 @@ void splitQSRec (LInt l, int x, LInt *mx, LInt *Mx)  // versão recursiva
 {
     if (l)
     {
-        if (l->valor <x)
+        if (l->valor < x)
         {
             *mx = l;
             l = l->prox;
@@ -230,22 +221,22 @@ LInt parteAmeio (LInt *l)
 {
     int len;
     LInt aux = *l;
-    LInt ant =NULL;
-    LInt r=*l;
+    LInt ant = NULL;
+    LInt r = *l;
     
-    for(len=0; aux;len++ )
-        aux=aux->prox;
+    for(len = 0; aux;len++ )
+        aux = aux->prox;
     
     aux = *l;
     
-    for(len /= 2; len>0; len--)
+    for(len /= 2; len > 0 ; len--)
     {
     	ant = aux;
-        aux=aux->prox;
+        aux = aux->prox;
     }
     
     *l = aux;
-    if (ant== NULL)
+    if (ant == NULL)
         r = NULL;
     else 
         ant->prox = NULL;
@@ -267,8 +258,7 @@ int removeAll (LInt *l, int x)
             r++;
         }
         else
-        	l = &((*l)->prox);
-            
+        	l = &((*l)->prox);   
     }
     return r;
 }
