@@ -766,7 +766,7 @@ io/projects/14685)*/
 int unionSet (int N, int v1[N], int v2[N], int r[N])
 {
 	int i;
-	for (i=0; i<N; i++)
+	for (i = 0; i < N; i++)
 		r[i] = v1[i] || v2[i];
 			
 }
@@ -781,7 +781,7 @@ int r[N]) que coloca no array r o resultado da intersecção dos conjuntos v1 e 
 int intersectSet (int N, int v1[N], int v2[N], int r[N])
 {
     int i;
-	for (i=0; i<N; i++)
+	for (i = 0; i < N; i++)
 		r[i] = v1[i] && v2[i];
 }
 
@@ -796,8 +796,8 @@ int r[N]) que coloca no array r o resultado da intersecção dos multi-conjuntos
 int intersectMSet (int N, int v1[N], int v2[N], int r[N])
 {
 	int i;
-	for(i=0; i<N; i++)
-		if (v1[i]<v2[i])
+	for(i = 0; i < N; i++)
+		if (v1[i] < v2[i])
 	    	r[i] = v1[i];
 	 	else
 	     	r[i] = v2[i];
@@ -815,8 +815,8 @@ r[N]) que coloca no array r o resultado da união dos multi-conjuntos v1 e v2. (
 int unionMSet (int N, int v1[N], int v2[N], int r[N])
 {
     int i;
-	for(i=0; i<N; i++)
-		if (v1[i]>v2[i])
+	for(i = 0; i < N; i++)
+		if (v1[i] > v2[i])
 	    	r[i] = v1[i];
 	 	else
 	     	r[i] = v2[i];
@@ -833,8 +833,8 @@ número de elementos do multi-conjunto v. (https://codeboard.io/projects/14740)*
 int cardinalMSet (int N, int v[N])
 {
 	int i, r = 0;
-	for(i=0; i<N; i++)
-		r+= v[i];
+	for(i = 0; i < N; i++)
+		r += v[i];
 	return r;
 }
 
@@ -852,8 +852,7 @@ de efectuar essa sequência de movimentos. (https://codeboard.io/projects/73018)
 Posicao posFinal (Posicao inicial, Movimento mov[], int N)
 {
     int i;
-    for(i=0; i<N; i++)
-    
+    for(i = 0; i < N; i++)
         if (mov[i] == Norte)
             inicial.y++;
         else
@@ -877,7 +876,7 @@ retornar um número negativo. (https://codeboard.io/projects/73019)*/
 int caminho (Posicao inicial, Posicao final, Movimento mov[], int N)
 {
     int r = 0;
-    for(r=0; r<N && (inicial.x != final.x || inicial.y != final.y); r++ )
+    for(r = 0; r < N && (inicial.x != final.x || inicial.y != final.y); r++ )
     	if (inicial.y < final.y )
         {
             inicial.y++;
@@ -924,7 +923,7 @@ e um array com N posições, calcula quantas dessas posições são adjacentes �
 int vizinhos (Posicao p, Posicao pos[], int N) 
 {
     int i, r = 0;
-    for(i=0; i<N; i++)
+    for(i = 0; i < N; i++)
     {
         if ((p.x - pos[i].x == 0 && (p.y - pos[i].y == 1 || p.y - pos[i].y == -1)) || (p.y - pos[i].y == 0 && (p.x - pos[i].x == 1 || p.x - pos[i].x == -1)))
             r++;
