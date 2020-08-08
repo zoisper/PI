@@ -876,7 +876,7 @@ retornar um número negativo. (https://codeboard.io/projects/73019)*/
 int caminho (Posicao inicial, Posicao final, Movimento mov[], int N)
 {
     int r = 0;
-    for(r = 0; r < N && (inicial.x != final.x || inicial.y != final.y); r++ )
+    for(r = 0; r < N && (inicial.x != final.x || inicial.y != final.y); r++)
     	if (inicial.y < final.y )
         {
             inicial.y++;
