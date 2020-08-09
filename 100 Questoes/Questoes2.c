@@ -269,8 +269,8 @@ dos de uma lista (deixando apenas a primeira ocorrência). (https://codeboard.io
 
 int isDup (LInt l, int N, int x) // verficca se ha repetidos
 {
-    int i, r=0;
-    for (i=0; i<N && r==0; i++)
+    int i, r = 0;
+    for (i = 0; i < N && r == 0; i++)
     {
         if (l->valor == x)
             r = 1;
@@ -380,13 +380,13 @@ por esta ordem. (https://codeboard.io/projects/16256)*/
 
 LInt cloneRev (LInt l)
 {
-    LInt aux = NULL, r = NULL;
+    LInt new = NULL, r = NULL;
     while(l)
     {
-        aux = malloc (sizeof (struct lligada));
-        aux->valor = l->valor;
-        aux->prox = r;
-        r = aux;
+        new = malloc (sizeof (struct lligada));
+        new->valor = l->valor;
+        new->prox = r;
+        r = new;
         l = l->prox;
     }
     return r;
