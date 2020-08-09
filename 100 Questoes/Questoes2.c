@@ -459,7 +459,7 @@ elemento da lista que está N posições à frente. (https://codeboard.io/projec
 
 LInt NForward (LInt l, int N)
 {
-    while (N>0)
+    while (N > 0)
     {
         l = l->prox;
         N--;
@@ -488,15 +488,14 @@ int listToArray (LInt l, int v[], int N)
 
 int listToArrayRec (LInt l, int v[], int N) // versão recursiva
 {
-    int r = 0;
     if (l && N>0)
     {
         *v = l->valor;
         l = l->prox;
-        r++;
-        r += listToArray (l, v+1, N-1);
+        return 1 + listToArrayRec (l, v+1, N-1);
     }
-    return r;
+    else
+        return 0;
 }
 
 /*23. Defina uma função LInt arrayToList (int v[], int N) que constrói uma lista com os
@@ -526,7 +525,7 @@ LInt arrayToListRec (int v[], int N) // versão recursiva
 {
     LInt r = NULL;
     LInt * ptr = &r;
-    if (N>0)
+    if (N > 0)
     {
         *ptr = malloc (sizeof (struct lligada));
         (*ptr)->valor = *v;
@@ -568,10 +567,10 @@ void remreps (LInt l)
     LInt aux = NULL;
     while (l && l->prox)
     {
-        if (l->valor == l->prox->valor)
+        if (l->valor == (l->prox)->valor)
         {
             aux = l->prox;
-            l->prox = l->prox->prox;
+            l->prox = (l->prox)->prox;
             free (aux);
         }
         else
@@ -636,17 +635,17 @@ binária. (https://codeboard.io/projects/16220)*/
 
 int altura (ABin a)
 {
-    int r = 0;
     if (a)
     {
-        int e = altura (a->esq);
-        int d = altura (a->dir);
-        if (d > e)
-            r = 1 + d;
+        int esq = altura (a->esq);
+        int dir = altura (a->dir);
+        if (esq > dir)
+            return 1 + esq;
         else
-            r = 1 + e;
+            return 1 + dir;
     }
-    return r;
+    else 
+        return 0;
 }
 
 /*29. Defina uma função ABin cloneAB (ABin) que cria uma cópia de uma árvore. (https://
@@ -676,8 +675,7 @@ void mirror (ABin *a)
         (*a)->dir = (*a)->esq;
         (*a)->esq = aux;
         mirror (&((*a)->dir));
-        mirror (&((*a)->esq));
-        
+        mirror (&((*a)->esq));       
     }
 }
 
