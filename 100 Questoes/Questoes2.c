@@ -874,16 +874,16 @@ int nivelV (ABin a, int n, int v[])
     int r = 0;
     if (a)
     {
-        if (n==1)
+        if (n == 1)
         {
             *v = a->valor;
             r++;
         }
         else
-            if (n>1)
+            if (n > 1)
             {
-                r+= nivelV (a->esq, n-1, v);
-                r+= nivelV (a->dir, n-1, v+r);
+                r += nivelV (a->esq, n-1, v);
+                r += nivelV (a->dir, n-1, v+r);
             }
     }
     return r;
@@ -900,7 +900,7 @@ int dumpAbin (ABin a, int v[], int N)
     if(a)
     {        
         r += dumpAbin (a->esq, v, N);
-        if (r<N)
+        if (r < N)
             v[r++] = a->valor;
         r += dumpAbin (a->dir, v+r, N-r);       
     }
