@@ -923,14 +923,10 @@ ABin somasAcA (ABin a)
         r->valor = a->valor;
         r->esq = somasAcA (a->esq);
         r->dir = somasAcA (a->dir);
-        if(r->esq && r->dir)
-            r->valor += r->esq->valor + r->dir->valor;
-        else
-            if(r->esq)
-                r->valor += r->esq->valor;
-            else
-                if(r->dir)
-                    r->valor += r->dir->valor;    
+        if(r->esq)
+            r->valor += r->esq->valor;
+        if(r->dir)
+            r->valor += r->dir->valor;    
     }
     return r;
 }
@@ -941,18 +937,13 @@ de inteiros, conta quantos dos seus nodos são folhas, i.e., que não têm nenhu
 
 int contaFolhas (ABin a) 
 {
-    int r = 0;
-    if (a)
-    {
-        if (!a->esq && !a->dir)
-            r++;
+    if (!a)
+        return 0;
+    else
+        if (! a->esq && ! a->dir)
+            return 1;
         else
-            {
-                r += contaFolhas (a->esq);
-                r += contaFolhas (a->dir);
-            }
-    }
-    return r;
+            return contaFolhas (a->esq) + contaFolhas (a->dir);
 }
 
 /*43. Defina uma função ABin cloneMirror (ABin a) que cria uma árvore nova, com o resultado
@@ -978,7 +969,7 @@ a inserir já existir na árvore ou 0 no outro caso. (https://codeboard.io/proje
 int addOrd (ABin *a, int x) 
 {
     int r = 0;
-    while (*a && r!= 1)
+    while (*a && !r)
     {
     	if ((*a)->valor == x)
             r = 1;
@@ -1058,8 +1049,9 @@ void removeMaiorA (ABin *a)
 {
     while ((*a)->dir)
         a = &((*a)->dir);    
-    free (*a);
-    *a = (*a)->esq;      
+    ABin aux = *a;
+    *a = (*a)->esq;
+    free (aux);      
 }
 
 /*49. Apresente uma definição da função int quantosMaiores (ABin a, int x) que, dada uma
@@ -1134,32 +1126,19 @@ void listToBTreeNB (LInt l, ABin *a) // nesta versao a arvore resultante não es
 /*51. Apresente uma definição da função int deProcura (ABin a) que testa se uma árvore é de
 procura. (https://codeboard.io/projects/16290)*/
 
-int maiorAB (ABin a) // calcula maior elemento de uma arvore de procura não vazia
-{
-    while (a && a->dir)
-        a = a->dir;
-    return a->valor;
-}
-
-int menorAB (ABin a) // calcula menor elemento de uma arvore de procura não vazia
-{
-    while (a && a->esq)
-        a = a->esq;
-    return a->valor;
-}
-
 int deProcura (ABin a) 
 {
-    int r = 1;
-    if(a)
+    if (! a)
+        return 1;
+    else
     {
-        if (a->esq && maiorAB(a->esq) > a->valor)
-            r = 0;
+        if (a->esq && (a->esq->valor > a->valor || a->esq->dir && a->esq->dir->valor > a->valor))
+            return 0;
+            
         else
-            if (a->dir && menorAB(a->dir) < a->valor)
-                r = 0;
-            else
-                r = deProcura (a->esq) && deProcura(a->dir);          
+            if (a->dir && (a->dir->valor <= a->valor|| a->dir->esq  && a->dir->esq->valor <= a->valor))
+                return 0;
+                
+        return deProcura (a->esq) && deProcura (a->dir);
     }
-    return r;
 }
