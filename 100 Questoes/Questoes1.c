@@ -113,9 +113,12 @@ int trailingZ (unsigned int n)
 	int r;
 	if (n == 0)
 		return 32;
-	for(r = 0; n%2 == 0; n /= 2)
-    	r++;
-	return r;   
+	else
+	{
+		for(r = 0; n%2 == 0; n /= 2)
+    		r++;
+		return r;   
+	}
 }
 
 /*6. Defina uma função int qDig (unsigned int n) que calcula o número de dı́gitos necessários
@@ -124,10 +127,10 @@ para escrever o inteiro n em base decimal. Por exemplo, qDig (440) deve retornar
 
 int qDig (int n) 
 {
-	int i ;
-	for (i = 1; n/10 > 0; i++)
+	int r ;
+	for (r = 1; n/10 > 0; r++)
 		n /= 10;
-    return i;    
+    return r;    
 }
 
 /*7. Apresente uma definição da função pré-definida em C char *strcat (char s1[], char
@@ -136,11 +139,9 @@ codeboard.io/projects/14490)*/
 
 char *mystrcat(char s1[], char s2[]) 
 {
-   int i,j;
-   for (i = 0; s1[i] != '\0'; i++)
-		;
-    for (j = 0; s1[i] = s2[j]; i++, j++ )
-        ;    
+	int i, j;
+   	for (i = 0; s1[i]; i++);
+   	for (j = 0; s1[i+j] = s2[j]; j++);    
 	return s1;
 }
 
@@ -168,8 +169,7 @@ que compara (lexicograficamente) duas strings. O resultado deverá ser
 int mystrcmp(char s1[], char s2[]) 
 {
     int i;
-    for (i = 0; s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0'; i++); 
-    
+    for (i = 0; s1[i] && s1[i] == s2[i]; i++); 
     return s1[i] - s2[i];
 }
 
@@ -179,16 +179,17 @@ NULL caso s2 não ocorra em s1. (https://codeboard.io/projects/14493)*/
 
 char *mystrstr (char s1[], char s2[]) 
 {
-    int i, j;
     char *r = NULL;
+    int i, j;
     if (! *s2)
-        return s1;
-    for (i = 0; s1[i] && !r; i++)
-    {
-        for (j = 0; s2[j] && s1[i+j] == s2[j]; j++);
-        if (!s2[j])
-             r = (s1+i);    
-    }
+        r = s1;
+    else
+    	for (i = 0; s1[i] && !r; i++)
+    	{
+        	for (j = 0; s2[j] && s1[i+j] == s2[j]; j++);
+        	if (!s2[j])
+            	r = (s1+i);
+        }
     return r;
 }
 /*11. Defina uma função void strrev (char s[]) que inverte uma string. (https://codeboard.
