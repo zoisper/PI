@@ -89,10 +89,10 @@ return 0;
 
 }
 
-
 /*4. Defina uma função int bitsUm (unsigned int n) que calcula o número de bits iguais a 1
 usados na representação binária de um dado número n. (https://codeboard.io/projects/
 13548)*/
+
 int bitsUm (unsigned int x)
 {
 	int r = 0;
@@ -108,6 +108,7 @@ int bitsUm (unsigned int x)
 /*5. Defina uma função int trailingZ (unsigned int n) que calcula o número de bits a 0 no
 final da representação binária de um número (i.e., o expoente da maior potência de 2 que é
 divisor desse número). (https://codeboard.io/projects/13549)*/
+
 int trailingZ (unsigned int n)
  {
 	int r;
@@ -155,8 +156,6 @@ char *mystrcpy(char s1[], char s2[])
     for (i = 0; s1[i] = s2[i]; i++);
     return s1;
 }
-
-
 
 /*9. Apresente uma definição da função pré-definida em C int strcmp (char s1[], char s2[])
 que compara (lexicograficamente) duas strings. O resultado deverá ser
@@ -207,7 +206,6 @@ void strrev (char s[])
     }
 }
 
-
 /*12. Defina uma função void strnoV (char s[]) que retira todas as vogais de uma string.
 (https://codeboard.io/projects/13661)*/
 
@@ -219,13 +217,13 @@ void strnoV (char t[])
            j++;
 }
 
-
 /*13. Defina uma função void truncW (char t[], int n) que dado um texto t com várias palavras
 (as palavras estão separadas em t por um ou mais espaços) e um inteiro n, trunca todas as
 palavras de forma a terem no máximo n caracteres. Por exemplo, se a string txt contiver
 "liberdade, igualdade e fraternidade", a invocação de truncW (txt, 4) deve fazer
 com que passe a estar lá armazenada a string "libe igua e frat". (https://codeboard.
 io/projects/13659)*/
+
 void truncW (char t[], int n)
 {
     int i, j, acc;
@@ -240,7 +238,6 @@ void truncW (char t[], int n)
     }
     t[j]='\0';
 }
-
 
 /*14. Defina uma função char charMaisfreq (char s[]) que determina qual o caracter mais fre-
 quente numa string. A função deverá retornar 0 no caso de s ser a string vazia. (https:
@@ -264,7 +261,6 @@ char charMaisfreq (char s[])
     return r;
 }
 
-
 /*15. Defina uma função int iguaisConsecutivos (char s[]) que, dada uma string s calcula o
 comprimento da maior sub-string com caracteres iguais. Por exemplo, iguaisConsecutivos
 ("aabcccaac") deve dar como resultado 3, correspondendo à repetição "ccc". (https://
@@ -287,10 +283,10 @@ comprimento da maior sub-string com caracteres diferentes. Por exemplo, difConse
 ("aabcccaac") deve dar como resultado 3, correspondendo à string "abc". (https://
 codeboard.io/projects/14579)*/
 
-int isDif (char s[], int n)
+int isDif (char s[], int n) // função auxiliar que verifica se o caracter é repetido
 {
     int i, r = 1;
-    for(i = 0; i<n && r; i++)
+    for(i = 0; i < n && r; i++)
         if (s[i] == s[n])
             r = 0; 
     return r;
@@ -311,6 +307,7 @@ int difConsecutivos(char s[])
 /*17. Defina uma função int maiorPrefixo (char s1 [], char s2 []) que calcula o compri-
 mento do maior prefixo comum entre as duas strings. (https://codeboard.io/projects/
 14580)*/
+
 int maiorPrefixo (char s1 [], char s2 []) 
 {
     int r;
@@ -350,12 +347,14 @@ int sufPref (char s1[], char s2[])
     }
     return r;
 }
+
 /*20. Defina uma função int contaPal (char s[]) que conta as palavras de uma string. Uma
 palavra é uma sequência de caracteres (diferentes de espaço) terminada por um ou mais
 espaços. Assim se a string p tiver o valor "a a bb a", o resultado de contaPal (p) deve ser
 4. (https://codeboard.io/projects/14583)*/
 
-int contaPal (char s[]) {
+int contaPal (char s[]) 
+{
     int i, r = 0;
     for (i = 0; s[i]; i++)
         if (s[i] != ' ' && s[i] != '\n' &&  (s[i+1] == ' ' || s[i+1] == '\0' || s[i+1] == '\n'))
@@ -376,8 +375,6 @@ int contaVogais (char s[])
           		r++;
     return r;
 }
-
-
 
 /*22. Defina uma função int contida (char a[], char b[]) que testa se todos os caracteres da
 primeira string também aparecem na segunda. Por exemplo, contida "braga" "bracara
@@ -456,8 +453,7 @@ int limpaEspacos (char texto[])
 /*26. Defina uma função void insere (int v[], int N, int x) que insere um elemento (x) num
 vector ordenado. Assuma que as N primeiras posições do vector estão ordenadas e que por
 isso, após a inserção o vector terá as primeiras N+1 posições ordenadas. (https://codeboard.
-io/projects/14836)
-*/
+io/projects/14836)*/
 
 void insere (int s[], int N, int x)
 {
@@ -471,8 +467,8 @@ void insere (int s[], int N, int x)
 /*27.  Defina uma função void merge (int r [], int a[], int b[], int na, int nb) que, da-
 dos vectores ordenados a (com na elementos) e b (com nb elementos), preenche o vector r (com
 na+nb elementos) com os elementos de a e b ordenados. (https://codeboard.io/projects/
-14837)
-*/
+14837)*/
+
 void merge (int r[], int a[], int b[], int na,  int nb)
 {
     int i = 0, j = 0, k = 0;
@@ -491,7 +487,6 @@ void merge (int r[], int a[], int b[], int na,  int nb)
     }    
 }
 
-
 /*28. Defina uma função int crescente (int a[], int i, int j) que testa se os elementos do
 vector a, entre as posições i e j (inclusivé) estão ordenados por ordem crescente. A função
 deve retornar 1 ou 0 consoante o vector esteja ou não ordenado. (https://codeboard.io/
@@ -509,7 +504,6 @@ int crescente (int a[], int i, int j)
     return r;
 }
 
-
 /*29. Defina uma função int retiraNeg (int v[], int N) que retira os números negativos de
 um vector com N inteiros. A função deve retornar o número de elementos que não foram
 retirados. (https://codeboard.io/projects/14839)*/
@@ -522,6 +516,7 @@ int retiraNeg (int v[], int N)
         	v[r++] = v[i];
     return r;
 }
+
 /*30. Defina uma função int menosFreq (int v[], int N) que recebe um vector v com N ele-
 mentos ordenado por ordem crescente e retorna o menos frequente dos elementos do
 vector. Se houver mais do que um elemento nessas condições deve retornar o que começa por
@@ -559,7 +554,6 @@ no ı́ndice mais baixo. (https://codeboard.io/projects/14841)*/
         }
     return r;
 }
-
 
 /*32. Defina uma função int maxCresc (int v[], int N) que calcula o comprimento da maior
 sequência crescente de elementos consecutivos num vector v com N elementos. Por exemplo,
@@ -624,7 +618,6 @@ int elimRep2 (int v[], int N)
 teiros ordenado por ordem crescente e elimina as repetições. A função deverá retornar o
 número de elementos do vector resultante. (https://codeboard.io/projects/14844)*/
 
-
 int elimRepOrd (int v[], int N) 
 {
 	int i, r = 0;
@@ -637,7 +630,6 @@ int elimRepOrd (int v[], int N)
 	}
 	return r;
 }
-
 
 /*35. Defina uma função int comunsOrd (int a[], int na, int b[], int nb) que calcula quan-
 tos elementos os vectores a (com na elementos) e b (com nb elementos) têm em comum. As-
@@ -662,7 +654,7 @@ projects/14845)*/
  	        	i++;
  	}
  	return r;
-}
+ }
 
 /*36. Defina uma função int comuns (int a[], int na, int b[], int nb) que calcula quantos
 elementos os vectores a (com na elementos) e b (com nb elementos) têm em comum. Assuma
@@ -681,7 +673,6 @@ int comuns (int a[], int na, int b[], int nb)
 		    }	
 	return r;
 }
-
 
 /*37. Defina uma função int minInd (int v[], int n) que, dado um vector v com n inteiros,
 retorna o ı́ndice do menor elemento do vector. (https://codeboard.io/projects/14847)*/
@@ -739,7 +730,6 @@ void transposta (int N, float m [N][N])
             m[j][i] = aux;
         }
 }
-
 
 /*41. Defina uma função void addTo (int N, int M, int a [N][M], int b[N][M]) que adi-
 ciona a segunda matriz à primeira. (https://codeboard.io/projects/14851)*/
@@ -899,6 +889,7 @@ int caminho (Posicao inicial, Posicao final, Movimento mov[], int N)
         r = -1;
     return r;
 }
+
 /*49. Defina a função int maisCentral (Posicao pos[], int N) que, dado um array com N
 posições, determina o ı́ndice da posição que está mais perto da origem (note que as coor-
 denadas de cada ponto são números inteiros). (https://codeboard.io/projects/73020)*/
