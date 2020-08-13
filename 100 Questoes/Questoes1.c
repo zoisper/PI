@@ -214,14 +214,10 @@ void strrev (char s[])
 
 void strnoV (char t[])
 {
-	int i, h;
-    for ( i = 0, h = 0; t[i] != '\0'; i++)
-    {
-    	if (t[i] != 'a' && t[i] != 'e' && t[i] != 'i' && t[i] != 'o' && t[i] != 'u' &&
-            t[i] != 'A' && t[i] != 'E' && t[i] != 'I' && t[i] != 'O' && t[i] != 'U' )
-            t[h++] = t[i];
-    }    
-    t[h] = '\0';
+	int i, j;
+    for(i=0, j = 0; t[j] = t[i]; i++)
+        if (t[i] != 'a' && t[i] != 'A' && t[i] != 'e' && t[i] != 'E' && t[i] != 'i' && t[i] != 'I' && t[i] != 'o' && t[i] != 'O' && t[i] != 'u' && t[i] != 'U')
+           j++;
 }
 
 
@@ -318,9 +314,9 @@ mento do maior prefixo comum entre as duas strings. (https://codeboard.io/projec
 14580)*/
 int maiorPrefixo (char s1 [], char s2 []) 
 {
-    int i;
-    for(i = 0; s1[i] && s1[i] == s2[i]; i++);
-    return i;
+    int r;
+    for(r = 0; s1[r] && s1[r] == s2[r]; r++);
+    return r;
 }
 
 /*18. Defina uma função int maiorSufixo (char s1 [], char s2 []) que calcula o compri-
