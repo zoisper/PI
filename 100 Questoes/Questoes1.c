@@ -495,12 +495,12 @@ projects/14838)*/
 int crescente (int a[], int i, int j)
 {
 	int r = 1;
-    while (i<j && r)
+	while (i < j && r)
     {
     	if (a[i] > a[i+1])
-     		r = 0;
-        i++;
-    }       
+        	r = 0;
+     	i++;
+    }
     return r;
 }
 
