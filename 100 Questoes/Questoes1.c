@@ -561,16 +561,16 @@ se o vector contiver 10 elementos pela seguinte ordem: 1, 2, 3, 2, 1, 4, 10, 12,
 função deverá retornar 4, correspondendo ao tamanho da sequência 1, 4, 10, 12. (https:
 //codeboard.io/projects/14842)*/
 
- int maxCresc (int v[], int N) 
- {
-    int i,j,r = 0;
-    for (i = 0; i<N; i+=j-i)
-    {
-        for (j = i+1; v[j] && v[j-1] <= v[j]; j++ );
-    	if (j-i > r)
-        	r = j-i;
-    }
-    return r;
+int maxCresc (int v[], int N) 
+{
+   	int i, j, r = 0;
+   	for(i = 0; i < N; i += j)
+   	{
+   	    for(j = 1; j+i < N && v[i+j-1] <= v[i+j]; j++);
+   		if(j > r)
+   	    	r = j;
+   	}
+   	return r;
 }
 
  /*33. Defina uma função int elimRep (int v[], int n) que recebe um vector v com n inteiros e
@@ -608,7 +608,7 @@ int isRep (int v[], int x)
 int elimRep2 (int v[], int N) 
 {
 	int i, r = 0;
-	for(i = 0; i<N; i++)
+	for(i = 0; i < N; i++)
 		if (!isRep (v, i))
 	    	v[r++] = v[i];
 	return r;
@@ -661,17 +661,16 @@ elementos os vectores a (com na elementos) e b (com nb elementos) têm em comum.
 que os vectores a e b não estão ordenados e defina a função sem alterar os vectores. (https:
 //codeboard.io/projects/14846)*/
 
-int comuns (int a[], int na, int b[], int nb)
-{
-	int i, j, controlo, r=0;
-	for(i = 0; i < na; i++)
-		for (j = 0, controlo = 0; j < nb && !controlo; j++)
-			if (a[i] == b[j])
-		    {
-		    	r++;
-		        controlo = 1;
-		    }	
-	return r;
+ int comuns (int a[], int na, int b[], int nb)
+ {
+    int i, j, r=0;
+    for(i = 0; i < na; i++)
+    {
+    	for(j = 0; j < nb && a[i] != b[j]; j++);
+      	if (j < nb)
+        	r++;
+    }
+    return r;
 }
 
 /*37. Defina uma função int minInd (int v[], int n) que, dado um vector v com n inteiros,
@@ -754,7 +753,7 @@ int unionSet (int N, int v1[N], int v2[N], int r[N])
 	int i;
 	for (i = 0; i < N; i++)
 		r[i] = v1[i] || v2[i];
-			
+	return 0;	
 }
 
 /*43. Uma forma de representar conjuntos de ı́ndices consiste em usar um array de inteiros contendo
@@ -769,6 +768,7 @@ int intersectSet (int N, int v1[N], int v2[N], int r[N])
     int i;
 	for (i = 0; i < N; i++)
 		r[i] = v1[i] && v2[i];
+	return 0;
 }
 
 /*44. Uma forma de representar multi-conjuntos de ı́ndices consiste em usar um array de inteiros
@@ -861,7 +861,7 @@ retornar um número negativo. (https://codeboard.io/projects/73019)*/
 
 int caminho (Posicao inicial, Posicao final, Movimento mov[], int N)
 {
-    int r = 0;
+    int r;
     for(r = 0; r < N && (inicial.x != final.x || inicial.y != final.y); r++)
     	if (inicial.y < final.y )
         {
@@ -886,8 +886,9 @@ int caminho (Posicao inicial, Posicao final, Movimento mov[], int N)
                     mov[r] = Este;
                 }             
     if (inicial.x != final.x || inicial.y != final.y)
-        r = -1;
-    return r;
+        return -1;
+    else
+    	return r;
 }
 
 /*49. Defina a função int maisCentral (Posicao pos[], int N) que, dado um array com N
@@ -897,7 +898,7 @@ denadas de cada ponto são números inteiros). (https://codeboard.io/projects/73
 int maiscentral (Posicao pos[], int N) 
 {
     int i, r = 0;
-    for (i=1; i<N; i++)
+    for (i = 1; i < N; i++)
         if(pos[r].x * pos[r].x + pos[r].y * pos[r].y > pos[i].x * pos[i].x + pos[i].y * pos[i].y)
             r = i;
     return r;
@@ -909,12 +910,10 @@ e um array com N posições, calcula quantas dessas posições são adjacentes �
 
 int vizinhos (Posicao p, Posicao pos[], int N) 
 {
-    int i, r = 0;
-    for(i = 0; i < N; i++)
-    {
-        if ((p.x - pos[i].x == 0 && (p.y - pos[i].y == 1 || p.y - pos[i].y == -1)) || (p.y - pos[i].y == 0 && (p.x - pos[i].x == 1 || p.x - pos[i].x == -1)))
+    int i, r=0;
+    for(i=0; i<N; i++)
+        if ((p.x == pos[i].x && (p.y - pos[i].y == 1 || p.y - pos[i].y == -1 )) || (p.y == pos[i].y && (p.x - pos[i].x == 1 || p.x - pos[i].x == -1 )))
             r++;
-    }
     return r;
 }
     
