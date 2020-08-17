@@ -72,13 +72,12 @@ sere ordenadamente um elemento numa lista ordenada. (https://codeboard.io/projec
 
 void insertOrd (LInt *l, int x)
 {
-   LInt new = (LInt) malloc (sizeof (struct lligada));
-   new->valor = x;
-   new->prox = NULL;
-   while (*l && (*l)->valor < x)
-   		l = (&(*l)->prox);
+   	while (*l && (*l)->valor <x)
+    	l = &((*l)->prox);
+    LInt new = malloc (sizeof (struct lligada));
+    new->valor = x;
     new->prox = *l;
-    *l = new;   
+    *l = new;  
 }
 
 /*6. Apresente uma definição não recursiva da função int removeOneOrd (LInt *, int) que
@@ -87,13 +86,15 @@ remove um elemento de uma lista ordenada. Retorna 1 caso o elemento a remover n�
 
 int removeOneOrd (LInt *l, int x)
 {
-	while (*l && (*l)->valor != x)
-        l = (&(*l)->prox);
-    if (! *l)
+	while (*l && (*l)->valor <x)
+        l = &((*l)->prox);
+    if(!*l || (*l)->valor != x)
         return 1;
-    else 
+    else
+    {
         *l = (*l)->prox;
-    return 0;
+        return 0;
+    }
 }
 
 /*7. Defina uma função merge (LInt *r, LInt a, LInt b) que junta duas listas ordenadas (a
@@ -121,7 +122,7 @@ void merge (LInt *r, LInt l1, LInt l2)
     if (!l1)
         *r = l2;
     else
-            *r = l1;
+    	*r = l1;
 }
 
 //ou 
@@ -224,7 +225,7 @@ LInt parteAmeio (LInt *l)
     LInt ant = NULL;
     LInt r = *l;
     
-    for(len = 0; aux;len++ )
+    for(len = 0; aux; len++)
         aux = aux->prox;
     
     aux = *l;
@@ -1059,25 +1060,20 @@ void removeMaiorA (ABin *a)
 maiores que o inteiro dado. (https://codeboard.io/projects/16288)*/
 int quantosMaiores (ABin a, int x) 
 {
-	int r=0;
-    
-    if (a)
-    {
-      if (a->valor > x)
-            r++;
-        r += quantosMaiores (a->dir,x);
-        r += quantosMaiores (a->esq, x);
-      
-    }
-    
-    return r ;
+	if (!a)
+    	return 0;
+    else
+        if(a->valor > x)
+            return 1 + quantosMaiores (a->esq, x) + quantosMaiores (a->dir, x);
+        else
+            return quantosMaiores (a->dir, x);
 }
 
 /*50. Apresente uma definição da função void listToBTree (LInt l, ABin *a) que constrói uma
 árvore binária de procura a partir de uma lista ligada ordenada. (https://codeboard.io/
 projects/16289)*/
 
-void listToBTreeAux (LInt l,int size, ABin *a)
+void listToBTreeAux (LInt l,int size, ABin *a) // função auxiliar para cosntruit arvore balanceada
 {
     if (size >0)
     {
@@ -1109,36 +1105,42 @@ void listToBTree (LInt l, ABin *a)
     listToBTreeAux (l, len, a);
 }
 
-// ou
-
-void listToBTreeNB (LInt l, ABin *a) // nesta versao a arvore resultante não está balanceada 
-{
-    while (l)
-    {
-        (*a) = malloc (sizeof(struct nodo));
-        (*a)->valor = l->valor;
-        (*a)->esq = NULL;
-        a = &((*a)->dir);
-        l = l->prox;       
-    }
-}
 
 /*51. Apresente uma definição da função int deProcura (ABin a) que testa se uma árvore é de
 procura. (https://codeboard.io/projects/16290)*/
 
-int deProcura (ABin a) 
+int isBigger (ABin a, int x) // verifica se x é maior que todos os elemntos da arvore 
 {
-    if (! a)
+    if (!a)
         return 1;
     else
-    {
-        if (a->esq && (a->esq->valor > a->valor || a->esq->dir && a->esq->dir->valor > a->valor))
+        if (a->valor >= x )
             return 0;
-            
         else
-            if (a->dir && (a->dir->valor <= a->valor|| a->dir->esq  && a->dir->esq->valor <= a->valor))
-                return 0;
-                
-        return deProcura (a->esq) && deProcura (a->dir);
-    }
+            return isBigger (a->esq, x) && isBigger (a->dir, x);
+    
+}
+
+int isSmaller (ABin a, int x) // verifica se x é menor que todos os elemntos da arvore
+{
+    if (!a)
+        return 1;
+    else
+        if (a->valor <= x )
+            return 0;
+        else
+            return isSmaller (a->esq, x) && isSmaller (a->dir, x);
+    
+}
+
+
+int deProcura (ABin a) 
+{
+    if (!a)
+        return 1;
+    else
+        if (!isBigger (a->esq, a->valor) || !isSmaller (a->dir, a->valor))
+            return 0;
+        else
+            return deProcura (a->esq) && deProcura (a->dir);
 }
