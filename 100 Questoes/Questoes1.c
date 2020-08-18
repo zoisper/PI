@@ -113,13 +113,13 @@ int trailingZ (unsigned int n)
  {
 	int r;
 	if (n == 0)
-		return 32;
+		r = 32;
 	else
 	{
 		for(r = 0; n%2 == 0; n /= 2)
     		r++;
-		return r;   
 	}
+	return r;   
 }
 
 /*6. Defina uma função int qDig (unsigned int n) que calcula o número de dı́gitos necessários
