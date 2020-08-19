@@ -342,7 +342,7 @@ int sufPref (char s1[], char s2[])
     for (i = 0; s1[i] && !r; i++)
     {
         for(j = 0; s2[j] && s1[i+j] == s2[j]; j++);
-        if(!s1[i+j] && j> r)
+        if(!s1[i+j])
             r = j;
     }
     return r;
@@ -527,7 +527,7 @@ int menosFreq (int v[], int N)
 	int i,j, freq = N, r = v[0];
     for (i = 0; i < N; i += j)
    	{
-		for(j = 0; i + j < N && v[i] == v[i+j]; j++);
+		for(j = 1; i + j < N && v[i] == v[i+j]; j++);
 		if (j < freq)
 		{
 		    freq = j;
