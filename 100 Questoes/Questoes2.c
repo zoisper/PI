@@ -72,7 +72,7 @@ sere ordenadamente um elemento numa lista ordenada. (https://codeboard.io/projec
 
 void insertOrd (LInt *l, int x)
 {
-   	while (*l && (*l)->valor <x)
+   	while (*l && (*l)->valor < x)
     	l = &((*l)->prox);
     LInt new = malloc (sizeof (struct lligada));
     new->valor = x;
@@ -86,7 +86,7 @@ remove um elemento de uma lista ordenada. Retorna 1 caso o elemento a remover nÃ
 
 int removeOneOrd (LInt *l, int x)
 {
-	while (*l && (*l)->valor <x)
+	while (*l && (*l)->valor < x)
         l = &((*l)->prox);
     if(!*l || (*l)->valor != x)
         return 1;
@@ -108,16 +108,14 @@ void merge (LInt *r, LInt l1, LInt l2)
         {
             *r = l1;
             l1 = l1->prox;
-            (*r)->prox = NULL;
-            r = &((*r)->prox);
         }
         else
         {
             *r = l2;
             l2 = l2->prox;
-            (*r)->prox = NULL;
-            r = &((*r)->prox);
         }
+        (*r)->prox = NULL;
+        r = &((*r)->prox);
     }
     if (!l1)
         *r = l2;
@@ -223,7 +221,7 @@ LInt parteAmeio (LInt *l)
     int len;
     LInt aux = *l;
     LInt ant = NULL;
-    LInt r = *l;
+    LInt r = NULL;
     
     for(len = 0; aux; len++)
         aux = aux->prox;
@@ -236,11 +234,12 @@ LInt parteAmeio (LInt *l)
         aux = aux->prox;
     }
     
-    *l = aux;
-    if (ant == NULL)
-        r = NULL;
-    else 
+    if (ant)
+    {
+        r = *l;
         ant->prox = NULL;
+        *l = aux;
+    }
     return r;
 }
 
