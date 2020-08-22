@@ -360,7 +360,7 @@ os elementos pela ordem em que aparecem na lista argumento.*/
 LInt cloneL (LInt l) 
 {
 	LInt r = NULL;
-	LInt *ptr = & r;
+	LInt *ptr = &r;
 	while (l)
 	{
 		*ptr = malloc (sizeof (struct lligada));
