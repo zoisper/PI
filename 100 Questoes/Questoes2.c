@@ -769,7 +769,7 @@ int depth (ABin a, int x)
                             r = 1 + e;
                         else
                             if (d>0)
-                                r = 1+d;                
+                                r = 1 + d;                
             }
     }
     return r;
@@ -842,17 +842,15 @@ LInt nivelL (ABin a, int n)
 {
     LInt r = NULL;
     LInt * ptr = &r;
-    if (a)
+    if (a && n > 0)
     {
         if (n == 1)
         {
             *ptr = malloc (sizeof (struct lligada));
             (*ptr)->valor = a->valor;
-            (*ptr)->prox = NULL;
-            ptr = &((*ptr)->prox);   
+            (*ptr)->prox = NULL;  
         }
         else
-            if (n > 1)
             {
                 *ptr = nivelL(a->esq, n-1);
                 while(*ptr)
@@ -872,19 +870,15 @@ io/projects/16278)*/
 int nivelV (ABin a, int n, int v[]) 
 {
     int r = 0;
-    if (a)
+    if (a && n > 0)
     {
         if (n == 1)
-        {
-            *v = a->valor;
-            r++;
-        }
+            v[r++] = a->valor;
         else
-            if (n > 1)
             {
                 r += nivelV (a->esq, n-1, v);
-                r += nivelV (a->dir, n-1, v+r);
-            }
+                r+= nivelV (a->dir, n-1, v+r);
+            } 
     }
     return r;
 }
@@ -897,7 +891,7 @@ preencher no máximo N elementos e retornar o número de elementos preenchidos. 
 int dumpAbin (ABin a, int v[], int N) 
 {
     int r = 0;
-    if(a)
+    if(a && r < N)
     {        
         r += dumpAbin (a->esq, v, N);
         if (r < N)
