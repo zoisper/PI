@@ -297,9 +297,9 @@ int difConsecutivos(char s[])
     int i, j, r = 0;
     for (i = 0; s[i]; i++)
     {
-        for (j = 0; s[j+i] && isDif (s+i,j); j++);
-            if (j > r)
-                r = j;
+        for (j = 1; s[j+i] && isDif (s+i,j); j++);
+        if (j > r)
+        	r = j;
     }        
  return r;   
 }

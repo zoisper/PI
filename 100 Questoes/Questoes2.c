@@ -281,19 +281,16 @@ int isDup (LInt l, int N, int x) // verficca se ha repetidos
 }
 
 int removeDups (LInt *l){
-    int i = 0, r = 0;
+    int r = 0;
     LInt init = *l;
     while (*l)
     {
-        if (isDup (init, i, (*l)->valor))
-        {
+        if (isDup (init, r, (*l)->valor))
             *l = (*l)->prox;
-            r++;
-        }
         else
             {
                 l = &((*l)->prox);
-                i++;
+                r++;
             }
     }
     return r;
