@@ -442,10 +442,10 @@ int drop (int n, LInt *l)
     LInt aux = NULL;
     while (*l && r<n)
     {
-        aux = (*l)->prox;
-        free (*l);
-        *l = aux;
         r++;
+        aux = *l;
+        *l = (*l)->prox;
+        free(aux);
     }
     return r;
 }
