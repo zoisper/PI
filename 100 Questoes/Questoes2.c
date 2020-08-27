@@ -987,18 +987,15 @@ se um elemento pertence a uma árvore binária de procura. (https://codeboard.io
 
 int lookupAB (ABin a, int x) 
 {
-    int r = 0;
-    while (a && !r)
-    {
-    	if (a->valor == x)
-            r = 1;
+    while (a && a->valor != x)
+        if (a->valor >x)
+            a = a->esq;
         else
-            if (a->valor > x)
-                a = a->esq;
-            else
-                a = a->dir;
-    }
-    return r;
+            a = a->dir;
+    if (!a)
+        return 0;
+    else
+        return 1;
 }
 
 /*46. Apresente uma definição da funçãoint depthOrd (ABin a, int x) que calcula o nı́vel a que
