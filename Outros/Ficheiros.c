@@ -57,7 +57,7 @@ void acrescentaF (FILE *fp, char *n)
         ant = pt;
         pt = buff.prox;
         fseek (fp, pt, SEEK_SET);
-        fread (&buff, sizeof (struct slist), 1, fp);
+        fread (&buff, sizeof (struct flist), 1, fp);
     }
     if (!pt || strcmp (buff.nome, n) != 0)
     {
@@ -65,7 +65,7 @@ void acrescentaF (FILE *fp, char *n)
         novo.prox = pt;
         fseek (fp, 0L, SEEK_END);
         endN = ftell(fp);
-        fwrite (&novo, sizeof (struct slist), 1, fp);
+        fwrite (&novo, sizeof (struct flist), 1, fp);
         if (!ant)
         {
             fseek(fp, 0L, SEEK_SET);
@@ -74,10 +74,10 @@ void acrescentaF (FILE *fp, char *n)
         else
         {
             fseek (fp, ant, SEEK_SET);
-            fread (&buff, sizeof (struct slist), 1, fp);
+            fread (&buff, sizeof (struct flist), 1, fp);
             buff.prox = endN;
             fseek (fp, ant, SEEK_SET);
-            fwrite (&buff, sizeof (struct slist), 1, fp);
+            fwrite (&buff, sizeof (struct flist), 1, fp);
         }
     }
 }
@@ -91,7 +91,7 @@ void imprimeF (FILE * fp)
     while (pt)
     {
         fseek (fp, pt, SEEK_SET);
-        fread (&buff, sizeof (struct slist), 1, fp);
+        fread (&buff, sizeof (struct flist), 1, fp);
         printf ("%s\n", buff.nome);
         pt = buff.prox;
     }
@@ -110,3 +110,4 @@ FILE * abreF (char *nome) // usar esta função para abrir o ficheiro
     }   
     return fp;
 }
+
