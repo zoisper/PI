@@ -249,8 +249,8 @@ char charMaisfreq (char s[])
     int i, j, freq, maisFreq;
     for (i = 0, maisFreq = 0; s[i]; i++)
     {
-        for (j = i+1, freq = 1; s[j]; j++)
-            if (s[j] == s[i])
+        for (j = 1, freq = 1; s[i+j]; j++)
+            if (s[i+j] == s[i])
                 freq++;
         if (freq > maisFreq)
         {
@@ -399,10 +399,10 @@ int palindroma (char s[])
   	int i, j, r = 1;
   	for(i = 0; s[i]; i++);
   	i--;
-  	for (j = 0; j<i && r; j++, i--)
+  	for (j = 0; j < i && r; j++, i--)
     	if (s[i] != s[j])
-      	r=0;
-  return r;
+      		r = 0;
+  	return r;
 }
 
 /*24. Defina uma função int remRep (char x[]) que elimina de uma string todos os caracteres
