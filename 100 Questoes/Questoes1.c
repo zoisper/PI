@@ -667,8 +667,8 @@ que os vectores a e b não estão ordenados e defina a função sem alterar os v
     for(i = 0; i < na; i++)
     {
     	for(j = 0; j < nb && a[i] != b[j]; j++);
-      if (j < nb)
-        r++;
+      	if (j < nb)
+        	r++;
     }
     return r;
 }
