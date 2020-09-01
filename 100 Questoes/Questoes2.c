@@ -267,10 +267,10 @@ int removeAll (LInt *l, int x)
 dos de uma lista (deixando apenas a primeira ocorrência). (https://codeboard.io/projects/
 16250)*/
 
-int isDup (LInt l, int N, int x) // verficca se ha repetidos
+int isDup (LInt l, int length, int x) // verficca se ha repetidos
 {
     int i, r = 0;
-    for (i = 0; i < N && r == 0; i++)
+    for (i = 0; i < length && r == 0; i++)
     {
         if (l->valor == x)
             r = 1;
