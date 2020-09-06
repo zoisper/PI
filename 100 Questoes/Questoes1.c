@@ -181,12 +181,12 @@ char *mystrstr (char s1[], char s2[])
     int i, j;
     if (! *s2)
         r = s1;
-    else
-    	for (i = 0; s1[i] && !r; i++)
-    	{
-        	for (j = 0; s2[j] && s1[i+j] == s2[j]; j++);
+      else
+        for (i = 0; s1[i] && !r; i++)
+        {
+          for (j = 0; s2[j] && s1[i+j] == s2[j]; j++);
         	if (!s2[j])
-            	r = (s1+i);
+            r = (s1+i);
         }
     return r;
 }
@@ -199,8 +199,8 @@ void strrev (char s[])
     for (len = 0; s[len] != '\0'; len++)
             ;
     for (i = 0, len--; i < len; i++, len--)
-    {              
-    	c = s[i];
+    {
+        c = s[i];
         s[i] = s[len];
         s[len] = c;
     }

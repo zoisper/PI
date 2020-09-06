@@ -747,29 +747,29 @@ projects/16273)*/
 
 int depth (ABin a, int x) 
 {
-    int r = -1;
-    if (a)
-    {
-        if (a->valor == x)
-            r = 1;
+    if (!a)
+        return -1;
+    else
+    	if (a->valor == x)
+            return 1;
         else
-            {
-                int d = depth (a->dir, x);
-                int e = depth (a->esq, x);
-                if (d>0 && d<e)
-                    r = 1 + d;
-                else
-                    if(e>0 && e<d)
-                        r = 1 + e;
-                    else
-                        if (e>0)
-                            r = 1 + e;
-                        else
-                            if (d>0)
-                                r = 1 + d;                
-            }
-    }
-    return r;
+       	{
+        	int d = depth (a->dir, x);
+        	int e = depth (a->esq, x);
+        	if(e>0 && e<d)
+        	    return 1 + e;
+        	else
+        	    if (d>0 && d<e)
+        	        return 1 + d;
+        	    else
+        	        if (e>0)
+        	            return 1 + e;
+        	        else
+        	            if (d>0)
+        	                return  1 + d;
+        	            else
+        	                return -1;
+        }
 }
 
 /*35. Defina uma função int freeAB (ABin a) que liberta o espaço ocupado por uma árvore
@@ -777,15 +777,14 @@ binária, retornando o número de nodos libertados. (https://codeboard.io/projec
 
 int freeAB (ABin a) 
 {
-    int r = 0;
-    if (a)
+    if(!a)
+        return 0;
+    else
     {
-        int e = freeAB (a->esq);
-        int d = freeAB (a->dir);
+        int r = freeAB (a->esq) + 1 + freeAB (a->dir);
         free(a);
-        r = 1 + e + d;
+        return r;
     }
-    return r;
 }
 
 /*36. Defina uma função int pruneAB (ABin *a, int l) que remove (libertando o espaço respec-
@@ -797,24 +796,18 @@ corresponde a remover todos os elementos da árvore a. (https://codeboard.io/pro
 
 int pruneAB (ABin *a, int l) 
 {
-    int r = 0;
-    if (*a)
-    {
-        if (l <= 0)
+    if(!*a)
+        return 0;
+    else    
+        if (l <=0)
         {
-            r += pruneAB (&((*a)->esq),l);
-            r += pruneAB (&((*a)->dir),l);
-            r++;
+            int r = 1 + pruneAB (&((*a)->esq), l) + pruneAB (&((*a)->dir), l);
             free(*a);
             *a = NULL;
+            return r;
         }
         else
-        {
-            r += pruneAB (&((*a)->esq),l-1);
-            r += pruneAB (&((*a)->dir),l-1);
-        }
-    }
-    return r;
+            return pruneAB (&((*a)->esq), l-1) + pruneAB (&((*a)->dir), l-1);
 }
 
 /*37. Defina uma função int iguaisAB (ABin a, ABin b) que testa se duas árvores são iguais
@@ -822,13 +815,19 @@ int pruneAB (ABin *a, int l)
 
 int iguaisAB (ABin a, ABin b) 
 {
-    int r = 0;
     if (!a && !b)
-        r = 1;
+        return 1;
     else
-        if (a && b)
-            r = (a->valor == b->valor && iguaisAB (a->esq, b->esq) && iguaisAB (a->dir, b->dir));
-    return r;
+        if (a && !b)
+            return 0;
+        else
+            if (!a && b)
+                return 0;
+            else
+                if (a->valor != b->valor)
+                    return 0;
+                else
+                    return iguaisAB (a->esq, b->esq) && iguaisAB (a->dir, b->dir);
 }
 
 /*38. Defina uma função LInt nivelL (ABin a, int n) que, dada uma árvore binária, constrói
@@ -874,7 +873,7 @@ int nivelV (ABin a, int n, int v[])
         else
             {
                 r += nivelV (a->esq, n-1, v);
-                r+= nivelV (a->dir, n-1, v+r);
+                r += nivelV (a->dir, n-1, v+r);
             } 
     }
     return r;
@@ -931,7 +930,7 @@ int contaFolhas (ABin a)
     if (!a)
         return 0;
     else
-        if (! a->esq && ! a->dir)
+        if (!a->esq && !a->dir)
             return 1;
         else
             return contaFolhas (a->esq) + contaFolhas (a->dir);
